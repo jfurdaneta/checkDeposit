@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/com.pkmmte.view.CircularImageView"
+    xmlns:ext="http://schemas.android.com/apk/res-auto"
+    xmlns:pixlui="http://schemas.android.com/apk/com.neopixl.pixlui"
+    android:id="@+id/inicioMainRelativeLayout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/bod_nav_bar_color"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ll_form"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:alpha="1"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_marginTop="12dp"
+            android:src="@drawable/logo_blanco" />
+
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="40dp"
+            android:orientation="vertical">
+
+            <com.neopixl.pixlui.components.textview.TextView
+                android:id="@+id/textView12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/inicio_sesion_label"
+                android:textColor="@color/bod_blanco"
+                android:textSize="27dp"
+                pixlui:clearclipboardcontent="true"
+                pixlui:copyandpaste="false"
+                pixlui:typeface="OpenSans-Semibold.ttf" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp">
+
+                <!-- app:border_width="4dp" -->
+                <!--     <com.neopixl.pixlui.components.textview.TextView
+                         android:layout_width="0dp"
+                         android:layout_weight="0.6"
+                         android:layout_height="wrap_content"
+                         android:layout_marginLeft="10dp"
+                         android:text="@string/imagen_validacion_texto"
+                         pixlui:typeface="OpenSans-Semibold.ttf"
+                         android:textColor="@color/bod_blanco"
+                         android:textSize="11dp"
+                        />  -->
+
+
+            </LinearLayout>
+
+
+            <com.neopixl.pixlui.components.edittext.EditText
+                android:id="@+id/et_pass_field"
+                android:layout_width="fill_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/bod_blanco"
+                android:hint="@string/contrasenia__holder_string"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:paddingLeft="10dp"
+                android:textColor="@color/bod_gray_text"
+                android:textSize="12dp"
+                pixlui:typeface="OpenSans-Semibold.ttf" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|bottom"
+                android:layout_marginTop="30dp">
+
+                <ImageView
+                    android:id="@+id/iv_next"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="top"
+                    android:paddingBottom="2dp"
+                    android:paddingLeft="1dp"
+                    android:paddingRight="1dp"
+                    android:paddingTop="2dp"
+                    android:src="@drawable/continuar_fondonegro" />
+
+                <com.neopixl.pixlui.components.textview.TextView
+                    android:id="@+id/tv_next"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:text="@string/continuar_string"
+                    android:textColor="@color/bod_blanco"
+                    android:textSize="16sp"
+                    pixlui:clearclipboardcontent="true"
+                    pixlui:copyandpaste="false"
+                    pixlui:typeface="OpenSans-Semibold.ttf" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

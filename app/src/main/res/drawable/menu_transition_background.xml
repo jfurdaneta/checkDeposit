@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<transition xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/bod_transparent_black" />
+    <item android:drawable="@color/bod_semitransparent_black" />
+</transition>

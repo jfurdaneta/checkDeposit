@@ -1,0 +1,169 @@
+<resources>
+    <string name="app_name">Depósito en Cheque Móvil</string>
+    <string name="action_settings" translatable="false">Configuración</string>
+    <string name="hello">Hello World, PhotoIntentActivity!</string>
+
+    <string name="btnFrontal">Foto Frente</string>
+    <string name="lblMonto">Monto: </string>
+    <string name="txtContinuar">Continuar</string>
+    <string name="btnReverso">Foto Reverso</string>
+    <string name="lblFrontal">Frente</string>
+    <string name="lblTrasero">Atrás</string>
+    <string name="btnIntendV">Video</string>
+    <string name="cannot">Cannot</string>
+    <string name="album_name" translatable="false">DepCheq</string>
+    <string name="intro">Capture a picture to crop!</string>
+    <string name="picture">Foto del Cheque</string>
+
+
+
+    <string name="app_version_desc"></string>
+    <string name="app_version_date">2016.07.18</string>
+    <string name="app_version">APP v.0.1.1.6534 (2016-07-18).</string>
+    <string name="title_activity_login">login</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="contacto_amigo_title">Contáctenos \nestamos para servirle.</string>
+    <string name="contacto_amigo_desc">Tu decides como hacerlo,tenemos a tu disposición diferentes canales de atención pensando en tu comodidad y preferencias. </string>
+    <string name="contacto_amigo_conversar">¿Quieres conversar con un ejecutivo?</string>
+    <string name="contacto_amigo_263">*263</string>
+    <string name="contacto_amigo_0501">0501-9200000</string>
+    <string name="contacto_amigo_necesidad">¿Quieres relatarnos tu necesidad?</string>
+    <string name="bod_mail">contactoamigo@bod.com.ve</string>
+    <string name="consulta_credito_header_title">Consulta de Créditos</string>
+    <string name="consulta_cuenta_header_title">Consulta de Cuentas</string>
+    <string name="fecha_string_label">Fecha</string>
+    <string name="tipo_operacion_string_label">Tipo de Operación</string>
+    <string name="monto_string_label">Monto</string>
+    <string name="saldo_sring_label">Saldo</string>
+    <string name="saldo_promedio_label">Saldo Promedio</string>
+    <string name="web_string">Web</string>
+    <string name="movil_string">Móvil</string>
+    <string name="cajero_string">Cajero Automático</string>
+    <string name="ivr_string">IVR</string>
+    <string name="taquilla_string">Taquilla</string>
+    <string name="todos_string">Todos</string>
+    <string name="debit_string">Débito</string>
+    <string name="credito_string">Crédito</string>
+    <string name="buscar_string">Buscar...</string>
+    <string name="consulta_cuenta_button_string">Consulta\nde Cuenta</string>
+    <string name="descarga_mov_button_string">Descarga\nde Movimientos</string>
+    <string name="estado_cuenta_button_string">Estado\nde Cuenta</string>
+    <string name="fecha_inicio_string">Seleccione fecha inicio</string>
+    <string name="fecha_fin_string">Seleccione fecha fin</string>
+    <string name="buscar_button_string">Buscar</string>
+    <string name="inicio_sesion_label">Inicio de Sesión</string>
+    <string name="imagen_validacion_texto">Si reconoce esta frase e imagen ingrese su \"contraseña\" y presione &quot;Continuar&quot;, caso contrario desinstale la aplicación, vaya a la tienda de aplicaciones de su sistema operativo y descargue la aplicación oficial del b.o.d</string>
+    <string name="contrasenia__holder_string">Ingrese su contrase\u00f1a</string>
+    <string name="continuar_string">Continuar</string>
+    <string name="ingrese_usuario_holder_label">Ingrese su usuario...</string>
+    <string name="ingrese_pregunta_holder_label">Ingrese su pregunta...</string>
+    <string name="ingrese_respuesta_holder_label">Ingrese su respuesta...</string>
+    <string name="pago_tarjetas_title_string">Pago de Tarjetas</string>
+    <string name="pago_tarjeta_a_quien_string">\u00bfA quien le desea pagar?</string>
+    <string name="pago_tarjeta_entre_string">\u00bfEntre sus tarjetaCreditos?</string>
+    <string name="nombre_contacto_holder_string">Ingrese el nombre de su contacto</string>
+    <string name="contacto_no_directorio_string">¿El contacto no se encuentra en el directorio?</string>
+    <string name="casi_listo_string">Casi estamos listos!</string>
+    <string name="confirmacion_pago_string">Por favor confirme el pago que está por realizar:</string>
+    <string name="pago_dirigida_a_string">Dirigida al Benerificiario:</string>
+    <string name="pago_a_tarjeta_string">A la tarjetaCredito:</string>
+    <string name="desde_cuenta_string">Desde su Cta.:</string>
+    <string name="pago_monto_string">Por un monto de:</string>
+    <string name="pago_confirm_concept_string">Por concepto de:</string>
+    <string name="cancelar_string_button">Cancelar</string>
+    <string name="pagar_string_button">Pagar</string>
+    <string name="listo_string">Listo!</string>
+    <string name="pago_con_exito_string">Pago realizado con éxito</string>
+    <string name="comprobante_string">Comprobante</string>
+    <string name="fecha_operacion_label">Fecha de Operación:</string>
+    <string name="hora_operacion_label">Hora de la Operación:</string>
+    <string name="referencia_operacion_string">"Referencia de la Operación:</string>
+    <string name="numero_solicitud_string">Número de Solicitud:</string>
+    <string name="usuario_string">Usuario:</string>
+    <string name="canal_utilizado_string">Canal utilizado:</string>
+    <string name="vencimiento_string">Vencimiento</string>
+    <string name="monto_cuota_string">Monto cuota</string>
+    <string name="interes_string">Interes</string>
+    <string name="otros_cargos_string">Otros</string>
+    <string name="afiliacion_string">Afilación</string>
+    <string name="afiliacion_ingrese_title">Ingrese la respuesta a las siguientes preguntas.</string>
+    <string name="afiliacion_respuesta_hint">Escriba su respuesta...</string>
+    <string name="alert_pop_up_title">Atención</string>
+    <string name="cerrar_button_string">Cerrar</string>
+    <string name="canal_filtro_string">Canal</string>
+    <string name="operacion_filtro_string">Operación</string>
+    <string name="lo_q_tengo_vs_debo_String">Lo que tengo vs lo que debo</string>
+    <string name="lo_q_tengo_string">Lo que tengo</string>
+    <string name="lo_q_debo_string">Lo que debo</string>
+    <string name="redes_sociales_title">Síguenos \nen las redes sociales.</string>
+    <string name="redes_sociales_desc_string">Ponemos a su alcance nuestros canales oficiales para mantenerse informado y comunicar sus inquietudes"</string>
+
+    <string name="perfil_consulta_producto">No tienes autorizaci\u00f3n para consultar este producto</string>
+
+    <string name="transferencia_titulo">Transferencias</string>
+    <string name="transferencia_aquien">\u00bf\u00c1 qui\u00e9n le quieres transferir?</string>
+    <string name="transferencia_acual">\u00bf\u00c1 cu\u00e1l cuenta?</string>
+    <string name="transferencia_concepto">\u00bfCu\u00e1l es el concepto de la transferencia?</string>
+    <string name="transferencia_desde_cual_cuenta_label">\u00bfDe cu\u00e1l de sus cuentas deseas transferir?</string>
+
+    <string name="pago_aquien">\u00bf\u00c1 qui\u00e9n le quieres cancelar?</string>
+    <string name="pago_acual">\u00bf\u00c1 cu\u00e1l tarjeta?</string>
+    <string name="pago_concepto">\u00bfCu\u00e1l es el concepto del pago?</string>
+    <string name="pago_desde_cual_cuenta_label">\u00bfDe cu\u00e1l de sus cuentas deseas debitar?</string>
+
+
+    <string name="login_euf_titulo">Equipo de uso Frecuente</string>
+    <string name="login_euf_mensaje">Dado que est\u00e1 ingresando al sistema desde un equipo que no es de uso frecuente, debemos realizarle unas preguntas de validaci\u00f3n por su seguridad.</string>
+    <string name="login_euf_mensaje_paso2">Por su seguridad le recomendamos configurar este equipo como de uso frecuente por lo que debe suministrar la siguiente información.</string>
+
+    <string name="login_pdesafio_titulo">Preguntas de Desafío</string>
+    <string name="login_pdesafio_mensaje">Ingresa y responde las preguntas de desafío, estas serán utilizadas para validar y registrar su equipo como frecuente.</string>
+
+    <string name="iniciar_sesion_label">Iniciar Sesión</string>
+    <string name="act_code_string">Código de activación</string>
+    <string name="val_code_string">Validar Código</string>
+
+    <string name="clave_virtual_title">Token M\u00f3vil</string>
+    <string name="scan_code_string">Escanear Código</string>
+    <string name="enter_code_string">Ingresar Código</string>
+    <string name="regresar_label">Regresar</string>
+    <string name="cuanto_dinero_label">\u00bfQu\u00e9 monto deseas transferir?</string>
+    <string name="tipo_pago_label">\u00bfTipo de Pago?</string>
+
+
+    <string name="cual_concepto_label">\u00bfCual es el concepto de la tranferencia?</string>
+    <string name="concepto_label">Concepto</string>
+    <string name="borrar_label">Borrar</string>
+    <string name="cancelar_label">Cancelar</string>
+    <string name="entre_cuentas_label">\u00bfEntre sus cuentas?</string>
+    <string name="nombre_contacto_hint">Buscar Contacto</string>
+    <string name="comprobante_label">Comprobante</string>
+
+    <string name="verMas_string">Ver m\u00e1s</string>
+
+    <string name="label_cerrar_sesion">Cerrar Sesión</string>
+
+    <string name="label_mensaje_timeout">Tu sesi\u00f3n a punto de expirar, pulsa continuar para seguir con tus operaciones.</string>
+
+    <string name="tipo_doc_prompt">Tipo</string>
+    <string-array name="tipo_documento_identidad">
+        <item>V</item>
+        <item>E</item>
+        <item>J</item>
+    </string-array>
+
+    <!--Jose urdaneta -->
+    <string name="codigo_invalido">Código de validación inválido. Por favor verifique</string>
+    <string name="token_movil">Token Móvil</string>
+    <string name="token_opciones">Opciones</string>
+    <string name="token_copiar">Copiar</string>
+    <string name="token_copiado">Token Móvil copiado al portapapeles</string>
+    <string name="token_desasociar">Desasociar token</string>
+    <string name="token_desasociar_confirmacion">Está seguro que desea desasociar el token?</string>
+    <string name="token_desasociado">Token desasociado satisfactoriamente</string>
+    <string name="token_aceptar">Aceptar</string>
+    <string name="token_cancelar">Cancelar</string>
+    <!--Jose urdaneta -->
+
+
+</resources>

@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "C:\\AndroidProjects\\checkDeposit\\pixlUI\\build\\intermediates\\res\\merged\\release\\drawable-v23\\abc_control_background_material.xml",
+        "source": "C:\\AndroidProjects\\checkDeposit\\pixlUI\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.2.1\\res\\drawable-v23\\abc_control_background_material.xml"
+    },
+    {
+        "merged": "G:\\Fintec\\nueva\\checkDeposit\\pixlUI\\build\\intermediates\\res\\merged\\release\\drawable-v23\\abc_control_background_material.xml",
+        "source": "G:\\Fintec\\nueva\\checkDeposit\\pixlUI\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.2.1\\res\\drawable-v23\\abc_control_background_material.xml"
+    },
+    {
+        "merged": "G:\\Fintec\\checkDeposit\\pixlUI\\build\\intermediates\\res\\merged\\release\\drawable-v23\\abc_control_background_material.xml",
+        "source": "G:\\Fintec\\checkDeposit\\pixlUI\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.2.1\\res\\drawable-v23\\abc_control_background_material.xml"
+    }
+]

@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:pixlui="http://schemas.android.com/apk/com.neopixl.pixlui"
+    android:id="@+id/inicioMainRelativeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bod_nav_bar_color"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.7"
+            android:orientation="vertical">
+
+            <com.neopixl.pixlui.components.textview.TextView
+                android:id="@+id/textView12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="40dp"
+                android:text="@string/contacto_amigo_title"
+                android:textColor="@color/bod_blanco"
+                android:textSize="22dp"
+                pixlui:clearclipboardcontent="true"
+                pixlui:copyandpaste="false"
+                pixlui:typeface="OpenSans-Semibold.ttf" />
+
+            <com.neopixl.pixlui.components.textview.TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="15dp"
+                android:text="@string/contacto_amigo_desc"
+                android:textColor="@color/bod_blanco"
+                android:textSize="11dp"
+                pixlui:clearclipboardcontent="true"
+                pixlui:copyandpaste="false"
+                pixlui:typeface="OpenSans-Regular.ttf" />
+
+
+            <com.neopixl.pixlui.components.textview.TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="25dp"
+                android:text="@string/contacto_amigo_conversar"
+                android:textColor="@color/bod_blanco"
+                android:textSize="16dp"
+                pixlui:clearclipboardcontent="true"
+                pixlui:copyandpaste="false"
+                pixlui:typeface="OpenSans-Semibold.ttf" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="22dp"
+                android:layout_marginTop="20dp"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:src="@drawable/telefono" />
+
+                <com.neopixl.pixlui.components.textview.TextView
+                    android:id="@+id/tv_call_263"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:text="@string/contacto_amigo_263"
+                    android:textColor="@color/bod_blanco"
+                    android:textSize="12dp"
+                    pixlui:clearclipboardcontent="true"
+                    pixlui:copyandpaste="false"
+                    pixlui:typeface="OpenSans-Semibold.ttf" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:src="@drawable/telefono" />
+
+                <com.neopixl.pixlui.components.textview.TextView
+                    android:id="@+id/tv_call_0501"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:text="@string/contacto_amigo_0501"
+                    android:textColor="@color/bod_blanco"
+                    android:textSize="12dp"
+                    pixlui:clearclipboardcontent="true"
+                    pixlui:copyandpaste="false"
+                    pixlui:typeface="OpenSans-Semibold.ttf"
+
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="22dp">
+
+                <com.neopixl.pixlui.components.textview.TextView
+                    android:id="@+id/youtube_link"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/contacto_amigo_necesidad"
+                    android:textColor="@color/bod_blanco"
+                    android:textSize="16dp"
+                    pixlui:clearclipboardcontent="true"
+                    pixlui:copyandpaste="false"
+                    pixlui:typeface="OpenSans-Semibold.ttf" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="22dp"
+                android:layout_marginTop="25dp"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:src="@drawable/correo" />
+
+                <com.neopixl.pixlui.components.textview.TextView
+                    android:id="@+id/tv_mail_link"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:text="@string/bod_mail"
+                    android:textColor="@color/bod_blanco"
+                    android:textSize="12dp"
+                    pixlui:clearclipboardcontent="true"
+                    pixlui:copyandpaste="false"
+                    pixlui:typeface="OpenSans-Semibold.ttf" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="10dp"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@color/background_floating_material_light" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="100dp"
+            android:layout_marginBottom="50dp"
+            android:layout_weight="0.3"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_weight="0.8"
+                android:gravity="bottom"
+                android:orientation="vertical">
+
+                <com.neopixl.pixlui.components.textview.TextView
+                    android:id="@+id/tv_app_version"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="@string/app_version"
+                    android:textColor="@color/bod_blanco"
+                    android:textSize="12dp"
+                    pixlui:clearclipboardcontent="true"
+                    pixlui:copyandpaste="false"
+                    pixlui:typeface="OpenSans-Semibold.ttf" />
+
+                <com.neopixl.pixlui.components.textview.TextView
+                    android:id="@+id/tv_app_desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="@string/app_version_desc"
+                    android:textColor="@color/bod_blanco"
+                    android:textSize="12dp"
+                    android:visibility="visible"
+                    pixlui:clearclipboardcontent="true"
+                    pixlui:copyandpaste="false"
+                    pixlui:typeface="OpenSans-Semibold.ttf" />
+
+
+               
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_gravity="left"
+                android:layout_weight="0.2"
+                android:gravity="bottom"
+                android:orientation="vertical">
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

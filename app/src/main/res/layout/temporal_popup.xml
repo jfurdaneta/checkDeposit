@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:pixlui="http://schemas.android.com/apk/com.neopixl.pixlui"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+
+
+    <LinearLayout android:orientation="vertical"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/white_rounded_corners_shape"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="20dp">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/bod_blanco"
+            android:gravity="center">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:background="@color/bod_blanco"
+                >
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/logo"
+                android:layout_gravity="center_vertical"/>
+
+            <com.neopixl.pixlui.components.textview.TextView
+                android:id="@+id/funcion_title"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:text="Titulo funcionalidad"
+                android:textSize="18dp"
+                android:textColor="@color/bod_color_444"
+                pixlui:clearclipboardcontent="true"
+                pixlui:copyandpaste="false"
+                android:layout_marginTop="4dp"
+                pixlui:typeface="OpenSans-Semibold.ttf" />
+
+                </LinearLayout>
+        </LinearLayout>
+
+
+        <com.neopixl.pixlui.components.textview.TextView
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="3dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="Proximamente la aplicación contara con esta funcionalidad"
+            android:textSize="16sp"
+            pixlui:clearclipboardcontent="true"
+            android:layout_marginTop="50dp"
+            android:textColor="@color/bod_color_444"
+            pixlui:copyandpaste="false"
+            pixlui:typeface="OpenSans-Semibold.ttf"
+            android:layout_gravity="center_vertical"/>
+
+
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="55dp"
+            >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                >
+
+                <ImageView
+                    android:id="@+id/icon_cerrar"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/cancelar"
+                    android:layout_gravity="center_vertical"/>
+
+                <com.neopixl.pixlui.components.textview.TextView
+                    android:id="@+id/tv_back"
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:text="Cerrar"
+                    android:textSize="22sp"
+                    android:textColor="@color/bod_color_444"
+                    pixlui:clearclipboardcontent="true"
+                    pixlui:copyandpaste="false"
+                    pixlui:typeface="OpenSans-Semibold.ttf"
+                    android:layout_gravity="center_vertical"/>
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

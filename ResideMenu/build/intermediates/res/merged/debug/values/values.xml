@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="semitransparent_black">#70000000</color>
+    <declare-styleable name="CircularImageView"><attr format="boolean" name="civ_border"/><attr format="color" name="civ_borderColor"/><attr format="dimension" name="civ_borderWidth"/><attr format="boolean" name="civ_selector"/><attr format="color" name="civ_selectorColor"/><attr format="color" name="civ_selectorStrokeColor"/><attr format="dimension" name="civ_selectorStrokeWidth"/><attr format="boolean" name="civ_shadow"/><attr format="float" name="civ_shadowRadius"/><attr format="float" name="civ_shadowDx"/><attr format="float" name="civ_shadowDy"/><attr format="color" name="civ_shadowColor"/></declare-styleable>
+    <declare-styleable name="CircularImageViewStyle"><attr format="reference" name="circularImageViewDefault"/></declare-styleable>
+    <string name="app_name">ResideMenu</string>
+</resources>

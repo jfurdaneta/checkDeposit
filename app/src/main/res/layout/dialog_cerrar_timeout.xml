@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:pixlui="http://schemas.android.com/apk/com.neopixl.pixlui"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ll_image_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/bod_semitransparent_alert"
+            android:gravity="center">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/rounded_corners_shape"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="20dp">
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+
+                    <!--
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/alert"
+                        android:layout_gravity="center_vertical"/>
+                        -->
+
+                    <com.neopixl.pixlui.components.textview.TextView
+                        android:id="@+id/dialog_titulo"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:text="Ha ocurrido lo siguiente"
+                        android:textSize="16dp"
+                        android:textColor="@color/bod_color_ccc"
+                        pixlui:clearclipboardcontent="true"
+                        pixlui:copyandpaste="false"
+                        pixlui:typeface="OpenSans-Semibold.ttf" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:gravity="center"
+                    android:layout_gravity="center_horizontal">
+
+                    <com.neopixl.pixlui.components.textview.TextView
+                        android:id="@+id/dialog_mensaje"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:textAlignment="center"
+                        android:lines="3"
+                        android:text="@string/label_mensaje_timeout"
+                        android:textSize="16dp"
+                        pixlui:clearclipboardcontent="true"
+                        pixlui:copyandpaste="false"
+                        pixlui:typeface="OpenSans-Semibold.ttf"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginTop="15dp"
+                    >
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|bottom"
+                        >
+
+                        <ImageView
+                            android:id="@+id/iv_back"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/cerrar_app"
+                            android:visibility="gone"
+                            />
+
+                        <com.neopixl.pixlui.components.textview.TextView
+                            android:id="@+id/tv_back"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="3dp"
+                            android:clickable="true"
+                            android:text="Cancelar"
+                            android:textSize="22sp"
+                            pixlui:clearclipboardcontent="true"
+                            pixlui:copyandpaste="false"
+                            pixlui:typeface="OpenSans-Semibold.ttf"
+                            android:visibility="gone"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="right|bottom">
+
+                        <ImageView
+                            android:id="@+id/iv_next"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/continuar_fondoblanco" />
+
+                        <com.neopixl.pixlui.components.textview.TextView
+                            android:id="@+id/tv_next"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="3dp"
+                            android:clickable="true"
+                            android:text="Continuar"
+                            android:textSize="20sp"
+                            pixlui:clearclipboardcontent="true"
+                            pixlui:copyandpaste="false"
+                            pixlui:typeface="OpenSans-Semibold.ttf" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

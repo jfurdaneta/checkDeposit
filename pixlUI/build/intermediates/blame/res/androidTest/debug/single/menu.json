@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "G:\\Fintec\\checkDeposit\\pixlUI\\build\\intermediates\\res\\merged\\androidTest\\debug\\menu\\main.xml",
+        "source": "G:\\Fintec\\checkDeposit\\pixlUI\\build\\intermediates\\bundles\\debug\\res\\menu\\main.xml"
+    },
+    {
+        "merged": "G:\\Fintec\\nueva\\checkDeposit\\pixlUI\\build\\intermediates\\res\\merged\\androidTest\\debug\\menu\\main.xml",
+        "source": "G:\\Fintec\\nueva\\checkDeposit\\pixlUI\\build\\intermediates\\bundles\\debug\\res\\menu\\main.xml"
+    },
+    {
+        "merged": "C:\\AndroidProjects\\checkDeposit\\pixlUI\\build\\intermediates\\res\\merged\\androidTest\\debug\\menu\\main.xml",
+        "source": "C:\\AndroidProjects\\checkDeposit\\pixlUI\\build\\intermediates\\bundles\\debug\\res\\menu\\main.xml"
+    }
+]
