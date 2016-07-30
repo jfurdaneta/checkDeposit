@@ -13,6 +13,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v8.renderscript.RenderScript;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -200,26 +201,7 @@ public class PrincipalFragmentActivity extends FragmentBaseActivity implements V
         mContext = this;
        // getSingleton().resetTimeTask_main(this);
 
-        if (bundle.containsKey(BodConstants.bundle_goto)) {
-
-            int goto_fragment = bundle.getInt(BodConstants.bundle_goto);
-
-            switch (goto_fragment) {
-                case BodConstants.GOTO_PANEL_FINANCIERO:
-                    changeFragment(new PrincipalFragment());
-                    //changeFragment(new PrincipalFragmentPF());
-                    break;
-
-                default:
-                    changeFragment(new PrincipalFragment());
-                    //changeFragment(new PrincipalFragmentPF());
-                    break;
-
-            }
-        } else {
-            changeFragment(new PrincipalFragment());
-        }
-
+        changeFragment(new PrincipalFragment());
         //changeFragment(new ConfiguracionExcepcionLimitesFragment()); //TEST
 
         isCuentasSubmenu = false;
@@ -228,7 +210,7 @@ public class PrincipalFragmentActivity extends FragmentBaseActivity implements V
 
         titleView = (TextView) findViewById(R.id.tvTitleView);
 
-        setDownUpMenu();
+        //setDownUpMenu();
 
         userProfile = (LinearLayout) findViewById(R.id.ll_user_profile);
         TextView textUserName = (TextView) findViewById(R.id.tv_profile_user_name);
@@ -239,13 +221,13 @@ public class PrincipalFragmentActivity extends FragmentBaseActivity implements V
         profileListLAyout.setVisibility(View.GONE);
 
         com.pkmmte.view.CircularImageView avatar = (com.pkmmte.view.CircularImageView) findViewById(R.id.iv_profile_user_avatar_bar);
-        avatar.setImageDrawable(getResources().getDrawable(R.drawable.cuadrado_blanco));
+        avatar.setImageDrawable(ContextCompat.getDrawable(this.context,R.drawable.cuadrado_blanco));
 
 
         topBar = (LinearLayout) findViewById(R.id.ll_top_bar);
         mainScroll = (CustomScrollView) findViewById(R.id.sv_main_scroll);
         headerIcon = (ImageView) findViewById(R.id.iv_header_icon);
-
+/*
         first = true;
         ViewTreeObserver observer = topBar.getViewTreeObserver();
         observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -292,7 +274,7 @@ public class PrincipalFragmentActivity extends FragmentBaseActivity implements V
                 }
             }
         });
-
+*/
 
     }
 
@@ -373,58 +355,20 @@ public class PrincipalFragmentActivity extends FragmentBaseActivity implements V
         resideMenu.setShadowVisible(false);
 
         String encodedText = Utiles.encodedText(getString(R.string.label_cerrar_sesion));
-        itemCerrarSesion = new ResideMenuItem(this, R.drawable.cerrar_sesion, encodedText);
 
-        Log.v(this.getClass().getName(),"loadMENU - Agregado itemCerrarSesion ");
+        // create menu items;
+        String titles[] = { "Cerrar sesión" };
+        int icon[] = { R.drawable.cerrar_sesion_white};
 
-        itemCerrarSesion.setOnClickListener(this);
-
-
-        //rigth side
-        itemPanelFinanciero = configResideMenuItem(R.drawable.panel_financiero_white, "Panel Principal");
-
-        itemPanelFinanciero.setOnClickListener(this);
-
-
-        findViewById(R.id.open_drawer).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                /*if (getSingleton().isMenuOpen()) {
-                    return;
-                }
-                */
-
-                resideMenu.openMenu(ResideMenu.DIRECTION_LEFT);
-            }
-        });
-        findViewById(R.id.open_drawer_right).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-             /*   if (getSingleton().isMenuOpen()) {
-                    return;
-                }*/
-
-                resideMenu.openMenu(ResideMenu.DIRECTION_RIGHT);
-            }
-        });
-
-        resideMenu.addMenuItem(itemPanelFinanciero, ResideMenu.DIRECTION_LEFT, false, 0);
-        resideMenu.addMenuItem(itemCerrarSesion, ResideMenu.DIRECTION_LEFT, false, 0);
-
-        Log.v(this.getClass().getName(),"loadMENU - Voy a llamar a  load_menu_dynamic_2016()");
-
-        load_menu_dynamic_2016();
+        for (int i = 0; i < titles.length; i++){
+            ResideMenuItem item = new ResideMenuItem(this, icon[i], titles[i]);
+            item.setOnClickListener(this);
+            resideMenu.addMenuItem(item,  ResideMenu.DIRECTION_LEFT); // or  ResideMenu.DIRECTION_RIGHT
+        }
 
 
-        configMENU();
-        Log.v(this.getClass().getName(),"loadMENU -Saliendo");
     }
 
-    public void configMENU() {
-
-    }
 
     public void goto_Fragment_Transferencias() {
         /*TransferenciaContactoListaFragment tFragment = new TransferenciaContactoListaFragment();
@@ -591,15 +535,6 @@ public class PrincipalFragmentActivity extends FragmentBaseActivity implements V
     }
 
 
-    public void load_sub_menu_dynamic_2016(String menuCodigo) {
-
-
-    }
-
-    public void remove_sub_menu_dynamic_2016(String menuCodigo) {
-
-
-    }
 
     public void gotoLoginActivity() {
 
@@ -696,7 +631,7 @@ public class PrincipalFragmentActivity extends FragmentBaseActivity implements V
     public void changeFragment(Fragment targetFragment) {
         //reiniciar timeout
         //singleton.initializeTimeTask_main(this);
-        getSingleton().resetTimeTask_main(this);
+       // getSingleton().resetTimeTask_main(this);
 
         resideMenu.clearIgnoredViewList();
         changeLeftIconForToolButton();

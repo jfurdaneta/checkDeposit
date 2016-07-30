@@ -1,38 +1,14 @@
 [
     {
-        "merged": "G:\\Fintec\\nueva\\checkDeposit\\ResideMenu\\build\\intermediates\\res\\merged\\debug\\layout\\residemenu.xml",
-        "source": "G:\\Fintec\\nueva\\checkDeposit\\ResideMenu\\res\\layout\\residemenu.xml"
-    },
-    {
         "merged": "G:\\Fintec\\checkDeposit\\ResideMenu\\build\\intermediates\\res\\merged\\debug\\layout\\residemenu_submenu_item.xml",
         "source": "G:\\Fintec\\checkDeposit\\ResideMenu\\res\\layout\\residemenu_submenu_item.xml"
-    },
-    {
-        "merged": "C:\\AndroidProjects\\checkDeposit\\ResideMenu\\build\\intermediates\\res\\merged\\debug\\layout\\residemenu.xml",
-        "source": "C:\\AndroidProjects\\checkDeposit\\ResideMenu\\res\\layout\\residemenu.xml"
-    },
-    {
-        "merged": "G:\\Fintec\\nueva\\checkDeposit\\ResideMenu\\build\\intermediates\\res\\merged\\debug\\layout\\residemenu_submenu_item.xml",
-        "source": "G:\\Fintec\\nueva\\checkDeposit\\ResideMenu\\res\\layout\\residemenu_submenu_item.xml"
     },
     {
         "merged": "G:\\Fintec\\checkDeposit\\ResideMenu\\build\\intermediates\\res\\merged\\debug\\layout\\residemenu.xml",
         "source": "G:\\Fintec\\checkDeposit\\ResideMenu\\res\\layout\\residemenu.xml"
     },
     {
-        "merged": "C:\\AndroidProjects\\checkDeposit\\ResideMenu\\build\\intermediates\\res\\merged\\debug\\layout\\residemenu_submenu_item.xml",
-        "source": "C:\\AndroidProjects\\checkDeposit\\ResideMenu\\res\\layout\\residemenu_submenu_item.xml"
-    },
-    {
-        "merged": "C:\\AndroidProjects\\checkDeposit\\ResideMenu\\build\\intermediates\\res\\merged\\debug\\layout\\residemenu_item.xml",
-        "source": "C:\\AndroidProjects\\checkDeposit\\ResideMenu\\res\\layout\\residemenu_item.xml"
-    },
-    {
         "merged": "G:\\Fintec\\checkDeposit\\ResideMenu\\build\\intermediates\\res\\merged\\debug\\layout\\residemenu_item.xml",
         "source": "G:\\Fintec\\checkDeposit\\ResideMenu\\res\\layout\\residemenu_item.xml"
-    },
-    {
-        "merged": "G:\\Fintec\\nueva\\checkDeposit\\ResideMenu\\build\\intermediates\\res\\merged\\debug\\layout\\residemenu_item.xml",
-        "source": "G:\\Fintec\\nueva\\checkDeposit\\ResideMenu\\res\\layout\\residemenu_item.xml"
     }
 ]

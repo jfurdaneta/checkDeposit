@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Depósito en Cheque Móvil</string>
+    <string name="app_name">Depósito de Cheque Móvil</string>
     <string name="action_settings" translatable="false">Configuración</string>
     <string name="hello">Hello World, PhotoIntentActivity!</string>
 
@@ -14,7 +14,6 @@
     <string name="album_name" translatable="false">DepCheq</string>
     <string name="intro">Capture a picture to crop!</string>
     <string name="picture">Foto del Cheque</string>
-
 
 
     <string name="app_version_desc"></string>

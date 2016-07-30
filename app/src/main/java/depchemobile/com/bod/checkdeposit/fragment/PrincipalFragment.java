@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v8.renderscript.RenderScript;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -62,7 +63,7 @@ public class PrincipalFragment extends Fragment implements View.OnClickListener 
         resideMenu = parentActivity.getResideMenu();
 
         parentActivity.setTile("Panel Principal");
-        parentActivity.setHeaderIcon(getActivity().getResources().getDrawable(R.drawable.panel_financiero_white));
+        parentActivity.setHeaderIcon(ContextCompat.getDrawable(this.getContext(), R.drawable.panel_financiero_white));
 
 
 

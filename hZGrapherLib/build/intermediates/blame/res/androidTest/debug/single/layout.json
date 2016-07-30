@@ -1,14 +1,6 @@
 [
     {
-        "merged": "C:\\AndroidProjects\\checkDeposit\\hZGrapherLib\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\activity_main.xml",
-        "source": "C:\\AndroidProjects\\checkDeposit\\hZGrapherLib\\build\\intermediates\\bundles\\debug\\res\\layout\\activity_main.xml"
-    },
-    {
         "merged": "G:\\Fintec\\checkDeposit\\hZGrapherLib\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\activity_main.xml",
         "source": "G:\\Fintec\\checkDeposit\\hZGrapherLib\\build\\intermediates\\bundles\\debug\\res\\layout\\activity_main.xml"
-    },
-    {
-        "merged": "G:\\Fintec\\nueva\\checkDeposit\\hZGrapherLib\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\activity_main.xml",
-        "source": "G:\\Fintec\\nueva\\checkDeposit\\hZGrapherLib\\build\\intermediates\\bundles\\debug\\res\\layout\\activity_main.xml"
     }
 ]
