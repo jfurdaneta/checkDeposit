@@ -13,22 +13,63 @@ import java.util.Date;
 public class Cheque implements Parcelable{
 
 
+    int id ;
     Date fechaProceso;
     Double monto;
     String numCuenta;
     Uri imgChequeFront;
     Uri imgChequeBack;
+    boolean mismoBanco;
+    String nombreBanco;
+    long numLote;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public long getNumLote() {
+        return numLote;
+    }
+
+    public void setNumLote(long numLote) {
+        this.numLote = numLote;
+    }
+
+    public boolean isMismoBanco() {
+        return mismoBanco;
+    }
+
+    public void setMismoBanco(boolean mismoBanco) {
+        this.mismoBanco = mismoBanco;
+    }
+
+    public String getNombreBanco() {
+        return nombreBanco;
+    }
+
+    public void setNombreBanco(String nombreBanco) {
+        this.nombreBanco = nombreBanco;
+    }
 
     protected Cheque(Parcel in) {
 
         try
         {
+            id = in.readInt();
             Uri.Builder builder = new Uri.Builder();
             numCuenta = in.readString();
             monto = in.readDouble();
             fechaProceso = new Date(in.readLong());
             imgChequeFront = builder.path(in.readString()).build();
             imgChequeBack = builder.path(in.readString()).build();
+
+            mismoBanco = in.readByte() != 0;
+            nombreBanco = in.readString();
+            numLote = in.readLong();
 
 
 
@@ -113,11 +154,16 @@ public class Cheque implements Parcelable{
     @Override
     public void writeToParcel(Parcel dest, int flags) {
 
+        dest.writeInt(id);
+
         dest.writeString(numCuenta);
         dest.writeDouble(monto);
         dest.writeLong(fechaProceso.getTime());
         dest.writeString(imgChequeFront.getPath());
         dest.writeString(imgChequeBack.getPath());
+        dest.writeByte((byte) (mismoBanco ? 1 : 0));
+        dest.writeString(nombreBanco);
+        dest.writeLong(numLote);
 
         /*Log.v(this.getClass().getName(),"writeToParcel - " + "numCuenta");
 
