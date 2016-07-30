@@ -1,5 +1,9 @@
 package depchemobile.com.bod.checkdeposit.utils;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
@@ -96,5 +100,33 @@ public class Utils {
 
 
 
+    }
+
+    public static void backButtonHandler(final Activity context) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(
+                context);
+        // Setting Dialog Title
+        alertDialog.setTitle("¿Salir de la aplicación?");
+        // Setting Dialog Message
+        alertDialog.setMessage("¿Está seguro que desea salir de la aplicación?");
+        // Setting Icon to Dialog
+
+        // Setting Positive "Yes" Button
+        alertDialog.setPositiveButton("SI",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        context.finish();
+                    }
+                });
+        // Setting Negative "NO" Button
+        alertDialog.setNegativeButton("NO",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Write your code here to invoke NO event
+                        dialog.cancel();
+                    }
+                });
+        // Showing Alert Message
+        alertDialog.show();
     }
 }
