@@ -1,7 +1,12 @@
 package depchemobile.com.bod.checkdeposit.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -9,18 +14,30 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
+
 import java.util.ArrayList;
 
-import depchemobile.com.bod.checkdeposit.MockData;
+import depchemobile.com.bod.checkdeposit.data.CheckDepositDbHelper;
+import depchemobile.com.bod.checkdeposit.data.MockData;
 import depchemobile.com.bod.checkdeposit.R;
 import depchemobile.com.bod.checkdeposit.adapters.ListaChequeAdapter;
 import depchemobile.com.bod.checkdeposit.entidades.Cheque;
+import depchemobile.com.bod.checkdeposit.utils.Utils;
 
 public class ListaChequesActivity extends Activity {
 
-    ArrayList<Cheque> listaChequeData;
+
     ListView list;
     ListaChequeAdapter adapter;
+    private CheckDepositDbHelper mCheckDepositDbHelper;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,42 +45,76 @@ public class ListaChequesActivity extends Activity {
         Log.v(this.getClass().getName(), "onCreate - " + "Iniciando");
         setContentView(R.layout.activity_lista_cheques);
 
-        //Intent intent = getIntent();
+        Intent intent = getIntent();
         Log.v(this.getClass().getName(), "onCreate - " + "Obtieniendo intent");
 
         //Cheque chequeObject = intent.getExtras().getParcelable("cheque");
 
-        MockData d = new MockData();
-        listaChequeData = d.datos();
-
-        Log.v(this.getClass().getName(), "onCreate - " + "Parseado chequeObject");
-
-        if (listaChequeData == null)
-            listaChequeData = new ArrayList<Cheque>();
-
-
-
 
         list = (ListView) findViewById(R.id.list);
-        adapter = new ListaChequeAdapter(ListaChequesActivity.this, listaChequeData);
+        mCheckDepositDbHelper = new CheckDepositDbHelper(this.getBaseContext());
+        // mCheckDepositDbHelper.datos();
+        Cursor c = mCheckDepositDbHelper.getCheques();
+        adapter = new ListaChequeAdapter(ListaChequesActivity.this, c);
+        Log.v(this.getClass().getName(), "onCreate - " + "adapter Instanciado");
         list.setAdapter(adapter);
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.v(getClass().getName(),"setOnItemClickListener - Seleccionado " +  String.valueOf(position)  );
-                Toast.makeText(ListaChequesActivity.this, "Cheque tocado "  +  String.valueOf(position) , Toast.LENGTH_SHORT).show();
+                Log.v(getClass().getName(), "setOnItemClickListener - Seleccionado " + String.valueOf(position));
+                Toast.makeText(ListaChequesActivity.this, "Cheque tocado " + String.valueOf(position), Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent();
-                intent.setClass(getBaseContext() ,PrincipalActivity.class);
-                Bundle mBundle = new Bundle();
-                mBundle.putParcelable("cheque",listaChequeData.get(position));
-                intent.putExtras(mBundle);
+                intent.setClass(getBaseContext(), PrincipalActivity.class);
+                intent.putExtra("chequeID", adapter.getItemId(position));
                 startActivity(intent);
             }
         });
 
 
+        cargarCheques();
+
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
+
+
+    private void cargarCheques() {
+        new ChequesLoadTask().execute();
+    }
+
+
+
+
+    private class ChequesLoadTask extends AsyncTask<Void, Void, Cursor> {
+
+        @Override
+        protected Cursor doInBackground(Void... voids) {
+            return mCheckDepositDbHelper.getCheques();
+        }
+
+        @Override
+        protected void onPostExecute(Cursor cursor) {
+            if (cursor != null && cursor.getCount() > 0) {
+                adapter.swapCursor(cursor);
+            } else {
+                // Mostrar empty state
+            }
+        }
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        //Display alert message when back button has been pressed
+        Utils.backButtonHandler(ListaChequesActivity.this);
+        return;
+    }
+
+
+
 
 }

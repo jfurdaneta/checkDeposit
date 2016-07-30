@@ -3,19 +3,24 @@ package depchemobile.com.bod.checkdeposit.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Locale;
 
 import depchemobile.com.bod.checkdeposit.R;
+import depchemobile.com.bod.checkdeposit.data.ChequeContract;
 import depchemobile.com.bod.checkdeposit.entidades.Cheque;
 import depchemobile.com.bod.checkdeposit.utils.ImageLoader;
 import depchemobile.com.bod.checkdeposit.utils.Utils;
@@ -23,9 +28,10 @@ import depchemobile.com.bod.checkdeposit.utils.Utils;
 /**
  * Created by rony_2 on 26/7/2016.
  */
-public class ListaChequeAdapter extends BaseAdapter {
+public class ListaChequeAdapter extends CursorAdapter {
 
-    ArrayList<Cheque> lista;
+
+    Cursor cursor;
     Activity context;
     private static LayoutInflater inflater=null;
     public ImageLoader imageLoader;
@@ -33,8 +39,9 @@ public class ListaChequeAdapter extends BaseAdapter {
     Utils utilidades;
   //  boolean[] itemChecked;
 
-    public ListaChequeAdapter(Activity context, ArrayList<Cheque> lista ) {
-        this.lista = lista;
+    public ListaChequeAdapter(Activity context, Cursor cursor) {
+        super(context, cursor, 0);
+        this.cursor = cursor;
         this.context = context;
         inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         imageLoader=new ImageLoader(context.getApplicationContext());
@@ -45,82 +52,85 @@ public class ListaChequeAdapter extends BaseAdapter {
 
 
     private class ViewHolder {
+
+
+    }
+
+
+    @Override
+    public long getItemId(int position) {
+        return super.getItemId(position);
+    }
+
+    public Object getItem(int position) {
+        return position;
+    }
+
+
+
+
+
+    @Override
+    public View newView(Context context, Cursor cursor, ViewGroup parent) {
+
+        return LayoutInflater.from(context).inflate(R.layout.list_row, parent, false);
+    }
+
+    @Override
+    public void bindView(View convertView, final Context context, final Cursor cursor) {
+
+        final ViewHolder holder;
+        //LayoutInflater inflater = context.getLayoutInflater();
+
         ImageView mImageViewFront;
         ImageView mImageViewBack;
         CheckBox ck1;
         TextView txtMonto;
         TextView txtfechaCheque;
 
-    }
+        mImageViewFront = (ImageView) convertView
+                .findViewById(R.id.imageViewFrente);
+        mImageViewBack = (ImageView) convertView
+                .findViewById(R.id.imageViewTrasera);
+        txtMonto = (TextView) convertView
+                .findViewById(R.id.lblMonto);
+        txtfechaCheque = (TextView) convertView
+                .findViewById(R.id.txtFechaCheque);
 
-    @Override
-    public int getCount() {
-        return lista.size();
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return lista.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return 0;
-    }
-
-    @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
-        final ViewHolder holder;
-        LayoutInflater inflater = context.getLayoutInflater();
-
-        if (convertView == null) {
-            convertView = inflater.inflate(R.layout.list_row, null);
-            holder = new ViewHolder();
-
-            holder.mImageViewFront = (ImageView) convertView
-                    .findViewById(R.id.imageViewFrente);
-            holder.mImageViewBack = (ImageView) convertView
-                    .findViewById(R.id.imageViewTrasera);
-            holder.txtMonto = (TextView) convertView
-                    .findViewById(R.id.lblMonto);
-            holder.txtfechaCheque = (TextView) convertView
-                    .findViewById(R.id.txtFechaCheque);
-
-            holder.ck1 = (CheckBox) convertView
-                    .findViewById(R.id.checkboxSelected);
+        ck1 = (CheckBox) convertView
+                .findViewById(R.id.checkboxSelected);
 
 
-            convertView.setTag(holder);
-
-        } else {
-
-            holder = (ViewHolder) convertView.getTag();
-        }
-
-        utilidades = new Utils();
-        final Cheque tmp = (Cheque) getItem(position);
 
 
-        holder.mImageViewFront.setOnClickListener(new View.OnClickListener() {
+        final int chequeID = cursor.getInt(cursor.getColumnIndexOrThrow(ChequeContract.ChequeEntry._ID));
+        double montoCheque = cursor.getDouble(cursor.getColumnIndexOrThrow(ChequeContract.ChequeEntry.MONTO));
+
+        long fechaCheque = cursor.getLong((int) new Date(cursor.getColumnIndexOrThrow(ChequeContract.ChequeEntry.FECHA_PROCESO)).getTime());
+
+
+        mImageViewFront.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 Intent intent = new Intent();
                 intent.setAction(Intent.ACTION_VIEW);
-                intent.setDataAndType(tmp.getImgChequeFront(), "image/*");
+                intent.setDataAndType(Uri.parse(cursor.getString(cursor.getColumnIndexOrThrow(ChequeContract.ChequeEntry.IMAGEN_CHEQUE_FRENTE))), "image/*");
+
                 context.startActivity(intent);
 
 
             }
         });
 
-        holder.mImageViewBack.setOnClickListener(new View.OnClickListener() {
+        mImageViewBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 Intent intent = new Intent();
                 intent.setAction(Intent.ACTION_VIEW);
-                intent.setDataAndType(tmp.getImgChequeBack(), "image/*");
+                intent.setDataAndType(Uri.parse(cursor.getString(cursor.getColumnIndexOrThrow(ChequeContract.ChequeEntry.IMAGEN_CHEQUE_TRASERA))), "image/*");
+
                 context.startActivity(intent);
 
 
@@ -128,15 +138,17 @@ public class ListaChequeAdapter extends BaseAdapter {
         });
 
 
-        imageLoader.DisplayImage(tmp.getImgChequeFront().getEncodedPath() , holder.mImageViewFront);
-        imageLoader.DisplayImage(tmp.getImgChequeBack().getEncodedPath() , holder.mImageViewBack);
+        imageLoader.DisplayImage(cursor.getString(cursor.getColumnIndexOrThrow(ChequeContract.ChequeEntry.IMAGEN_CHEQUE_FRENTE))  , mImageViewFront);
+        imageLoader.DisplayImage(cursor.getString(cursor.getColumnIndexOrThrow(ChequeContract.ChequeEntry.IMAGEN_CHEQUE_TRASERA))  , mImageViewBack);
 
 
-        holder.txtMonto.setText( NumberFormat.getNumberInstance(Locale.getDefault()).format(tmp.getMonto()) + " Bs.");
 
-        holder.txtfechaCheque.setText(Utils.FormateadorFecha(tmp.getFechaProceso()));
-        holder.ck1.setChecked(false);
+        txtMonto.setText( NumberFormat.getNumberInstance(Locale.getDefault()).format(montoCheque) + " Bs.");
 
-        return convertView;
+        txtfechaCheque.setText(Utils.FormateadorFecha(new Date(fechaCheque)));
+        ck1.setChecked(false);
+
+
+
     }
 }

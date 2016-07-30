@@ -1,4 +1,4 @@
-package depchemobile.com.bod.checkdeposit;
+package depchemobile.com.bod.checkdeposit.data;
 
 import android.net.Uri;
 
@@ -30,6 +30,9 @@ public class MockData {
 
         cheque = new Cheque();
         cheque.setNumCuenta("3465446");
+        cheque.setMismoBanco(true);
+        cheque.setNumLote(14564646);
+        cheque.setNombreBanco("BOD");
         cheque.setFechaProceso(new Date());
         cheque.setMonto(154.51);
         cheque.setImgChequeBack(uri);
@@ -37,6 +40,9 @@ public class MockData {
         lista.add(cheque);
         cheque = new Cheque();
         cheque.setNumCuenta("242323");
+        cheque.setMismoBanco(true);
+        cheque.setNumLote(234234);
+        cheque.setNombreBanco("BOD");
         cheque.setFechaProceso(new Date());
         cheque.setMonto(541545.65);
         cheque.setImgChequeBack(uri);
@@ -45,12 +51,18 @@ public class MockData {
 
         cheque = new Cheque();
         cheque.setNumCuenta("34535345");
+        cheque.setMismoBanco(false);
+        cheque.setNumLote(234234);
+        cheque.setNombreBanco("BOD");
         cheque.setFechaProceso(new Date());
         cheque.setMonto(23234.51);
         cheque.setImgChequeBack(builder.path("/storage/emulated/0/dcim/DepCheq/IMG_20160728_213824_997015474.jpg").build());
         cheque.setImgChequeFront(builder.path("/storage/emulated/0/dcim/DepCheq/IMG_20160728_213824_997015474.jpg").build());
         lista.add(cheque);
         cheque = new Cheque();
+        cheque.setMismoBanco(false);
+        cheque.setNumLote(887787);
+        cheque.setNombreBanco("BANESCO");
         cheque.setNumCuenta("345358");
         cheque.setFechaProceso(new Date());
         cheque.setMonto(45567.6);

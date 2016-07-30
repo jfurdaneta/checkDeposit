@@ -6,9 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.res.Resources;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
@@ -31,17 +34,22 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 import depchemobile.com.bod.checkdeposit.R;
 import depchemobile.com.bod.checkdeposit.activity.ListaChequesActivity;
+import depchemobile.com.bod.checkdeposit.data.CheckDepositDbHelper;
+import depchemobile.com.bod.checkdeposit.data.ChequeContract;
 import depchemobile.com.bod.checkdeposit.entidades.Cheque;
+import depchemobile.com.bod.checkdeposit.utils.ImageLoader;
 
 /**
  * A placeholder fragment containing a simple view.
  */
+
 public class ChequeScanFragment extends Fragment {
 
     public ChequeScanFragment() {
@@ -51,11 +59,16 @@ public class ChequeScanFragment extends Fragment {
     private static final int ACTION_TAKE_PHOTO_BACK = 2;
     private static final int ACTION_TAKE_VIDEO = 3;
 
+    CheckDepositDbHelper depositDbHelper;
+
+    private boolean modoEdit;
+
     private  final int PIC_CROP_FRONT = 4;
     private  final int PIC_CROP_BACK = 5;
     private final int CAMERA_CAPTURE = 1;
 
     Cheque chequeObject;
+    long chequeID;
 
     private static final String BITMAP_STORAGE_KEY = "viewbitmap";
     private static final String IMAGEVIEW_VISIBILITY_STORAGE_KEY = "imageviewvisibility";
@@ -139,50 +152,8 @@ public class ChequeScanFragment extends Fragment {
         return f;
     }
 
-    private Bitmap setPic(ImageView im) {
-
-		/* There isn't enough memory to open up more than a couple camera photos */
-		/* So pre-scale the target bitmap into which the file is decoded */
-
-        Log.v(this.getClass().getName(),"setPic - Inicando:");
-        im.setAdjustViewBounds(true);
 
 
-		/* Get the size of the ImageView */
-        int targetW = im.getWidth();
-        int targetH = im.getHeight();
-
-		/* Get the size of the image */
-        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-        bmOptions.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
-        int photoW = bmOptions.outWidth;
-        int photoH = bmOptions.outHeight;
-
-		/* Figure out which way needs to be reduced less */
-        int scaleFactor = 1;
-        if ((targetW > 0) || (targetH > 0)) {
-            scaleFactor = Math.min(photoW/targetW, photoH/targetH);
-        }
-
-		/* Set bitmap options to scale the image decode target */
-        bmOptions.inJustDecodeBounds = false;
-        bmOptions.inSampleSize = scaleFactor;
-        bmOptions.inPurgeable = true;
-
-		/* Decode the JPEG file into a Bitmap */
-        Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
-        Log.v(this.getClass().getName(),"setPic - Final:");
-        return bitmap;
-
-		/* Associate the Bitmap to the ImageView */
-        // mImageView.setImageBitmap(bitmap);
-        // mVideoUri = null;
-        //mImageView.setVisibility(View.VISIBLE);
-
-
-
-    }
 
     private void galleryAddPic(String mCurrentPhotoPath) {
         Log.v(this.getClass().getName(),"galleryAddPic - Iniciando");
@@ -195,16 +166,7 @@ public class ChequeScanFragment extends Fragment {
         Log.v(this.getClass().getName(),"galleryAddPic - Final");
     }
 
-    private void galleryDeletePic(String mCurrentPhotoPath) {
-        Log.v(this.getClass().getName(),"galleryAddPic - Iniciando");
-        Intent mediaScanIntent = new Intent("android.intent.action.MEDIA_SCANNER_SCAN_FILE");
-        File f = new File(mCurrentPhotoPath);
-        Uri contentUri = Uri.fromFile(f);
 
-        mediaScanIntent.setData(contentUri);
-        getContext().sendBroadcast(mediaScanIntent);
-        Log.v(this.getClass().getName(),"galleryAddPic - Final");
-    }
 
     private void performCrop(int pic_crop){
 
@@ -244,6 +206,8 @@ public class ChequeScanFragment extends Fragment {
 
 
 
+
+    //Guarda la imagen en la ruta DCIM \nombre de la app
     private void dispatchTakePictureIntent(int actionCode) {
 
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -265,10 +229,7 @@ public class ChequeScanFragment extends Fragment {
         startActivityForResult(takePictureIntent, actionCode);
     }
 
-    private void dispatchTakeVideoIntent() {
-        Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-        startActivityForResult(takeVideoIntent, ACTION_TAKE_VIDEO);
-    }
+
 
     private void handleSmallCameraPhoto(Intent intent) {
         Bundle extras = intent.getExtras();
@@ -340,13 +301,8 @@ public class ChequeScanFragment extends Fragment {
                 }
             };
 
-    Button.OnClickListener mTakeVidOnClickListener =
-            new Button.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dispatchTakeVideoIntent();
-                }
-            };
+
+
 
 
 
@@ -354,11 +310,7 @@ public class ChequeScanFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent intent = getActivity().getIntent();
-        if(intent.hasExtra("cheque"))
-        {
-            chequeObject = intent.getExtras().getParcelable("cheque");
-        }
+
 
 
 
@@ -382,111 +334,38 @@ public class ChequeScanFragment extends Fragment {
             Log.v(getClass().getName(),"onActivityResult - picUri.getEncodedPath " + picUri.getEncodedPath());
             Log.v(getClass().getName(),"onActivityResult - picUri.getPath " + picUri.getPath());
             Log.v(getClass().getName(),"onActivityResult - picUri.toString " + picUri.toString());
+            Log.v(getClass().getName(),"onActivityResult - f.getAbsolutePath " + f.getAbsolutePath());
 
-            Bitmap myBitmap = BitmapFactory.decodeFile(mCurrentPhotoPath);
 
 
 
 
             switch (requestCode) {
                 case ACTION_TAKE_PHOTO_FRONT: {
-
-
-
                     chequeObject.setImgChequeFront(picUri);
-                    mImageViewFront.setImageBitmap(setPic(mImageViewFront));
+                    loadBitmap(picUri.getPath(),mImageViewFront);
                     btnAnverso.setEnabled(true);
-
-
                     mImageViewFront.setVisibility(View.VISIBLE);
                     mImageViewFront.setClickable(true);
-
-
-
-
                     //performCrop(PIC_CROP_FRONT);
                     //handleBigCameraPhoto();
-
                     break;
                 } // ACTION_TAKE_PHOTO_B
 
                 case ACTION_TAKE_PHOTO_BACK: {
-
-
                     chequeObject.setImgChequeBack(picUri);
-                    mImageViewBack.setImageBitmap(setPic(mImageViewBack));
+                    loadBitmap(picUri.getPath(),mImageViewBack);
                     mImageViewBack.setVisibility(View.VISIBLE);
                     mImageViewBack.setClickable(true);
-
-                    // handleSmallCameraPhoto(data);
-
-                    //performCrop(PIC_CROP_BACK);
-
-
                     break;
                 } // ACTION_TAKE_PHOTO_S
-                case PIC_CROP_FRONT:
-                {
-                    Bundle extras = data.getExtras();
-                    Bitmap thePic = extras.getParcelable("data");
-                    try {
-                        FileOutputStream fOut = new FileOutputStream(f);
-                        thePic.compress(Bitmap.CompressFormat.JPEG,100,fOut);
-                        fOut.flush();
-                        fOut.close();
-
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-
-
-
-                    chequeObject.setImgChequeFront(picUri);
-                    mImageViewFront.setImageBitmap(thePic);
-                    mImageViewFront.setVisibility(View.VISIBLE);
-                    break;
-                }
-                case PIC_CROP_BACK:
-                {
-                    Bundle extras = data.getExtras();
-                    Bitmap thePic = extras.getParcelable("data");
-                    mImageViewBack.setImageBitmap(thePic);
-
-                    try {
-                        FileOutputStream fOut = new FileOutputStream(f);
-                        thePic.compress(Bitmap.CompressFormat.JPEG,80,fOut);
-                        fOut.flush();
-                        fOut.close();
-
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    chequeObject.setImgChequeBack(picUri);
-                    mImageViewBack.setVisibility(View.VISIBLE);
-
-
-                    break;
-
-                }
-
-
-
             } // switch
 
             if(chequeObject.getImgChequeBack()!=null && chequeObject.getImgChequeFront()!=null)
             {
                 divMonto.setEnabled(true);
                 txtMonto.setEnabled(true);
-
             }
-
-
 
         }
 
@@ -563,7 +442,9 @@ public class ChequeScanFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+        Intent intent = getActivity().getIntent();
         View rootView = inflater.inflate(R.layout.lista_cheques_fragment,container);
+
         mImageViewBack = (ImageView) rootView.findViewById(R.id.imageViewTrasera);
         mImageViewFront = (ImageView) rootView.findViewById(R.id.imageViewFrente);
         divMonto = (LinearLayout)  rootView.findViewById(R.id.divMonto);
@@ -574,6 +455,39 @@ public class ChequeScanFragment extends Fragment {
         setImgListenerOrDisable(mImageViewFront,mViewPicFrontOnClickListener,Intent.ACTION_VIEW);
         setImgListenerOrDisable(mImageViewBack,mViewPicBackOnClickListener,Intent.ACTION_VIEW);
         mAlbumStorageDirFactory = new BaseAlbumDirFactory();
+        modoEdit = false;
+        depositDbHelper = new CheckDepositDbHelper(getActivity());
+
+
+        if(intent.hasExtra("chequeID"))
+        {
+            chequeID = intent.getLongExtra("chequeID",0);
+            if(chequeID > 0)
+            {
+                modoEdit = true;
+
+                Cursor cursor = depositDbHelper.getChequeById(chequeID);
+                if(cursor!=null)
+                {
+                    modoEdit = true;
+                    chequeObject = new Cheque();
+                    chequeObject.setImgChequeFront(Uri.parse(cursor.getString(cursor.getColumnIndexOrThrow(ChequeContract.ChequeEntry.IMAGEN_CHEQUE_FRENTE))));
+                    chequeObject.setImgChequeBack(Uri.parse(cursor.getString(cursor.getColumnIndexOrThrow(ChequeContract.ChequeEntry.IMAGEN_CHEQUE_TRASERA))));
+                    chequeObject.setMonto(cursor.getDouble(cursor.getColumnIndexOrThrow(ChequeContract.ChequeEntry.MONTO)));
+                    long fechaCheque = cursor.getLong((int) new Date(cursor.getColumnIndexOrThrow(ChequeContract.ChequeEntry.FECHA_PROCESO)).getTime());
+                    chequeObject.setMismoBanco(cursor.getInt(cursor.getColumnIndexOrThrow(ChequeContract.ChequeEntry.MISMO_BANCO))>0);
+                    chequeObject.setNombreBanco(cursor.getString(cursor.getColumnIndexOrThrow(ChequeContract.ChequeEntry.NOMBRE_BANCO)));
+                    chequeObject.setFechaProceso(new Date(fechaCheque));
+                    chequeObject.setNumLote(cursor.getLong(cursor.getColumnIndexOrThrow(ChequeContract.ChequeEntry.NUMERO_LOTE)));
+                }
+
+
+            }
+
+        }
+
+
+
 
         setBtnListenerOrDisable(
                 btnFrontal,
@@ -639,16 +553,24 @@ public class ChequeScanFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.setClass(getContext(),ListaChequesActivity.class);
-                Bundle mBundle = new Bundle();
+
 
                 chequeObject.setNumCuenta("11998490");
-                //galleryAddPic(chequeObject.getImgChequeFront().getPath());
-                //galleryAddPic(chequeObject.getImgChequeBack().getPath());
+                chequeObject.setMismoBanco(true);
+                chequeObject.setNumLote(452545);
+                chequeObject.setNombreBanco("Banesco");
 
-
-                mBundle.putParcelable("cheque",chequeObject);
-                intent.putExtras(mBundle);
+                if(!modoEdit)
+                {
+                    depositDbHelper.insertarCheque(chequeObject);
+                }
+                else
+                {
+                    //Aqui va update
+                    depositDbHelper.updateCheque(chequeObject,chequeID);
+                }
                 startActivity(intent);
+                getActivity().finish();
             }
         });
 
@@ -658,6 +580,8 @@ public class ChequeScanFragment extends Fragment {
             chequeObject.setFechaProceso(new Date());
             mImageViewFront.setClickable(false);
             mImageViewBack.setClickable(false);
+
+
 
             divMonto.setEnabled(false);
             txtMonto.setEnabled(false);
@@ -670,15 +594,26 @@ public class ChequeScanFragment extends Fragment {
         }
         else
         {
-            mImageViewFront.setClickable(true);
-            mImageViewBack.setClickable(true);
+
             divMonto.setEnabled(true);
             txtMonto.setEnabled(true);
             btnContinuar.setEnabled(true);
-            mImageViewBack.setImageURI(chequeObject.getImgChequeBack());
-            mImageViewFront.setImageURI(chequeObject.getImgChequeFront());
             txtMonto.setText(chequeObject.getMonto().toString());
             btnAnverso.setEnabled(true);
+
+            //Carga las imagenes asíncronas
+            loadBitmap( chequeObject.getImgChequeBack().getPath() ,mImageViewBack);
+            loadBitmap( chequeObject.getImgChequeFront().getPath() ,mImageViewFront);
+
+            mImageViewFront.setClickable(true);
+            mImageViewFront.setVisibility(View.VISIBLE);
+
+
+            mImageViewBack.setVisibility(View.VISIBLE);
+            mImageViewBack.setClickable(true);
+
+
+
         }
 
 
@@ -686,5 +621,83 @@ public class ChequeScanFragment extends Fragment {
 
         return rootView;
 
+    }
+
+
+    //Método que carga las imágenes de manera asíncrona para optimizar memoria
+    public void loadBitmap(String path, ImageView imageView) {
+        BitmapWorkerTask task = new BitmapWorkerTask(imageView);
+        task.execute(path);
+    }
+
+
+
+
+    class BitmapWorkerTask extends AsyncTask<String, Void, Bitmap> {
+        private final WeakReference<ImageView> imageViewReference;
+        private String data = "";
+
+        public BitmapWorkerTask(ImageView imageView) {
+            // Use a WeakReference to ensure the ImageView can be garbage collected
+            imageViewReference = new WeakReference<ImageView>(imageView);
+        }
+
+
+
+        @Override
+        protected Bitmap doInBackground(String... params) {
+            data = params[0];
+            Bitmap bitmap =decodeBitmapFromFile(data, 100, 100);
+            return bitmap;
+        }
+
+        // Once complete, see if ImageView is still around and set bitmap.
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            if (imageViewReference != null && bitmap != null) {
+                final ImageView imageView = imageViewReference.get();
+                if (imageView != null) {
+                    imageView.setImageBitmap(bitmap);
+                }
+            }
+        }
+    }
+
+    public static Bitmap decodeBitmapFromFile(String path,int reqWidth, int reqHeight) {
+
+        // First decode with inJustDecodeBounds=true to check dimensions
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(path, options);
+
+        // Calculate inSampleSize
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false;
+        return  BitmapFactory.decodeFile(path, options);
+    }
+
+    public static int calculateInSampleSize(
+            BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while ((halfHeight / inSampleSize) >= reqHeight
+                    && (halfWidth / inSampleSize) >= reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+
+        return inSampleSize;
     }
 }

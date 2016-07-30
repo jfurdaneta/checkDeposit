@@ -1,11 +1,14 @@
 package depchemobile.com.bod.checkdeposit.entidades;
 
+import android.content.ContentValues;
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
 import java.util.Date;
+
+import depchemobile.com.bod.checkdeposit.data.ChequeContract;
 
 /**
  * Created by rony_2 on 24/7/2016.
@@ -100,6 +103,8 @@ public class Cheque implements Parcelable{
     }
 
     public void setImgChequeFront(Uri imgChequeFront) {
+
+        Log.v(getClass().getName(),"URI de imgChequeFront: " + imgChequeFront.getPath());
         this.imgChequeFront = imgChequeFront;
     }
 
@@ -108,6 +113,7 @@ public class Cheque implements Parcelable{
     }
 
     public void setImgChequeBack(Uri imgChequeBack) {
+        Log.v(getClass().getName(),"URI de imgChequeBack: " + imgChequeBack.getPath());
         this.imgChequeBack = imgChequeBack;
     }
 
@@ -165,19 +171,24 @@ public class Cheque implements Parcelable{
         dest.writeString(nombreBanco);
         dest.writeLong(numLote);
 
-        /*Log.v(this.getClass().getName(),"writeToParcel - " + "numCuenta");
 
-        Log.v(this.getClass().getName(),"writeToParcel - " + "imgChequeBack");
-
-
-        Log.v(this.getClass().getName(),"writeToParcel - " + "imgChequeFront");
+    }
 
 
+    public ContentValues toContentValues() {
+        ContentValues values = new ContentValues();
+
+        values.put(ChequeContract.ChequeEntry.FECHA_PROCESO, fechaProceso.toString());
+        values.put(ChequeContract.ChequeEntry.MONTO, monto);
+        values.put(ChequeContract.ChequeEntry.NUMERO_CUENTA, numCuenta);
+        values.put(ChequeContract.ChequeEntry.IMAGEN_CHEQUE_FRENTE, imgChequeFront.getPath());
+        values.put(ChequeContract.ChequeEntry.IMAGEN_CHEQUE_TRASERA, imgChequeBack.getPath());
+        values.put(ChequeContract.ChequeEntry.MISMO_BANCO, mismoBanco);
+        values.put(ChequeContract.ChequeEntry.NOMBRE_BANCO, nombreBanco);
+        values.put(ChequeContract.ChequeEntry.NUMERO_LOTE, numLote);
 
 
 
-        Log.v(this.getClass().getName(),"writeToParcel - " + "fechaProceso y fin");*/
-
-
+        return values;
     }
 }
