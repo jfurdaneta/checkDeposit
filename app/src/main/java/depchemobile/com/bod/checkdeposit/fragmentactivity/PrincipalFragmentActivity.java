@@ -214,7 +214,7 @@ public class PrincipalFragmentActivity extends FragmentBaseActivity implements V
 
         userProfile = (LinearLayout) findViewById(R.id.ll_user_profile);
         TextView textUserName = (TextView) findViewById(R.id.tv_profile_user_name);
-        textUserName.setText("El Cliente");
+        textUserName.setText("Luis Fernando Llerena");
 
         profileListLAyout = (LinearLayout) findViewById(R.id.ll_profile_list_layout);
         profileListLAyout.animate().scaleY(0).alpha(0).setDuration(0).start();
@@ -357,12 +357,17 @@ public class PrincipalFragmentActivity extends FragmentBaseActivity implements V
         String encodedText = Utiles.encodedText(getString(R.string.label_cerrar_sesion));
 
         // create menu items;
-        String titles[] = { "Cerrar sesión" };
+        String titles[] = { "Cerrar sesion" };
         int icon[] = { R.drawable.cerrar_sesion_white};
 
         for (int i = 0; i < titles.length; i++){
             ResideMenuItem item = new ResideMenuItem(this, icon[i], titles[i]);
-            item.setOnClickListener(this);
+            item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showDialogConfirmClose();
+                }
+            });
             resideMenu.addMenuItem(item,  ResideMenu.DIRECTION_LEFT); // or  ResideMenu.DIRECTION_RIGHT
         }
 
@@ -405,12 +410,6 @@ public class PrincipalFragmentActivity extends FragmentBaseActivity implements V
         findViewById(R.id.open_drawer).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if (getSingleton().isMenuOpen()) {
-                    return;
-                }
-
-
                 resideMenu.openMenu(ResideMenu.DIRECTION_LEFT);
             }
         });
@@ -452,11 +451,6 @@ public class PrincipalFragmentActivity extends FragmentBaseActivity implements V
             @Override
             public void onClick(View v) {
 
-                if (getSingleton().isMenuOpen()) {
-                    return;
-                }
-
-
                 dialog.dismiss();
             }
         });
@@ -464,11 +458,6 @@ public class PrincipalFragmentActivity extends FragmentBaseActivity implements V
         text_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-                if (getSingleton().isMenuOpen()) {
-                    return;
-                }
 
                 dialog.dismiss();
             }
@@ -479,23 +468,10 @@ public class PrincipalFragmentActivity extends FragmentBaseActivity implements V
             public void onClick(View v) {
 
 
-                if (getSingleton().isMenuOpen()) {
-                    return;
-                }
 
-
-                //singleton.resetTimeTask_main(parentActivity);
-                //gotoLoginActivity();
                 resideMenu.closeMenu();
                 dialog.dismiss();
-                //callService_closeApp();
-
-                if (Utiles.isConnected(dialog.getContext())) {
-                    HttpAsyncTask_closeApp task = new HttpAsyncTask_closeApp(dialog.getContext());
-                    task.execute(WebConstants.GATEWAY_URL);
-                } else {
-                    Utiles.generateAlertDialog(BodConstants.tituloMensaje, "Por favor verifique su conexi\u00f3n e intente de nuevo.", parentActivity);
-                }
+                gotoLoginActivity();
 
             }
         });
@@ -504,36 +480,14 @@ public class PrincipalFragmentActivity extends FragmentBaseActivity implements V
             @Override
             public void onClick(View v) {
 
-
-                if (getSingleton().isMenuOpen()) {
-                    return;
-                }
-
-
-                //singleton.resetTimeTask_main(parentActivity);
                 resideMenu.closeMenu();
                 dialog.dismiss();
-                //callService_closeApp();
-
-                if (Utiles.isConnected(dialog.getContext())) {
-                    HttpAsyncTask_closeApp task = new HttpAsyncTask_closeApp(dialog.getContext());
-                    task.execute(WebConstants.GATEWAY_URL);
-                } else {
-                    Utiles.generateAlertDialog(BodConstants.tituloMensaje, "Por favor verifique su conexi\u00f3n e intente de nuevo.", parentActivity);
-                }
+                gotoLoginActivity();
             }
         });
 
         dialog.show();
     }
-
-    //TODO nueva version abril 2016
-
-    public void load_menu_dynamic_2016() {
-
-
-    }
-
 
 
     public void gotoLoginActivity() {
