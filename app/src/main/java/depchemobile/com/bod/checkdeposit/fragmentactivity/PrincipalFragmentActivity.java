@@ -31,6 +31,7 @@ import android.widget.RelativeLayout;
 
 import depchemobile.com.bod.checkdeposit.R;
 import depchemobile.com.bod.checkdeposit.activity.LoginActivity;
+import depchemobile.com.bod.checkdeposit.activity.PrincipalActivityFragment;
 import depchemobile.com.bod.checkdeposit.fragment.PrincipalFragment;
 import depchemobile.com.bod.checkdeposit.model.Menu;
 import depchemobile.com.bod.checkdeposit.utils.Utiles;
@@ -80,35 +81,8 @@ public class PrincipalFragmentActivity extends FragmentBaseActivity implements V
     private ArrayList listaAsociados;
     private ArrayList listaAsociadosTarjetas;
 
-    //left side
-    private ResideMenuItem itemBuscar;
-    private ResideMenuItem itemNotificacion;
-    private ResideMenuItem itemEquipoFrecuente;
-    private ResideMenuItem itemZonaSegura;
-    private ResideMenuItem itemIdioma;
-    private ResideMenuItem itemIdiomaEspaniol;
-    private ResideMenuItem itemIdiomaIngles;
-    private ResideMenuItem itemIdiomaMandarin;
-    private ResideMenuItem itemAyuda;
-    private ResideMenuItem itemCerrarSesion;
-
-    //rigth side
-    private ResideMenuItem itemConsulta;
-    private ResideMenuItem itemConsultaCuenta;
-    private ResideMenuItem itemConsultaTarjeta;
-    private ResideMenuItem itemConsultaCadivi;
-    private ResideMenuItem itemConsultaFideicomiso;
-    private ResideMenuItem itemConsultaCredito;
-    private ResideMenuItem itemConsultaHistorico;
-    private ResideMenuItem itemConsultaReclamo;
-    private ResideMenuItem itemConsultaEstado;
-    private ResideMenuItem itemConsultaOperaciones;
-    private ResideMenuItem itemPagosTransferencias;
-    private ResideMenuItem itemTransferenciasCuentas;
-    private ResideMenuItem itemPagos;
-    private ResideMenuItem itemDirectorioGlobal;
-    private ResideMenuItem itemPanelFinanciero;
-    private ResideMenuItem itemConfiguracion;
+    private ResideMenuItem panel;
+    private ResideMenuItem cerrar;
 
     private boolean isConsultaCuentaVisible = false;
     private boolean isConsultaTarjetaVisible = false;
@@ -227,54 +201,7 @@ public class PrincipalFragmentActivity extends FragmentBaseActivity implements V
         topBar = (LinearLayout) findViewById(R.id.ll_top_bar);
         mainScroll = (CustomScrollView) findViewById(R.id.sv_main_scroll);
         headerIcon = (ImageView) findViewById(R.id.iv_header_icon);
-/*
-        first = true;
-        ViewTreeObserver observer = topBar.getViewTreeObserver();
-        observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                if (first) {
-                    first = false;
-                    initY = topBar.getY();
-                }
-            }
 
-        });
-
-        mainScroll.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
-
-            @Override
-            public void onScrollChanged() {
-                int scrollY = mainScroll.getScrollY();
-                headerIcon.setPivotY(0);
-                headerIcon.setPivotX(headerIcon.getWidth() / 2.0f);
-
-                // Log.e("SCROLL Y","scroll y = "+scrollY);
-                if (scrollY > 50) {
-                    topBar.setY(-5);
-                    titleView.animate().scaleX(0.85f).scaleY(0.85f).setDuration(0).start();
-                    headerIcon.animate().scaleX(0).scaleY(0).setDuration(0).alpha(0).start();
-
-                    //CASO TRANSACCIONES CUENTAS
-                    if (headerDetalles != null) {
-                        if (scrollY > offset + topBar.getHeight()) {
-                            //Log.e("SCROLL Y 3 ofsset","offset = "+(scrollY - offset - topBar.getHeight()));
-                            headerDetalles.setY(scrollY - offset - topBar.getHeight());
-                        } else {
-                            headerDetalles.setY(0);
-                        }
-                    }
-                } else {
-                    topBar.setY(initY - scrollY);
-                    titleView.animate().scaleX(1 - ((scrollY * 0.15f) / 50)).scaleY(1 - ((scrollY * 0.15f) / 50)).setDuration(0).start();
-                    headerIcon.animate().scaleX(1 - ((scrollY) / 50f)).scaleY(1 - ((scrollY) / 50f)).alpha(1 - ((scrollY) / 50f)).setDuration(0).start();
-
-                    if (headerDetalles != null)
-                        headerDetalles.setY(0);
-                }
-            }
-        });
-*/
 
     }
 
@@ -288,60 +215,19 @@ public class PrincipalFragmentActivity extends FragmentBaseActivity implements V
     @Override
     public void onClick(View view) {
 
-        if (getSingleton().isMenuOpen()) {
-            return;
-        }
+        if (view == panel) { //TODO panel financiero
 
-        onClick_view(view);
+            changeFragment(new PrincipalFragment());
 
-        /*
-        HttpAsyncTask_Menu task = new HttpAsyncTask_Menu(view);
-        task.context = this;
-        task.execute(WebConstants.GATEWAY_URL);
-        */
-    }
-
-    public void onClick_view(View view) {
-
-        /*if (getSingleton().isMenuOpen()) {
-            return;
-        }*/
-
-        String mensaje = "Esta operaci\u00f3n no esta disponible en estos momentos";
-
-        try {
-            if (!block) {
-                Fragment fragment;
-                Bundle bundle = new Bundle();
-                if (view == itemPanelFinanciero) { //TODO panel financiero
-
-                    if (!itemPanelFinanciero.isEnabled()) {
-                        Utiles.generateAlertDialog(BodConstants.tituloMensaje, mensaje, parentActivity);
-                        return;
-                    }
-
-                    //callService_PanelFinanciero();
-                    changeFragment(new PrincipalFragment());
-                    block = false;
-                    resideMenu.closeMenu();
-                } else if (view == itemCerrarSesion) {
-
-                    if (!itemCerrarSesion.isEnabled()) {
-                        Utiles.generateAlertDialog(BodConstants.tituloMensaje, mensaje, parentActivity);
-                        return;
-                    }
-
-                    block = false;
-                    showDialogConfirmClose();
-
-                }
-            }
-        } catch (Exception e) {
             resideMenu.closeMenu();
-            loadMENU();
+        } else if (view == cerrar) {
+
+            showDialogConfirmClose();
         }
 
     }
+
+
 
     public void loadMENU() {
         Log.v(this.getClass().getName(),"loadMENU - Entrando");
@@ -351,66 +237,31 @@ public class PrincipalFragmentActivity extends FragmentBaseActivity implements V
         resideMenu.setBackground(R.drawable.fondo_menu);
         resideMenu.attachToActivity(this);
         resideMenu.setMenuListener(menuListener);
-        resideMenu.setScaleValue(0.5f); //valid scale factor is between 0.0f and 1.0f. leftmenu'width is 150dip.
+        resideMenu.setScaleValue(0.6f); //valid scale factor is between 0.0f and 1.0f. leftmenu'width is 150dip.
         resideMenu.setShadowVisible(false);
 
-        String encodedText = Utiles.encodedText(getString(R.string.label_cerrar_sesion));
 
-        // create menu items;
-        String titles[] = { "Cerrar sesion" };
-        int icon[] = { R.drawable.cerrar_sesion_white};
+        panel   = new ResideMenuItem(this, R.drawable.panel_financiero_white, "Panel principal");
+        cerrar  = new ResideMenuItem(this, R.drawable.cerrar_sesion_white,  "Cerrar sesion");
 
-        for (int i = 0; i < titles.length; i++){
-            ResideMenuItem item = new ResideMenuItem(this, icon[i], titles[i]);
-            item.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showDialogConfirmClose();
-                }
-            });
-            resideMenu.addMenuItem(item,  ResideMenu.DIRECTION_LEFT); // or  ResideMenu.DIRECTION_RIGHT
-        }
+
+        panel.setOnClickListener(this);
+        cerrar.setOnClickListener(this);
+        resideMenu.addMenuItem(panel,  ResideMenu.DIRECTION_RIGHT); // or  ResideMenu.DIRECTION_RIGHT
+        resideMenu.addMenuItem(cerrar,  ResideMenu.DIRECTION_RIGHT); // or  ResideMenu.DIRECTION_RIGHT
 
 
     }
 
 
-    public void goto_Fragment_Transferencias() {
-        /*TransferenciaContactoListaFragment tFragment = new TransferenciaContactoListaFragment();
-        Bundle tBundle = new Bundle();
-        tBundle.putInt(BodConstants.TIPO_OPERACION_BUNDLE, BodConstants.TIPO_OPERACION_TRANSFERENCIA);
-        tFragment.setArguments(tBundle);
-        changeFragment(tFragment);
-        */
-    }
 
-
-    public void changeLeftIconForBackButton() {
-
-        ImageView buttonBack = (ImageView) findViewById(R.id.open_drawer);
-        buttonBack.setImageDrawable(getResources().getDrawable(R.drawable.flecha_back));
-        findViewById(R.id.open_drawer).setOnClickListener(new View.OnClickListener() {
+    public void openRightMenu(){
+        ImageView buttonTool = (ImageView) findViewById(R.id.open_drawer_right);
+        buttonTool.setImageDrawable(getResources().getDrawable(R.drawable.menu_der));
+        findViewById(R.id.open_drawer_right).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if (getSingleton().isMenuOpen()) {
-                    return;
-                }
-
-
-                getSupportFragmentManager().popBackStack();
-                changeLeftIconForToolButton();
-            }
-        });
-    }
-
-    public void changeLeftIconForToolButton() {
-        ImageView buttonTool = (ImageView) findViewById(R.id.open_drawer);
-        buttonTool.setImageDrawable(getResources().getDrawable(R.drawable.menu_izq));
-        findViewById(R.id.open_drawer).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                resideMenu.openMenu(ResideMenu.DIRECTION_LEFT);
+                resideMenu.openMenu(ResideMenu.DIRECTION_RIGHT);
             }
         });
     }
@@ -588,7 +439,7 @@ public class PrincipalFragmentActivity extends FragmentBaseActivity implements V
        // getSingleton().resetTimeTask_main(this);
 
         resideMenu.clearIgnoredViewList();
-        changeLeftIconForToolButton();
+        openRightMenu();
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.main_fragment, targetFragment, "fragment")
@@ -674,12 +525,12 @@ public class PrincipalFragmentActivity extends FragmentBaseActivity implements V
             Fragment fragment;
             Bundle bundle = new Bundle();
 
-            if (view == itemPanelFinanciero) {
+            if (view == panel) {
                 bundle.putInt(BodConstants.bundle_cuenta, BodConstants.TIPO_CREDITO);
-                fragment = new PrincipalFragment();
+                fragment = new PrincipalActivityFragment();
                 fragment.setArguments(bundle);
                 changeFragment(fragment);
-            } else if (view == itemCerrarSesion) {
+            } else if (view == cerrar) {
                 showDialogConfirmClose();
             }
 

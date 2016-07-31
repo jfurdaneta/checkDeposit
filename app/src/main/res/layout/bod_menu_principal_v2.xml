@@ -314,7 +314,8 @@
                                 android:paddingLeft="8dp"
                                 android:paddingRight="8dp"
                                 android:paddingTop="2dp"
-                                android:src="@drawable/menu_izq" />
+                                android:src="@drawable/menu_izq"
+                                android:visibility="gone"/>
 
                         </LinearLayout>
 
