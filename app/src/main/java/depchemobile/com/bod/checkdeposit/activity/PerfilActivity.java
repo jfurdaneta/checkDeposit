@@ -104,7 +104,7 @@ public class PerfilActivity extends BaseActivity {
                        //Aquí si va algo asíncrono contra el server
                         // callService();
                         Intent intent = new Intent();
-                        intent.setClass(PerfilActivity.this,PrincipalActivity.class);
+                        intent.setClass(PerfilActivity.this,PrincipalFragmentActivity.class);
                         intent.putExtra("username",username);
 
                         startActivity(intent);

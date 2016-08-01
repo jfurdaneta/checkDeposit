@@ -74,6 +74,9 @@ public class PrincipalFragmentActivity extends FragmentBaseActivity implements V
     private int m_base1 = 1;
     private int m_base3 = 3;
 
+    private long chequeID = 0;
+
+
 
     private ArrayList listaCuentas;
     private ArrayList listaTdc;
@@ -122,6 +125,14 @@ public class PrincipalFragmentActivity extends FragmentBaseActivity implements V
     private ArrayList<Menu> listadoMenu;
     private boolean appAction = false;
     private int tipo_operacion;
+
+    public long getChequeID() {
+        return chequeID;
+    }
+
+    public void setChequeID(long chequeID) {
+        this.chequeID = chequeID;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

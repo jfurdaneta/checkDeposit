@@ -10,9 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -22,6 +24,7 @@ import java.util.Locale;
 import depchemobile.com.bod.checkdeposit.R;
 import depchemobile.com.bod.checkdeposit.data.ChequeContract;
 import depchemobile.com.bod.checkdeposit.entidades.Cheque;
+import depchemobile.com.bod.checkdeposit.utils.Convertidor;
 import depchemobile.com.bod.checkdeposit.utils.ImageLoader;
 import depchemobile.com.bod.checkdeposit.utils.Utils;
 
@@ -99,23 +102,31 @@ public class ListaChequeAdapter extends CursorAdapter {
 
         ck1 = (CheckBox) convertView
                 .findViewById(R.id.checkboxSelected);
+        final Cheque cheque = Convertidor.llenarCheque(cursor);
+        ck1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
 
 
 
-        final int chequeID = cursor.getInt(cursor.getColumnIndexOrThrow(ChequeContract.ChequeEntry._ID));
-        double montoCheque = cursor.getDouble(cursor.getColumnIndexOrThrow(ChequeContract.ChequeEntry.MONTO));
-
-        long fechaCheque = cursor.getLong((int) new Date(cursor.getColumnIndexOrThrow(ChequeContract.ChequeEntry.FECHA_PROCESO)).getTime());
+            }
+        });
 
 
+
+        imageLoader.DisplayImage(cheque.getImgChequeFront().getPath()  , mImageViewFront);
+        imageLoader.DisplayImage(cheque.getImgChequeBack().getPath()  , mImageViewBack);
+        txtMonto.setText( NumberFormat.getNumberInstance(Locale.getDefault()).format(cheque.getMonto()) + " Bs.");
+        txtfechaCheque.setText(Utils.FormateadorFecha(cheque.getFechaProceso() ));
+        ck1.setChecked(cheque.isSeleccionado());
         mImageViewFront.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 Intent intent = new Intent();
                 intent.setAction(Intent.ACTION_VIEW);
-                intent.setDataAndType(Uri.parse(cursor.getString(cursor.getColumnIndexOrThrow(ChequeContract.ChequeEntry.IMAGEN_CHEQUE_FRENTE))), "image/*");
+                intent.setDataAndType(cheque.getImgChequeFront(), "image/*");
 
                 context.startActivity(intent);
 
@@ -129,7 +140,7 @@ public class ListaChequeAdapter extends CursorAdapter {
 
                 Intent intent = new Intent();
                 intent.setAction(Intent.ACTION_VIEW);
-                intent.setDataAndType(Uri.parse(cursor.getString(cursor.getColumnIndexOrThrow(ChequeContract.ChequeEntry.IMAGEN_CHEQUE_TRASERA))), "image/*");
+                intent.setDataAndType(cheque.getImgChequeBack(), "image/*");
 
                 context.startActivity(intent);
 
@@ -138,17 +149,10 @@ public class ListaChequeAdapter extends CursorAdapter {
         });
 
 
-        imageLoader.DisplayImage(cursor.getString(cursor.getColumnIndexOrThrow(ChequeContract.ChequeEntry.IMAGEN_CHEQUE_FRENTE))  , mImageViewFront);
-        imageLoader.DisplayImage(cursor.getString(cursor.getColumnIndexOrThrow(ChequeContract.ChequeEntry.IMAGEN_CHEQUE_TRASERA))  , mImageViewBack);
-
-
-
-        txtMonto.setText( NumberFormat.getNumberInstance(Locale.getDefault()).format(montoCheque) + " Bs.");
-
-        txtfechaCheque.setText(Utils.FormateadorFecha(new Date(fechaCheque)));
-        ck1.setChecked(false);
 
 
 
     }
+
+
 }

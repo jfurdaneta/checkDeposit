@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,11 +16,14 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,8 +33,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
@@ -42,9 +42,9 @@ import java.util.List;
 import depchemobile.com.bod.checkdeposit.R;
 import depchemobile.com.bod.checkdeposit.activity.ListaChequesActivity;
 import depchemobile.com.bod.checkdeposit.data.CheckDepositDbHelper;
-import depchemobile.com.bod.checkdeposit.data.ChequeContract;
 import depchemobile.com.bod.checkdeposit.entidades.Cheque;
-import depchemobile.com.bod.checkdeposit.utils.ImageLoader;
+import depchemobile.com.bod.checkdeposit.fragmentactivity.PrincipalFragmentActivity;
+import depchemobile.com.bod.checkdeposit.utils.Convertidor;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -54,6 +54,8 @@ public class ChequeScanFragment extends Fragment {
 
     public ChequeScanFragment() {
     }
+
+    private PrincipalFragmentActivity parentActivity;
 
     private static final int ACTION_TAKE_PHOTO_FRONT = 1;
     private static final int ACTION_TAKE_PHOTO_BACK = 2;
@@ -272,7 +274,8 @@ public class ChequeScanFragment extends Fragment {
 
                     Intent intent = new Intent();
                     intent.setAction(Intent.ACTION_VIEW);
-                    intent.setDataAndType( chequeObject.getImgChequeFront(), "image/*");
+                    Uri hacked_uri = Uri.parse("file://" + chequeObject.getImgChequeFront().getPath());
+                    intent.setDataAndType(hacked_uri, "image/*");
                     startActivity(intent);
 
 
@@ -284,7 +287,9 @@ public class ChequeScanFragment extends Fragment {
                 public void onClick(View v) {
                     Intent intent = new Intent();
                     intent.setAction(Intent.ACTION_VIEW);
-                    intent.setDataAndType( chequeObject.getImgChequeBack(), "image/*");
+                    Uri hacked_uri = Uri.parse("file://" + chequeObject.getImgChequeBack().getPath());
+
+                    intent.setDataAndType( hacked_uri, "image/*");
                     startActivity(intent);
 
 
@@ -442,8 +447,15 @@ public class ChequeScanFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        Intent intent = getActivity().getIntent();
-        View rootView = inflater.inflate(R.layout.lista_cheques_fragment,container);
+       // Intent intent = getActivity().getIntent();
+        View rootView = inflater.inflate(R.layout.cheque_scan_fragment,container,false);
+
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
+        parentActivity = (PrincipalFragmentActivity) getActivity();
+
+
+
 
         mImageViewBack = (ImageView) rootView.findViewById(R.id.imageViewTrasera);
         mImageViewFront = (ImageView) rootView.findViewById(R.id.imageViewFrente);
@@ -457,11 +469,8 @@ public class ChequeScanFragment extends Fragment {
         mAlbumStorageDirFactory = new BaseAlbumDirFactory();
         modoEdit = false;
         depositDbHelper = new CheckDepositDbHelper(getActivity());
+        chequeID = parentActivity.getChequeID();
 
-
-        if(intent.hasExtra("chequeID"))
-        {
-            chequeID = intent.getLongExtra("chequeID",0);
             if(chequeID > 0)
             {
                 modoEdit = true;
@@ -470,24 +479,11 @@ public class ChequeScanFragment extends Fragment {
                 if(cursor!=null)
                 {
                     modoEdit = true;
-                    chequeObject = new Cheque();
-                    chequeObject.setImgChequeFront(Uri.parse(cursor.getString(cursor.getColumnIndexOrThrow(ChequeContract.ChequeEntry.IMAGEN_CHEQUE_FRENTE))));
-                    chequeObject.setImgChequeBack(Uri.parse(cursor.getString(cursor.getColumnIndexOrThrow(ChequeContract.ChequeEntry.IMAGEN_CHEQUE_TRASERA))));
-                    chequeObject.setMonto(cursor.getDouble(cursor.getColumnIndexOrThrow(ChequeContract.ChequeEntry.MONTO)));
-                    long fechaCheque = cursor.getLong((int) new Date(cursor.getColumnIndexOrThrow(ChequeContract.ChequeEntry.FECHA_PROCESO)).getTime());
-                    chequeObject.setMismoBanco(cursor.getInt(cursor.getColumnIndexOrThrow(ChequeContract.ChequeEntry.MISMO_BANCO))>0);
-                    chequeObject.setNombreBanco(cursor.getString(cursor.getColumnIndexOrThrow(ChequeContract.ChequeEntry.NOMBRE_BANCO)));
-                    chequeObject.setFechaProceso(new Date(fechaCheque));
-                    chequeObject.setNumLote(cursor.getLong(cursor.getColumnIndexOrThrow(ChequeContract.ChequeEntry.NUMERO_LOTE)));
+                    chequeObject = Convertidor.llenarCheque(cursor);
                 }
-
-
             }
-
-        }
-
-
-
+        else
+            chequeObject = null;
 
         setBtnListenerOrDisable(
                 btnFrontal,
@@ -551,8 +547,8 @@ public class ChequeScanFragment extends Fragment {
         btnContinuar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClass(getContext(),ListaChequesActivity.class);
+               // Intent intent = new Intent();
+               // intent.setClass(getContext(),ListaChequesActivity.class);
 
 
                 chequeObject.setNumCuenta("11998490");
@@ -569,8 +565,18 @@ public class ChequeScanFragment extends Fragment {
                     //Aqui va update
                     depositDbHelper.updateCheque(chequeObject,chequeID);
                 }
-                startActivity(intent);
-                getActivity().finish();
+               // startActivity(intent);
+              //  getActivity().finish();
+
+                Fragment fragment;
+                fragment = new ListaChequesFragment();
+                parentActivity.setTile("Listado de Cheques");
+                parentActivity.setHeaderIcon(ContextCompat.getDrawable(getContext(), R.drawable.pagos_transferencias_white));
+                getActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.main_fragment, fragment, "fragment")
+                        .setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack(null)
+                        .commit();
             }
         });
 

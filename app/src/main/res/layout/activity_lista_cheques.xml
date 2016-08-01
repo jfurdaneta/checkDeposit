@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="depchemobile.com.bod.checkdeposit.activity.ListaChequesActivity">
+   >
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
@@ -20,7 +20,14 @@
             android:layout_height="wrap_content"
             android:divider="#b5b5b5"
             android:dividerHeight="1dp"
+            android:choiceMode="multipleChoice"
             android:listSelector="@drawable/list_selector" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:id="@+id/btnAceptar"
+            android:text="Depositar"
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 

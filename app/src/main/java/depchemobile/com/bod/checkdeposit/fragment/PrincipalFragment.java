@@ -76,8 +76,9 @@ public class PrincipalFragment extends Fragment implements View.OnClickListener 
             @Override
             public void onClick(View v) {
                 Fragment fragment;
-                fragment = new PrincipalActivityFragment();
+                fragment = new ChequeScanFragment();
                 parentActivity.setTile("Captura de Cheque");
+                parentActivity.setChequeID(0);//Aquí indico que no hay cheque
                 parentActivity.setHeaderIcon(ContextCompat.getDrawable(getContext(), R.drawable.pagos_transferencias_white));
                 getActivity().getSupportFragmentManager()
                         .beginTransaction()

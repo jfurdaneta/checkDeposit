@@ -144,6 +144,9 @@
 
     <string name="label_mensaje_timeout">Tu sesi\u00f3n a punto de expirar, pulsa continuar para seguir con tus operaciones.</string>
 
+    <string name="menu_option_edit">Editar</string>
+    <string name="menu_option_delete">Borrar</string>
+
     <string name="tipo_doc_prompt">Tipo</string>
     <string-array name="tipo_documento_identidad">
         <item>V</item>
@@ -162,6 +165,9 @@
     <string name="token_desasociado">Token desasociado satisfactoriamente</string>
     <string name="token_aceptar">Aceptar</string>
     <string name="token_cancelar">Cancelar</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     <!--Jose urdaneta -->
 
 

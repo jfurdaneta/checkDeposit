@@ -20,6 +20,8 @@ public class PrincipalActivityFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.lista_cheques_fragment, container, false);
+
+        View rootView = inflater.inflate(R.layout.cheque_scan_fragment,container,false);
+        return rootView;
     }
 }

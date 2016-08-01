@@ -23,8 +23,19 @@ public class Cheque implements Parcelable{
     Uri imgChequeFront;
     Uri imgChequeBack;
     boolean mismoBanco;
+
+    //esta variable es para determinar si el cheque es seleccionado del listview
+    boolean seleccionado = false;
     String nombreBanco;
     long numLote;
+
+    public boolean isSeleccionado() {
+        return seleccionado;
+    }
+
+    public void setSeleccionado(boolean seleccionado) {
+        this.seleccionado = seleccionado;
+    }
 
     public int getId() {
         return id;

@@ -135,6 +135,34 @@ public class CheckDepositDbHelper extends SQLiteOpenHelper {
 
     }
 
+
+    public long eliminarCheque(long chequeID) {
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        String selection = ChequeContract.ChequeEntry._ID+ " =  ?";
+        String[] selectionArgs = { String.valueOf(chequeID) };
+
+        return sqLiteDatabase.delete(
+                ChequeContract.ChequeEntry.TABLE_NAME,
+                selection,
+                selectionArgs
+        );
+
+
+    }
+
+    public long eliminarTodosCheques() {
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+
+
+        return sqLiteDatabase.delete(
+                ChequeContract.ChequeEntry.TABLE_NAME,
+                null,
+                null
+        );
+
+
+    }
+
     public long updateCheque(Cheque pCheque, long chequeID) {
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
 
