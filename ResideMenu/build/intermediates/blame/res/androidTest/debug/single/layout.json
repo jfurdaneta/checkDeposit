@@ -4,11 +4,11 @@
         "source": "G:\\Fintec\\checkDeposit\\ResideMenu\\build\\intermediates\\bundles\\debug\\res\\layout\\residemenu_submenu_item.xml"
     },
     {
-        "merged": "G:\\Fintec\\checkDeposit\\ResideMenu\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\residemenu_item.xml",
-        "source": "G:\\Fintec\\checkDeposit\\ResideMenu\\build\\intermediates\\bundles\\debug\\res\\layout\\residemenu_item.xml"
-    },
-    {
         "merged": "G:\\Fintec\\checkDeposit\\ResideMenu\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\residemenu.xml",
         "source": "G:\\Fintec\\checkDeposit\\ResideMenu\\build\\intermediates\\bundles\\debug\\res\\layout\\residemenu.xml"
+    },
+    {
+        "merged": "G:\\Fintec\\checkDeposit\\ResideMenu\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\residemenu_item.xml",
+        "source": "G:\\Fintec\\checkDeposit\\ResideMenu\\build\\intermediates\\bundles\\debug\\res\\layout\\residemenu_item.xml"
     }
 ]

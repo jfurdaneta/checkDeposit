@@ -9,6 +9,7 @@ import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
@@ -18,6 +19,8 @@ import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -29,6 +32,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +40,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -44,7 +49,10 @@ import depchemobile.com.bod.checkdeposit.activity.ListaChequesActivity;
 import depchemobile.com.bod.checkdeposit.data.CheckDepositDbHelper;
 import depchemobile.com.bod.checkdeposit.entidades.Cheque;
 import depchemobile.com.bod.checkdeposit.fragmentactivity.PrincipalFragmentActivity;
+import depchemobile.com.bod.checkdeposit.utils.BodConstants;
 import depchemobile.com.bod.checkdeposit.utils.Convertidor;
+import depchemobile.com.bod.checkdeposit.utils.STEditText;
+import depchemobile.com.bod.checkdeposit.utils.Utiles;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -64,6 +72,10 @@ public class ChequeScanFragment extends Fragment {
     CheckDepositDbHelper depositDbHelper;
 
     private boolean modoEdit;
+    private STEditText montoEditText;
+    private RelativeLayout layoutMonto;
+
+    private boolean isCanSave;
 
     private  final int PIC_CROP_FRONT = 4;
     private  final int PIC_CROP_BACK = 5;
@@ -72,11 +84,25 @@ public class ChequeScanFragment extends Fragment {
     Cheque chequeObject;
     long chequeID;
 
+    boolean montoEnabled;
+    private ImageView montoEditButton;
+    private boolean editing;
+    private String montoString;
+    private double monto;
+    private int montoLenght;
+    private String formato_bsF = "Bs. ";
+
+    private TextView cancelTransferText;
+    private ImageView cancelTransferImage;
+
+    private ImageView continueTransferImageView;
+    private TextView continueTransferTextView;
+
     private static final String BITMAP_STORAGE_KEY = "viewbitmap";
     private static final String IMAGEVIEW_VISIBILITY_STORAGE_KEY = "imageviewvisibility";
     private ImageView mImageView,mImageViewFront,mImageViewBack;
     private Bitmap mImageBitmap;
-    Button btnContinuar;
+
     Button btnFrontal;
     Button   btnAnverso;
     EditText txtMonto;
@@ -362,14 +388,14 @@ public class ChequeScanFragment extends Fragment {
                     loadBitmap(picUri.getPath(),mImageViewBack);
                     mImageViewBack.setVisibility(View.VISIBLE);
                     mImageViewBack.setClickable(true);
+                    activateLayoutMonto();
                     break;
                 } // ACTION_TAKE_PHOTO_S
             } // switch
 
             if(chequeObject.getImgChequeBack()!=null && chequeObject.getImgChequeFront()!=null)
             {
-                divMonto.setEnabled(true);
-                txtMonto.setEnabled(true);
+
             }
 
         }
@@ -457,31 +483,40 @@ public class ChequeScanFragment extends Fragment {
 
 
 
+        btnAnverso = (Button) rootView.findViewById(R.id.btnIntendS);
+        layoutMonto = (RelativeLayout) rootView.findViewById(R.id.layoutTransferenciaMonto);
+        editing = false;
+        montoLenght = 0;
+        montoString = "";
+
+
         mImageViewBack = (ImageView) rootView.findViewById(R.id.imageViewTrasera);
         mImageViewFront = (ImageView) rootView.findViewById(R.id.imageViewFrente);
-        divMonto = (LinearLayout)  rootView.findViewById(R.id.divMonto);
-        btnFrontal = (Button) rootView.findViewById(R.id.btnIntend);
-        txtMonto = (EditText) rootView.findViewById(R.id.txtMonto);
-        btnContinuar = (Button) rootView.findViewById(R.id.btnContinuar);
-        btnAnverso = (Button) rootView.findViewById(R.id.btnIntendS);
+
         setImgListenerOrDisable(mImageViewFront,mViewPicFrontOnClickListener,Intent.ACTION_VIEW);
         setImgListenerOrDisable(mImageViewBack,mViewPicBackOnClickListener,Intent.ACTION_VIEW);
+
+        btnFrontal = (Button) rootView.findViewById(R.id.btnIntend);
+        //txtMonto = (EditText) rootView.findViewById(R.id.txtMonto);
+
+        montoEditText = (STEditText) rootView.findViewById(R.id.et_monto);
+
         mAlbumStorageDirFactory = new BaseAlbumDirFactory();
         modoEdit = false;
         depositDbHelper = new CheckDepositDbHelper(getActivity());
         chequeID = parentActivity.getChequeID();
 
-            if(chequeID > 0)
+        if(chequeID > 0)
+        {
+            modoEdit = true;
+
+            Cursor cursor = depositDbHelper.getChequeById(chequeID);
+            if(cursor!=null)
             {
                 modoEdit = true;
-
-                Cursor cursor = depositDbHelper.getChequeById(chequeID);
-                if(cursor!=null)
-                {
-                    modoEdit = true;
-                    chequeObject = Convertidor.llenarCheque(cursor);
-                }
+                chequeObject = Convertidor.llenarCheque(cursor);
             }
+        }
         else
             chequeObject = null;
 
@@ -493,63 +528,48 @@ public class ChequeScanFragment extends Fragment {
 
 
 
-        setBtnListenerOrDisable(
-                btnAnverso,
-                mTakePicSOnClickListener,
-                MediaStore.ACTION_IMAGE_CAPTURE
-        );
-
-        txtMonto.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-
+        isCanSave = false;
+        cancelTransferText = (TextView) rootView.findViewById(R.id.tv_back);
+        cancelTransferText.setOnClickListener(new View.OnClickListener() {
 
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if(actionId == EditorInfo.IME_ACTION_DONE)
+            public void onClick(View arg0) {
+                if(chequeID>0)
                 {
-                    if(!txtMonto.getText().toString().trim().equals(""))
-                    {
-
-
-                        try {
-                            Double fMonto = Double.parseDouble(txtMonto.getText().toString().trim());
-
-                            if(fMonto>0)
-                            {
-
-                                chequeObject.setMonto(fMonto);
-                                btnContinuar.setEnabled(true);
-                                return false;
-                            }
-                            else
-                            {
-                                btnContinuar.setEnabled(false);
-                            }
-
-                        }
-                        catch (Exception e)
-                        {
-                            btnContinuar.setEnabled(false);
-                            return true;
-
-                        }
-
-
-                    }
-                    else
-                        btnContinuar.setEnabled(false);
-
-
+                    ListaChequesFragment fragment = new ListaChequesFragment();
+                    parentActivity.changeFragment(fragment);
                 }
-                return false;
+                else
+                {
+                    PrincipalFragment fragment = new PrincipalFragment();
+                    parentActivity.changeFragment(fragment);
+                }
+
+
+
             }
         });
 
-        btnContinuar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               // Intent intent = new Intent();
-               // intent.setClass(getContext(),ListaChequesActivity.class);
+        continueTransferImageView = (ImageView) rootView.findViewById(R.id.iv_next_transfer);
+        continueTransferTextView = (TextView) rootView.findViewById(R.id.tv_next_transfer);
 
+        continueTransferTextView.setVisibility(View.GONE);
+        continueTransferImageView.setVisibility(View.GONE);
+
+
+
+        continueTransferTextView.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+
+                if (!isCanSave)
+                    return;
+
+                if (monto == 0) {
+                    Utiles.generateAlertDialog("Mensaje", "El monto debe ser mayor a cero", getActivity());
+                    return;
+                }
 
                 chequeObject.setNumCuenta("11998490");
                 chequeObject.setMismoBanco(true);
@@ -565,8 +585,8 @@ public class ChequeScanFragment extends Fragment {
                     //Aqui va update
                     depositDbHelper.updateCheque(chequeObject,chequeID);
                 }
-               // startActivity(intent);
-              //  getActivity().finish();
+                // startActivity(intent);
+                //  getActivity().finish();
 
                 Fragment fragment;
                 fragment = new ListaChequesFragment();
@@ -577,34 +597,181 @@ public class ChequeScanFragment extends Fragment {
                         .replace(R.id.main_fragment, fragment, "fragment")
                         .setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack(null)
                         .commit();
+
+
             }
         });
+
+        cancelTransferImage = (ImageView) rootView.findViewById(R.id.iv_back);
+        cancelTransferImage.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                if(chequeID>0)
+                {
+                    ListaChequesFragment fragment = new ListaChequesFragment();
+                    parentActivity.changeFragment(fragment);
+                }
+                else
+                {
+                    PrincipalFragment fragment = new PrincipalFragment();
+                    parentActivity.changeFragment(fragment);
+                }
+            }
+        });
+
+
+
+
+
+
+        montoEditText.setOnEditorActionListener(new android.widget.TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(android.widget.TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+
+                 chequeObject.setMonto(monto);
+                    if (monto > 0) {
+                        __action_monto();
+                    } else {
+                        Utiles.generateAlertDialog(BodConstants.tituloMensaje, "El monto debe ser mayor a cero", getActivity());
+                    }
+                }
+                return false;
+            }
+        });
+
+        montoEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+               montoEditText.setSelection(montoEditText.getText().length());
+            }
+        });
+
+        montoEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+
+
+                if (!editing) {
+
+                    editing = true;
+                    String tempString = s.toString();
+                    try {
+
+                        if (s.length() > montoLenght) {
+                            montoString = montoString + tempString.substring(tempString.length() - 1);
+                            monto = Double.parseDouble(montoString);
+                            monto = monto / 100.0d;
+                            montoEditText.setText(formato_bsF + Utiles.formatNumber(monto));
+                        } else {
+                            if (montoString.length() > 0) {
+                                montoString = montoString.substring(0, montoString.length() - 1);
+                                monto = Double.parseDouble(montoString);
+                                monto = monto / 100.0d;
+                                montoEditText.setText(formato_bsF + Utiles.formatNumber(monto));
+                            } else {
+
+                                montoEditText.setText("");
+                                montoString = "";
+                                monto = 0;
+                            }
+                        }
+                        montoLenght = montoEditText.getText().toString().length();
+                    } catch (Exception e) {
+                        montoEditText.setText(formato_bsF + Utiles.formatNumber(monto));
+                    }
+                    editing = false;
+                    montoEditText.setSelection(montoEditText.getText().length());
+                }
+            }
+
+        });
+
+
+        montoEditButton = (ImageView) rootView.findViewById(R.id.ib_monto_edit_button);
+        montoEditButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                montoEditText.setFocusableInTouchMode(true);
+                montoEnabled = true;
+                montoEditButton.animate().alpha(0).setDuration(500).start();
+                montoEditText.setBackgroundColor(getActivity().getResources().getColor(R.color.bod_fondo_text));
+
+
+                continueTransferTextView.setVisibility(View.GONE);
+                continueTransferImageView.setVisibility(View.GONE);
+            }
+        });
+        montoEditButton.animate().alpha(0).setDuration(0).start();
+        montoEnabled = true;
+
+
+
+
+
+
+
+
+
+        setBtnListenerOrDisable(
+                btnAnverso,
+                mTakePicSOnClickListener,
+                MediaStore.ACTION_IMAGE_CAPTURE
+        );
+
+
 
         if(chequeObject==null)
         {
             chequeObject = new Cheque();
-            chequeObject.setFechaProceso(new Date());
+            Calendar calendar = Calendar.getInstance();
+            Date date =  calendar.getTime();
+            chequeObject.setFechaProceso(date);
             mImageViewFront.setClickable(false);
             mImageViewBack.setClickable(false);
-
-
-
-            divMonto.setEnabled(false);
-            txtMonto.setEnabled(false);
+            deactivateLayoutMonto();
             btnAnverso.setEnabled(false);
             mImageBitmap = null;
             mVideoUri = null;
-            btnContinuar.setEnabled(false);
+
 
 
         }
         else
         {
 
-            divMonto.setEnabled(true);
-            txtMonto.setEnabled(true);
-            btnContinuar.setEnabled(true);
-            txtMonto.setText(chequeObject.getMonto().toString());
+            monto = chequeObject.getMonto();
+            editing = true;
+            montoEditText.setText(formato_bsF + Utiles.formatNumber(monto));
+            String tmpString =String.valueOf(monto*100);
+            tmpString = tmpString.substring(0,tmpString.indexOf("."));
+            editing = false;
+            montoString =tmpString;
+          /* montoEditText.setBackgroundColor(getActivity().getResources().getColor(R.color.bod_blanco));
+            montoEditButton.animate().alpha(1).setDuration(400).start();
+            montoEditText.setFocusable(false);
+            Utiles.hideSoftKeyboard(getActivity());
+            //montoEnabled = false;
+            layoutMonto.setVisibility(View.VISIBLE);
+            layoutMonto.setPivotY(0);
+            layoutMonto.animate().scaleY(1).alpha(1).setDuration(500).start();
+
+*/
+            activateLayoutMonto();
+
+
+
             btnAnverso.setEnabled(true);
 
             //Carga las imagenes asíncronas
@@ -627,6 +794,42 @@ public class ChequeScanFragment extends Fragment {
 
         return rootView;
 
+    }
+
+    public void activateLayoutMonto() {
+        layoutMonto.setVisibility(View.VISIBLE);
+        layoutMonto.setPivotY(0);
+        layoutMonto.animate().scaleY(1).alpha(1).setDuration(500).start();
+        setEditableMontoedit();
+    }
+    public void setEditableMontoedit() {
+        montoEditText.setFocusableInTouchMode(true);
+        montoEnabled = true;
+        montoEditButton.animate().alpha(0).setDuration(500).start();
+        montoEditText.setBackgroundColor(getActivity().getResources().getColor(R.color.bod_fondo_text));
+    }
+
+    public void deactivateLayoutMonto() {
+        layoutMonto.animate().alpha(0).scaleY(0).start();
+        layoutMonto.setVisibility(View.GONE);
+
+    }
+
+    public void __action_monto() {
+
+        continueTransferTextView.setVisibility(View.VISIBLE);
+        continueTransferImageView.setVisibility(View.VISIBLE);
+
+        int imageResource = getResources().getIdentifier("@drawable/continuar_fondoverde", null, parentActivity.getPackageName());
+        Drawable res = getResources().getDrawable(imageResource);
+        continueTransferImageView.setImageDrawable(res);
+
+        isCanSave = true;
+        montoEditText.setBackgroundColor(getActivity().getResources().getColor(R.color.bod_blanco));
+        montoEditButton.animate().alpha(1).setDuration(400).start();
+        montoEditText.setFocusable(false);
+        Utiles.hideSoftKeyboard(getActivity());
+        montoEnabled = false;
     }
 
 

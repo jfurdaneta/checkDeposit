@@ -4,11 +4,11 @@
         "source": "G:\\Fintec\\checkDeposit\\ResideMenu\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\logo.png"
     },
     {
-        "merged": "G:\\Fintec\\checkDeposit\\ResideMenu\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\ic_launcher.png",
-        "source": "G:\\Fintec\\checkDeposit\\ResideMenu\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\ic_launcher.png"
-    },
-    {
         "merged": "G:\\Fintec\\checkDeposit\\ResideMenu\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\imagen_validacion_shape.xml",
         "source": "G:\\Fintec\\checkDeposit\\ResideMenu\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\imagen_validacion_shape.xml"
+    },
+    {
+        "merged": "G:\\Fintec\\checkDeposit\\ResideMenu\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\ic_launcher.png",
+        "source": "G:\\Fintec\\checkDeposit\\ResideMenu\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\ic_launcher.png"
     }
 ]
