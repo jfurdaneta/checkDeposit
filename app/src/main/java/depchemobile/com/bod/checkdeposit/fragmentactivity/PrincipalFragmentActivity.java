@@ -32,6 +32,7 @@ import android.widget.RelativeLayout;
 import depchemobile.com.bod.checkdeposit.R;
 import depchemobile.com.bod.checkdeposit.activity.LoginActivity;
 import depchemobile.com.bod.checkdeposit.activity.PrincipalActivityFragment;
+import depchemobile.com.bod.checkdeposit.fragment.ListaChequesFragment;
 import depchemobile.com.bod.checkdeposit.fragment.PrincipalFragment;
 import depchemobile.com.bod.checkdeposit.model.Menu;
 import depchemobile.com.bod.checkdeposit.utils.Utiles;
@@ -86,7 +87,7 @@ public class PrincipalFragmentActivity extends FragmentBaseActivity implements V
 
     private ResideMenuItem panel;
     private ResideMenuItem cerrar;
-
+    private ResideMenuItem listadoCheques;
     private boolean isConsultaCuentaVisible = false;
     private boolean isConsultaTarjetaVisible = false;
     private boolean isConsultaCreditosVisible = false;
@@ -234,6 +235,11 @@ public class PrincipalFragmentActivity extends FragmentBaseActivity implements V
         } else if (view == cerrar) {
 
             showDialogConfirmClose();
+        } else if (view == listadoCheques){
+            setTile("Listado de Cheques");
+            setHeaderIcon(ContextCompat.getDrawable(context, R.drawable.pagos_transferencias_white));
+            changeFragment(new ListaChequesFragment());
+            resideMenu.closeMenu();
         }
 
     }
@@ -254,11 +260,14 @@ public class PrincipalFragmentActivity extends FragmentBaseActivity implements V
 
         panel   = new ResideMenuItem(this, R.drawable.panel_financiero_white, "Panel principal");
         cerrar  = new ResideMenuItem(this, R.drawable.cerrar_sesion_white,  "Cerrar sesion");
-
+        listadoCheques= new ResideMenuItem(this, R.drawable.pagos_transferencias_white,  "Listado de Cheques");
 
         panel.setOnClickListener(this);
         cerrar.setOnClickListener(this);
+        listadoCheques.setOnClickListener(this);
+
         resideMenu.addMenuItem(panel,  ResideMenu.DIRECTION_RIGHT); // or  ResideMenu.DIRECTION_RIGHT
+        resideMenu.addMenuItem(listadoCheques,  ResideMenu.DIRECTION_RIGHT); // or  ResideMenu.DIRECTION_RIGHT
         resideMenu.addMenuItem(cerrar,  ResideMenu.DIRECTION_RIGHT); // or  ResideMenu.DIRECTION_RIGHT
 
 
