@@ -8,7 +8,7 @@
     <string name="txtContinuar">Continuar</string>
     <string name="btnReverso">Foto Reverso</string>
     <string name="lblFrontal">Frente</string>
-    <string name="lblTrasero">Atrás</string>
+    <string name="lblTrasero">Anverso</string>
     <string name="btnIntendV">Video</string>
     <string name="cannot">Cannot</string>
     <string name="album_name" translatable="false">DepCheq</string>
@@ -126,7 +126,7 @@
     <string name="scan_code_string">Escanear Código</string>
     <string name="enter_code_string">Ingresar Código</string>
     <string name="regresar_label">Regresar</string>
-    <string name="cuanto_dinero_label">\u00bfQu\u00e9 monto deseas transferir?</string>
+    <string name="cuanto_dinero_label">\u00bfQu\u00e9 monto deseas depositar?</string>
     <string name="tipo_pago_label">\u00bfTipo de Pago?</string>
 
 
