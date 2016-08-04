@@ -1,45 +1,55 @@
 package depchemobile.com.bod.checkdeposit.fragment;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
+        import android.app.Activity;
+        import android.app.Dialog;
+        import android.graphics.drawable.ColorDrawable;
+        import android.support.v4.app.Fragment;
+        import android.support.v4.app.FragmentTransaction;
+        import android.support.v4.content.ContextCompat;
 
-import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
-import android.util.Log;
-import android.view.ContextMenu;
-import android.view.LayoutInflater;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.Toast;
+        import android.content.Context;
+        import android.content.Intent;
+        import android.database.Cursor;
+        import android.os.AsyncTask;
+        import android.os.Bundle;
+        import android.support.annotation.Nullable;
+        import android.support.v4.app.FragmentTransaction;
+        import android.support.v4.content.ContextCompat;
+        import android.support.v8.renderscript.RenderScript;
+        import android.util.Log;
+        import android.view.ContextMenu;
+        import android.view.LayoutInflater;
+        import android.view.MenuInflater;
+        import android.view.MenuItem;
+        import android.view.View;
+        import android.view.ViewGroup;
+        import android.view.Window;
+        import android.view.WindowManager;
+        import android.widget.AdapterView;
+        import android.widget.Button;
+        import android.widget.ImageView;
+        import android.widget.LinearLayout;
+        import android.widget.ListView;
+        import android.widget.Toast;
 
 
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
+        import android.support.v4.app.FragmentTransaction;
+        import android.support.v4.content.ContextCompat;
 
-import java.util.ArrayList;
+        import com.neopixl.pixlui.components.textview.TextView;
 
-import depchemobile.com.bod.checkdeposit.R;
-import depchemobile.com.bod.checkdeposit.activity.PrincipalActivity;
-import depchemobile.com.bod.checkdeposit.adapters.ListaChequeAdapter;
-import depchemobile.com.bod.checkdeposit.adapters.ListaChequeArraylistAdapter;
-import depchemobile.com.bod.checkdeposit.data.CheckDepositDbHelper;
-import depchemobile.com.bod.checkdeposit.entidades.Cheque;
-import depchemobile.com.bod.checkdeposit.fragmentactivity.PrincipalFragmentActivity;
-import depchemobile.com.bod.checkdeposit.utils.Convertidor;
-import depchemobile.com.bod.checkdeposit.utils.Utils;
+        import java.util.ArrayList;
+
+        import depchemobile.com.bod.checkdeposit.R;
+        import depchemobile.com.bod.checkdeposit.activity.PrincipalActivity;
+        import depchemobile.com.bod.checkdeposit.adapters.ListaChequeAdapter;
+        import depchemobile.com.bod.checkdeposit.adapters.ListaChequeArraylistAdapter;
+        import depchemobile.com.bod.checkdeposit.data.CheckDepositDbHelper;
+        import depchemobile.com.bod.checkdeposit.entidades.Cheque;
+        import depchemobile.com.bod.checkdeposit.fragmentactivity.PrincipalFragmentActivity;
+        import depchemobile.com.bod.checkdeposit.utils.Convertidor;
+        import depchemobile.com.bod.checkdeposit.utils.Utiles;
+        import depchemobile.com.bod.checkdeposit.utils.Utils;
 
 
 /**
@@ -53,15 +63,21 @@ public class ListaChequesFragment extends Fragment {
     ListaChequeArraylistAdapter adapter;
     private CheckDepositDbHelper mCheckDepositDbHelper;
     private PrincipalFragmentActivity parentActivity;
+    double montoTotalDeposito;
+
+    private String formato_bsF = "Bs. ";
+
+    public View rootView;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //return super.onCreateView(inflater, container, savedInstanceState);
-        View rootView = inflater.inflate(R.layout.activity_lista_cheques,container,false);
+        rootView = inflater.inflate(R.layout.activity_lista_cheques,container,false);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         parentActivity = (PrincipalFragmentActivity) getActivity();
+        montoTotalDeposito = 0;
 
 
 
@@ -94,15 +110,39 @@ public class ListaChequesFragment extends Fragment {
 
                 int cont = 0;
 
+
+
                 for (Cheque bean : listaCheques) {
                     if(bean.isSeleccionado())
                         cont++;
                 }
-                Toast.makeText(getActivity(), "Cheques seleccionados " + String.valueOf(cont), Toast.LENGTH_SHORT).show();
+
+                dialog_transferir();
+                //Toast.makeText(getActivity(), "Cheques seleccionados " + String.valueOf(cont), Toast.LENGTH_SHORT).show();
 
 
             }
         });
+
+        Button  btnCapturar = (Button) rootView.findViewById(R.id.btnCapturar);
+        btnCapturar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                parentActivity.setChequeID(0);
+                Fragment fragment;
+
+                fragment = new ChequeScanFragment();
+                parentActivity.setTile("Captura de Cheque");
+                parentActivity.setHeaderIcon(ContextCompat.getDrawable(getActivity(), R.drawable.pagos_transferencias_white));
+                getActivity(). getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.main_fragment, fragment, "fragment")
+                        .setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack(null)
+                        .commit();
+
+            }
+        });
+
 
         return  rootView;
     }
@@ -140,7 +180,7 @@ public class ListaChequesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-      //  Intent intent = getIntent();
+        //  Intent intent = getIntent();
         Log.v(this.getClass().getName(), "onCreate - " + "Obtieniendo intent");
         mCheckDepositDbHelper = new CheckDepositDbHelper(getActivity());
 
@@ -148,7 +188,7 @@ public class ListaChequesFragment extends Fragment {
         // mCheckDepositDbHelper.datos();
         //Cursor c = mCheckDepositDbHelper.getCheques();
         //adapter2 = new ListaChequeAdapter(ListaChequesActivity.this, null);
-   //  list.setAdapter(adapter2);
+        //  list.setAdapter(adapter2);
 
     }
 
@@ -195,7 +235,9 @@ public class ListaChequesFragment extends Fragment {
 
                 while(cursor.moveToNext())
                 {
-                    listaCheques.add(Convertidor.llenarCheque(cursor));
+                    Cheque chequetmp =Convertidor.llenarCheque(cursor);
+                    montoTotalDeposito = montoTotalDeposito + chequetmp.getMonto();
+                    listaCheques.add(chequetmp);
                 }
                 adapter = new ListaChequeArraylistAdapter(getActivity(), listaCheques);
                 list.setAdapter(adapter);
@@ -206,6 +248,97 @@ public class ListaChequesFragment extends Fragment {
                 // Mostrar empty state
             }
         }
+    }
+
+
+
+
+    public void dialog_transferir() {
+
+        final Dialog dialog = new Dialog(rootView.getContext(), R.style.MyThemeDialog);
+        //final Dialog dialog = new Dialog(getActivity(), android.R.style.Theme_Material_NoActionBar_Fullscreen);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setContentView(R.layout.deposito_custom_dialog);
+
+        RenderScript rs = RenderScript.create(getActivity());
+        LinearLayout bgLayout = (LinearLayout) dialog.findViewById(R.id.ll_image_layout);
+        Utiles.blur(getActivity().getWindow().getDecorView().findViewById(android.R.id.content), rs, bgLayout, getActivity(), 4f);
+
+        TextView cantidadCheques = (TextView) dialog.findViewById(R.id.tv_CantidadCheques);
+        TextView cuentaDestino = (TextView) dialog.findViewById(R.id.tv_cuenta_destino);
+        TextView montoTextView = (TextView) dialog.findViewById(R.id.tv_monto);
+
+        cantidadCheques.setText(String.valueOf(listaCheques.size()));
+
+
+        TextView tv_textoSuperior = (TextView) dialog.findViewById(R.id.tv_textoSuperior);
+        TextView tv_tituloProductoOrigen = (TextView) dialog.findViewById(R.id.tv_tituloProductoOrigen);
+
+
+        String subTitulo = "Por favor confirme los datos de la transferencia que está por realizar:";
+
+
+
+        montoTextView.setText(formato_bsF + Utiles.formatNumber(montoTotalDeposito)); //marzo 2016
+
+        //Todo Validacion
+
+        boolean valido = true;
+
+
+        if (!valido) {
+            Utiles.generateAlertDialog("Mensaje", "No se pudo realizar esta transferencia por datos invalido.", (Activity) rootView.getContext());
+            return;
+        }
+
+        TextView dialogCloseButton = (TextView) dialog.findViewById(R.id.tv_back);
+        ImageView dialogCloseImage = (ImageView) dialog.findViewById(R.id.iv_back);
+
+        dialogCloseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                dialog.dismiss();
+            }
+        });
+
+        dialogCloseImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+
+                dialog.dismiss();
+            }
+        });
+
+        TextView dialogButton = (TextView) dialog.findViewById(R.id.tv_next_transfer_dialog);
+
+        //TODO 2016 - Se estan intercambiando las imagenes al ser pago TDC
+
+        tv_textoSuperior.setText("Por favor confirme los datos del deposito que est\u00e1 por realizar:");
+                    /*
+                    tv_tituloProductoOrigen.setText("Desde se cuenta:");
+                    tv_tituloProductoDestino.setText("A su tarjeta:");
+                    */
+        tv_tituloProductoOrigen.setText("A su cuenta:");
+
+        dialogButton.setText("Depositar");
+
+        dialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                dialog.dismiss();
+
+
+            }
+        });
+
+        dialog.show();
     }
 
 
