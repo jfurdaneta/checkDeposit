@@ -269,7 +269,7 @@ public class LoginActivity extends BaseActivity {
         RenderScript rs = RenderScript.create(this);
         //Utiles.blur(mainLayout, rs, mainLayout, this, 6f);
 
-        int imageResource = getResources().getIdentifier("@drawable/fondo_inicio", null, _activity.getPackageName());
+       /* int imageResource = getResources().getIdentifier("@drawable/fondo_inicio", null, _activity.getPackageName());
         Drawable res = getResources().getDrawable(imageResource);
 
         int sdk = android.os.Build.VERSION.SDK_INT;
@@ -278,6 +278,7 @@ public class LoginActivity extends BaseActivity {
         } else {
             mainLayout.setBackground(res);
         }
+        */
 
         initLogo.setVisibility(View.VISIBLE);
 
