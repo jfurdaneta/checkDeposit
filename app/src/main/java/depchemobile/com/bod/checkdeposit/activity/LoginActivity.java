@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -44,6 +45,7 @@ public class LoginActivity extends BaseActivity {
     private Handler mHandler = new Handler();
 
     private ImageView ivNext;
+    private Button btnContinuar;
     private TextView tvNext;
     private EditText etUsername;
     private TextView tvLoginText;
@@ -73,22 +75,23 @@ public class LoginActivity extends BaseActivity {
         alpha.setDuration(0);
         alpha.setFillAfter(true);
 
-        ivNext = (ImageView) findViewById(R.id.buttonImage);
+        //ivNext = (ImageView) findViewById(R.id.buttonImage);
+        btnContinuar = (Button) findViewById(R.id.btnContinuar);
         etUsername = (EditText) findViewById(R.id.et_username);
-        tvNext = (TextView) findViewById(R.id.tv_next);
+        //tvNext = (TextView) findViewById(R.id.tv_next);
         tvLoginText = (TextView) findViewById(R.id.textViewLogin);
         mainLayout = (RelativeLayout) findViewById(R.id.inicioMainRelativeLayout);
         initLogo = (ImageView) findViewById(R.id.iv_init_logo);
         transparentLayer = (LinearLayout) findViewById(R.id.ll_transparent_layer);
 
-        ivNext.animate().alpha(0).setDuration(0);
+        //ivNext.animate().alpha(0).setDuration(0);
         etUsername.animate().alpha(0).setDuration(0);
-        tvNext.animate().alpha(0).setDuration(0);
+        btnContinuar.animate().alpha(0).setDuration(0);
         transparentLayer.animate().alpha(0).setDuration(0);
 
-        ivNext.setVisibility(View.GONE);
+        //ivNext.setVisibility(View.GONE);
         etUsername.setVisibility(View.GONE);
-        tvNext.setVisibility(View.GONE);
+        btnContinuar.setVisibility(View.GONE);
         transparentLayer.setVisibility(View.GONE);
         tvLoginText.setVisibility(View.GONE);
 
@@ -138,10 +141,11 @@ public class LoginActivity extends BaseActivity {
             }
         };
 
-        tvNext.setOnClickListener(clickListener);
-        ivNext.setOnClickListener(clickListener);
+        //tvNext.setOnClickListener(clickListener);
+        //ivNext.setOnClickListener(clickListener);
+        btnContinuar.setOnClickListener(clickListener);
 
-        final ImageView ivNextf = ivNext;
+       // final ImageView ivNextf = ivNext;
 
         EditText.OnEditorActionListener editorListener = new android.widget.TextView.OnEditorActionListener() {
 
@@ -151,13 +155,16 @@ public class LoginActivity extends BaseActivity {
                 if (!textView.getText().equals("")) {
 
                     if (textView.getText().length() < 33 && textView.getText().length() > 5) {
-                        int imageResource = getResources().getIdentifier("@drawable/continuar_fondoverde", null, _activity.getPackageName());
+                       /* int imageResource = getResources().getIdentifier("@drawable/continuar_fondoverde", null, _activity.getPackageName());
                         Drawable res = getResources().getDrawable(imageResource);
                         ivNextf.setImageDrawable(res);
+                        */
+                        btnContinuar.setEnabled(true);
                     } else {
-                        int imageResource = getResources().getIdentifier("@drawable/continuar_fondonegro", null, _activity.getPackageName());
+                        /*int imageResource = getResources().getIdentifier("@drawable/continuar_fondonegro", null, _activity.getPackageName());
                         Drawable res = getResources().getDrawable(imageResource);
-                        ivNextf.setImageDrawable(res);
+                        ivNextf.setImageDrawable(res);*/
+                        btnContinuar.setEnabled(false);
                     }
 
 
@@ -180,19 +187,28 @@ public class LoginActivity extends BaseActivity {
                 if (!s.toString().equals("")) {
 
                     if (s.toString().length() < 33 && s.toString().length() > 5) {
-                        int imageResource = getResources().getIdentifier("@drawable/continuar_fondoverde", null, _activity.getPackageName());
+                        /*int imageResource = getResources().getIdentifier("@drawable/graphics", null, _activity.getPackageName());
                         Drawable res = getResources().getDrawable(imageResource);
-                        ivNextf.setImageDrawable(res);
+                        ivNextf.setImageDrawable(res);*/
+
+                        btnContinuar.setBackgroundColor(getResources().getColor(R.color.fondo_azul_tecnoware));
+
+                        btnContinuar.setEnabled(true);
                     } else {
-                        int imageResource = getResources().getIdentifier("@drawable/continuar_fondonegro", null, _activity.getPackageName());
+                        /*int imageResource = getResources().getIdentifier("@drawable/continuar_fondonegro", null, _activity.getPackageName());
                         Drawable res = getResources().getDrawable(imageResource);
                         ivNextf.setImageDrawable(res);
+                        */
+                        btnContinuar.setBackgroundColor(getResources().getColor(R.color.bod_gray_text));
+                        btnContinuar.setEnabled(false);
                     }
 
                 } else {
-                    int imageResource = getResources().getIdentifier("@drawable/continuar_fondonegro", null, _activity.getPackageName());
+                    /*int imageResource = getResources().getIdentifier("@drawable/continuar_fondonegro", null, _activity.getPackageName());
                     Drawable res = getResources().getDrawable(imageResource);
-                    ivNextf.setImageDrawable(res);
+                    ivNextf.setImageDrawable(res);*/
+                    btnContinuar.setBackgroundColor(getResources().getColor(R.color.bod_gray_text));
+                    btnContinuar.setEnabled(false);
                 }
             }
 
@@ -265,15 +281,15 @@ public class LoginActivity extends BaseActivity {
 
         initLogo.setVisibility(View.VISIBLE);
 
-        ivNext.setVisibility(View.VISIBLE);
+        btnContinuar.setVisibility(View.VISIBLE);
         etUsername.setVisibility(View.VISIBLE);
-        tvNext.setVisibility(View.VISIBLE);
+        //tvNext.setVisibility(View.VISIBLE);
         tvLoginText.setVisibility(View.VISIBLE);
         transparentLayer.setVisibility(View.VISIBLE);
 
-        ivNext.animate().alpha(1).setDuration(500);
+        btnContinuar.animate().alpha(1).setDuration(500);
         etUsername.animate().alpha(1).setDuration(500);
-        tvNext.animate().alpha(1).setDuration(500);
+        //tvNext.animate().alpha(1).setDuration(500);
         tvLoginText.animate().alpha(1).setDuration(500);
         transparentLayer.animate().alpha(1).setDuration(500);
 

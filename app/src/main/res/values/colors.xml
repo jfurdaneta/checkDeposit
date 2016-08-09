@@ -11,7 +11,7 @@
     <color name="bod_verde_fondo_claro_agua">#a5d389</color>
     <color name="bod_verde_fondo_v3">#69ae41</color>
     <color name="bod_verde_fondo_v3_backup">#69ae41</color>
-    <color name="bod_blanco">#FFFFFF</color>
+    <color name="bod_blanco">#ffffff</color>
     <color name="bod_boton_verde">#5ac14e</color>
     <color name="bod_boton_gris">#b7b7bd</color>
     <color name="bod_blanco_opaco">#10000000</color>
@@ -23,7 +23,7 @@
     <color name="bod_gray_text">#777777</color>
     <color name="bod_left_border_cuenta">#a5d389</color>
 
-    <color name="bod_semitransparent_black">#AA000000</color>
+    <color name="bod_semitransparent_black">#aa000000</color>
     <color name="bod_transparent_black">#00000000</color>
 
     <color name="bod_detalles_top_view">#dddddd</color>
@@ -33,9 +33,11 @@
     <color name="bod_color_ccc">#cccccc</color>
 
     <color name="bod_menu_bg_color">#4a6f54</color>
-    <color name="bod_nav_bar_color">#69b13a</color>
+    <color name="bod_nav_bar_color">#3263ab</color>
+    <color name="tecnoware_fondo">#e8effc</color>
 
     <color name="bod_semitransparent_init">#50000000</color>
     <color name="bod_semitransparent_alert">#40000000</color>
+    <color name="fondo_azul_tecnoware">#3263ab</color>
 
 </resources>

@@ -7,13 +7,10 @@
     <string name="lblMonto">Monto: </string>
     <string name="txtContinuar">Continuar</string>
     <string name="btnReverso">Foto Reverso</string>
-<<<<<<< .mine
-    <string name="lblFrontal">Anverso</string>
-    <string name="lblTrasero">Reverso</string>
-=======
+
     <string name="lblFrontal">Frente</string>
     <string name="lblTrasero">Anverso</string>
->>>>>>> .theirs
+
     <string name="btnIntendV">Video</string>
     <string name="cannot">Cannot</string>
     <string name="album_name" translatable="false">DepCheq</string>

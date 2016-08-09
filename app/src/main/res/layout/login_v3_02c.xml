@@ -4,7 +4,6 @@
     android:id="@+id/inicioMainRelativeLayout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/fondo_launcher"
     android:gravity="center"
     android:orientation="vertical">
 
@@ -12,7 +11,7 @@
         android:id="@+id/ll_transparent_layer"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="@color/bod_semitransparent_init"
+        android:background="@color/tecnoware_fondo"
         android:orientation="vertical"></LinearLayout>
 
 
@@ -27,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="60dp"
             android:layout_marginTop="12dp"
-            android:src="@drawable/logo" />
+            android:src="@drawable/tecnoware" />
 
         <LinearLayout
             android:id="@+id/ll_form"
@@ -54,7 +53,7 @@
                     android:layout_marginTop="10dp"
                     android:gravity="left"
                     android:text="@string/inicio_sesion_label"
-                    android:textColor="@color/bod_blanco"
+                    android:textColor="@color/background_material_dark"
                     android:textSize="23dp"
                     pixlui:clearclipboardcontent="true"
                     pixlui:copyandpaste="false"
@@ -105,30 +104,14 @@
                         android:layout_marginTop="45dp"
                         android:gravity="right|center_vertical">
 
-                        <ImageView
-                            android:id="@+id/buttonImage"
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:layout_gravity="top"
-                            android:paddingBottom="2dp"
-                            android:paddingLeft="1dp"
-                            android:paddingRight="1dp"
-                            android:paddingTop="2dp"
-                            android:src="@drawable/continuar_fondonegro" />
-
-                        <com.neopixl.pixlui.components.textview.TextView
-                            android:id="@+id/tv_next"
+                        <Button
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center_vertical"
-                            android:clickable="true"
-                            android:gravity="center"
+                            android:layout_height="wrap_content"
                             android:text="@string/continuar_string"
-                            android:textColor="@color/bod_blanco"
-                            android:textSize="16sp"
-                            pixlui:clearclipboardcontent="true"
-                            pixlui:copyandpaste="false"
-                            pixlui:typeface="OpenSans-Semibold.ttf" />
+                            android:id="@+id/btnContinuar"
+                            android:background="@color/bod_gray_text"
+                            android:textColor="@color/bod_blanco" />
+
                     </LinearLayout>
 
 

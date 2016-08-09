@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import depchemobile.com.bod.checkdeposit.MainActivity;
@@ -46,7 +47,8 @@ public class PerfilActivity extends BaseActivity {
 
     private String username;
     private String pass;
-    private ImageView ivNext;
+    //private ImageView ivNext;
+    private Button btnContinuar;
     private boolean intentoFallido;
     private boolean registrarPerfil;
 
@@ -117,16 +119,16 @@ public class PerfilActivity extends BaseActivity {
             }
         };
 
-        TextView tvnext = (TextView) findViewById(R.id.tv_next);
-        ivNext = (ImageView) findViewById(R.id.iv_next);
-        tvnext.setOnClickListener(clickListener);
-        ivNext.setOnClickListener(clickListener);
+        //TextView tvnext = (TextView) findViewById(R.id.tv_next);
+        btnContinuar = (Button) findViewById(R.id.btnContinuar);
+        //tvnext.setOnClickListener(clickListener);
+        btnContinuar.setOnClickListener(clickListener);
 
 
 
 
 
-        final ImageView ivNextf = ivNext;
+       // final ImageView ivNextf = ivNext;
 
         EditText.OnEditorActionListener editorListener = new android.widget.TextView.OnEditorActionListener() {
 
@@ -134,10 +136,12 @@ public class PerfilActivity extends BaseActivity {
             public boolean onEditorAction(android.widget.TextView textView, int i, KeyEvent keyEvent) {
 
                 if (!textView.getText().equals("")) {
-
+/*
                     int imageResource = getResources().getIdentifier("@drawable/continuar_fondoverde", null, _activity.getPackageName());
                     Drawable res = getResources().getDrawable(imageResource);
-                    ivNextf.setImageDrawable(res);
+                    ivNextf.setImageDrawable(res);*/
+                    btnContinuar.setBackgroundColor(getResources().getColor(R.color.fondo_azul_tecnoware));
+                    btnContinuar.setEnabled(true);
                 }
 
                 return false;
@@ -156,15 +160,19 @@ public class PerfilActivity extends BaseActivity {
 
                 if (!s.toString().equals("")) {
 
-                    int imageResource = getResources().getIdentifier("@drawable/continuar_fondoverde", null, _activity.getPackageName());
+                   /* int imageResource = getResources().getIdentifier("@drawable/continuar_fondoverde", null, _activity.getPackageName());
                     Drawable res = getResources().getDrawable(imageResource);
-                    ivNextf.setImageDrawable(res);
+                    ivNextf.setImageDrawable(res);*/
+                    btnContinuar.setBackgroundColor(getResources().getColor(R.color.fondo_azul_tecnoware));
+                    btnContinuar.setEnabled(true);
 
                     //ivNextf.setBackgroundResource(R.drawable.continuar_fondoverde);
                 } else {
-                    int imageResource = getResources().getIdentifier("@drawable/continuar_fondonegro", null, _activity.getPackageName());
+                    /*int imageResource = getResources().getIdentifier("@drawable/continuar_fondonegro", null, _activity.getPackageName());
                     Drawable res = getResources().getDrawable(imageResource);
-                    ivNextf.setImageDrawable(res);
+                    ivNextf.setImageDrawable(res);*/
+                    btnContinuar.setBackgroundColor(getResources().getColor(R.color.bod_gray_text));
+                    btnContinuar.setEnabled(false);
                 }
             }
 

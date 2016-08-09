@@ -1,13 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
-    <com.neopixl.pixlui.components.button.Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Iniciar captura de cheques"
-        android:id="@+id/init_button"
-        android:layout_gravity="center_horizontal|center_vertical"/>
-</LinearLayout>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:pixlui="http://schemas.android.com/apk/com.neopixl.pixlui"
+    android:id="@+id/inicioMainRelativeLayout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+
+        android:layout_height="fill_parent"
+        android:background="@color/tecnoware_fondo">
+
+        <com.neopixl.pixlui.components.button.Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Iniciar captura de cheques"
+            android:id="@+id/init_button"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:textColor="@color/bod_blanco"
+            android:background="@color/fondo_azul_tecnoware"
+            android:layout_marginTop="50dp" />
+    </LinearLayout>
+
+    </RelativeLayout>
