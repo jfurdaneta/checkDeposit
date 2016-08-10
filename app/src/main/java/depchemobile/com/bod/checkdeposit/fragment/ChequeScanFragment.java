@@ -51,6 +51,7 @@ import depchemobile.com.bod.checkdeposit.entidades.Cheque;
 import depchemobile.com.bod.checkdeposit.fragmentactivity.PrincipalFragmentActivity;
 import depchemobile.com.bod.checkdeposit.utils.BodConstants;
 import depchemobile.com.bod.checkdeposit.utils.Convertidor;
+import depchemobile.com.bod.checkdeposit.utils.MarshMallowPermission;
 import depchemobile.com.bod.checkdeposit.utils.STEditText;
 import depchemobile.com.bod.checkdeposit.utils.Utiles;
 
@@ -62,6 +63,8 @@ public class ChequeScanFragment extends Fragment {
 
     public ChequeScanFragment() {
     }
+
+    MarshMallowPermission marshMallowPermission;
 
     private PrincipalFragmentActivity parentActivity;
 
@@ -237,24 +240,37 @@ public class ChequeScanFragment extends Fragment {
 
     //Guarda la imagen en la ruta DCIM \nombre de la app
     private void dispatchTakePictureIntent(int actionCode) {
-
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-
-        File f = null;
-
-        try {
-            f = setUpPhotoFile();
-            mCurrentPhotoPath = f.getAbsolutePath();
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
-        } catch (IOException e) {
-            e.printStackTrace();
-            f = null;
-            mCurrentPhotoPath = null;
-        }
+        if (!marshMallowPermission.checkPermissionForCamera())
+            marshMallowPermission.requestPermissionForCamera();
+        else
+            if (!marshMallowPermission.checkPermissionForExternalStorage())
+                marshMallowPermission.requestPermissionForExternalStorage();
+            else
+            {
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
 
-        startActivityForResult(takePictureIntent, actionCode);
+                File f = null;
+
+                try {
+                    f = setUpPhotoFile();
+                    mCurrentPhotoPath = f.getAbsolutePath();
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    f = null;
+                    mCurrentPhotoPath = null;
+                }
+
+
+                startActivityForResult(takePictureIntent, actionCode);
+
+            }
+
+
+
+
+
     }
 
 
@@ -479,6 +495,8 @@ public class ChequeScanFragment extends Fragment {
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         parentActivity = (PrincipalFragmentActivity) getActivity();
+
+       marshMallowPermission = new MarshMallowPermission(parentActivity);
 
 
 
