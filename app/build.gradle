@@ -44,6 +44,6 @@ dependencies {
     compile project(':hZGrapherLib')
     compile project(':circularimageview')
     compile project(':pixlUI')
-
+    compile project(':volley')
 
 }

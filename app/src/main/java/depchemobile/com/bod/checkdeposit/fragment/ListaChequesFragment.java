@@ -2,6 +2,8 @@ package depchemobile.com.bod.checkdeposit.fragment;
 
         import android.app.Activity;
         import android.app.Dialog;
+        import android.app.ProgressDialog;
+        import android.graphics.Bitmap;
         import android.graphics.drawable.ColorDrawable;
         import android.support.v4.app.Fragment;
         import android.support.v4.app.FragmentTransaction;
@@ -36,10 +38,27 @@ package depchemobile.com.bod.checkdeposit.fragment;
         import android.support.v4.app.FragmentTransaction;
         import android.support.v4.content.ContextCompat;
 
+        import com.android.volley.AuthFailureError;
+        import com.android.volley.Request;
+        import com.android.volley.RequestQueue;
+        import com.android.volley.Response;
+        import com.android.volley.VolleyError;
+        import com.android.volley.VolleyLog;
+        import com.android.volley.toolbox.JsonObjectRequest;
+        import com.android.volley.toolbox.StringRequest;
+        import com.android.volley.toolbox.Volley;
         import com.neopixl.pixlui.components.textview.TextView;
 
-        import java.util.ArrayList;
+        import org.json.JSONException;
+        import org.json.JSONObject;
 
+        import java.util.ArrayDeque;
+        import java.util.ArrayList;
+        import java.util.Hashtable;
+        import java.util.Map;
+        import java.util.Queue;
+
+        import depchemobile.com.bod.checkdeposit.MainActivity;
         import depchemobile.com.bod.checkdeposit.R;
         import depchemobile.com.bod.checkdeposit.activity.PrincipalActivity;
         import depchemobile.com.bod.checkdeposit.adapters.ListaChequeAdapter;
@@ -50,6 +69,7 @@ package depchemobile.com.bod.checkdeposit.fragment;
         import depchemobile.com.bod.checkdeposit.utils.Convertidor;
         import depchemobile.com.bod.checkdeposit.utils.Utiles;
         import depchemobile.com.bod.checkdeposit.utils.Utils;
+        import depchemobile.com.bod.checkdeposit.web.WebConstants;
 
 
 /**
@@ -64,6 +84,7 @@ public class ListaChequesFragment extends Fragment {
     private CheckDepositDbHelper mCheckDepositDbHelper;
     private PrincipalFragmentActivity parentActivity;
     double montoTotalDeposito;
+    Queue <Cheque> sendQueue;
 
     private String formato_bsF = "Bs. ";
 
@@ -103,7 +124,7 @@ public class ListaChequesFragment extends Fragment {
         });
 
         Button btnAceptar = (Button) rootView.findViewById(R.id.btnAceptar);
-
+        sendQueue = new ArrayDeque<>();
         btnAceptar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -114,6 +135,7 @@ public class ListaChequesFragment extends Fragment {
 
                 for (Cheque bean : listaCheques) {
                     if(bean.isSeleccionado())
+                        sendQueue.add(bean);
                         cont++;
                 }
 
@@ -332,7 +354,11 @@ public class ListaChequesFragment extends Fragment {
             public void onClick(View v) {
 
 
-                dialog.dismiss();
+
+                    uploadCheck(sendQueue.poll());
+
+
+                //dialog.dismiss();
 
 
             }
@@ -341,5 +367,94 @@ public class ListaChequesFragment extends Fragment {
         dialog.show();
     }
 
+    private void uploadCheck(Cheque cheque){
+        final Cheque check = cheque;
+        final ProgressDialog loading = ProgressDialog.show(getContext(),"Subiendo cheque " + String.valueOf(check.getMonto()),"Por favor Espere...",false,false);
+        JsonObjectRequest req = new JsonObjectRequest(WebConstants.UPLOAD_URL, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
 
+                            if(!sendQueue.isEmpty()){
+                                uploadCheck(sendQueue.poll());
+                            }
+                            Toast.makeText(getContext(), response.toString() , Toast.LENGTH_LONG).show();
+                            loading.dismiss();
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getContext(), error.getMessage().toString(), Toast.LENGTH_LONG).show();
+                loading.dismiss();
+
+            }
+        });
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+
+        //Adding request to the queue
+        requestQueue.add(req);
+    }
+    private void uploadCheck1(Cheque cheque){
+        //Showing the progress dialog
+        final Cheque check = cheque;
+        final ProgressDialog loading = ProgressDialog.show(getContext(),"Subiendo cheque " + String.valueOf(check.getMonto()),"Por favor Espere...",false,false);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, WebConstants.UPLOAD_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+                        //Disimissing the progress dialog
+
+                        //Showing toast message of the response
+                        if(!sendQueue.isEmpty()){
+                            uploadCheck(sendQueue.poll());
+                        }
+                        Toast.makeText(getContext(), s , Toast.LENGTH_LONG).show();
+                        loading.dismiss();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        //Dismissing the progress dialog
+
+                        if(!sendQueue.isEmpty()){
+                            uploadCheck(sendQueue.poll());
+                        }
+                        //Showing toast
+                        Toast.makeText(getContext(), volleyError.getMessage().toString(), Toast.LENGTH_LONG).show();
+                        loading.dismiss();
+                    }
+                }){
+           /* @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                //Converting Bitmap to String
+                Bitmap img = Utils.loadBitmap(getContext(),check.getImgChequeFront());
+                String imageFront = Utils.getStringImage(img);
+                img =  Utils.loadBitmap(getContext(),check.getImgChequeBack());
+                String imageBack = Utils.getStringImage(img);
+                //Getting Image Name
+
+
+                //Creating parameters
+                Map<String,String> params = new Hashtable<String, String>();
+
+                //Adding parameters
+                params.put(WebConstants.NAME_FRONT, imageFront);
+                params.put(WebConstants.NAME_BACK, imageBack);
+                params.put(WebConstants.NAME_AMOUNT, String.valueOf(check.getMonto()));
+                params.put(WebConstants.NAME_ACCOUNT, String.valueOf(check.getNumCuenta()));
+                params.put(WebConstants.NAME_PACK, String.valueOf(check.getNumLote()));
+
+                //returning parameters
+                return params;
+            }*/
+        };
+
+        //Creating a Request Queue
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+
+        //Adding request to the queue
+        requestQueue.add(stringRequest);
+    }
 }

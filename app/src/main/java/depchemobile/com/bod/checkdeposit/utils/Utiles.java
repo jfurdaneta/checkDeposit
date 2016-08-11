@@ -69,6 +69,9 @@ import depchemobile.com.bod.checkdeposit.R;
  */
 public class Utiles {
 
+    private static final String SHARED_PREFERENCES_KEY = "APP_BOD_data";
+    private static final String SHARED_PREFERENCES_KEY_HELP = "APP_BOD_help";
+
     public  Bitmap setPic(ImageView im, String mCurrentPhotoPath) {
 
 		/* There isn't enough memory to open up more than a couple camera photos */
@@ -800,18 +803,6 @@ public class Utiles {
        return true;
     }
 
-    /*
-    public static boolean isExpiredSession(String code) {
-        if (code.equalsIgnoreCase(WebConstants.EXPIRED_SESSION_COD)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-    */
-
-    private static final String SHARED_PREFERENCES_KEY = "APP_BOD_data";
-    private static final String SHARED_PREFERENCES_KEY_HELP = "APP_BOD_help";
 
     public static boolean showTourAyuda_v0(Activity activity) {
         SharedPreferences sPreferences = activity.getSharedPreferences(SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE);
