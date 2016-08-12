@@ -39,7 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Rony Rodriguez"
+                android:text=""
                 android:textColor="@android:color/white"
                 android:textSize="14dp" />
 
@@ -79,7 +79,7 @@
 
     <ScrollView
         android:id="@+id/sv_right_menu"
-        android:layout_width="440dp"
+        android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:layout_gravity="right|center_vertical"
         android:layout_marginBottom="30dp"

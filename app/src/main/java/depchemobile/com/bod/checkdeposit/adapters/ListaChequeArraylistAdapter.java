@@ -49,7 +49,7 @@ public class ListaChequeArraylistAdapter extends BaseAdapter {
         CheckBox ck1;
         TextView txtMonto;
         TextView txtfechaCheque;
-
+        TextView txtCuenta;
     }
 
     @Override
@@ -87,7 +87,8 @@ public class ListaChequeArraylistAdapter extends BaseAdapter {
 
             holder.ck1 = (CheckBox) convertView
                     .findViewById(R.id.checkboxSelected);
-
+            holder.txtCuenta =(TextView) convertView
+                    .findViewById(R.id.txtCuenta);
             convertView.setTag(holder);
             convertView.setTag(R.id.checkboxSelected, holder.ck1);
 
@@ -117,6 +118,7 @@ public class ListaChequeArraylistAdapter extends BaseAdapter {
         imageLoader.DisplayImage(cheque.getImgChequeBack().getPath()  , holder.mImageViewBack);
         holder.txtMonto.setText( NumberFormat.getNumberInstance(Locale.getDefault()).format(cheque.getMonto()) + " Bs.");
         holder.txtfechaCheque.setText(Utils.FormateadorFecha(cheque.getFechaProceso() ));
+        holder.txtCuenta.setText(cheque.getNumCuenta());
         holder.ck1.setChecked(cheque.isSeleccionado());
         holder.mImageViewFront.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -28,13 +28,13 @@ public class MainActivity extends AppCompatActivity {
         resideMenu.setScaleValue(0.5f);
         resideMenu.setSwipeDirectionDisable(ResideMenu.DIRECTION_RIGHT);
         // create menu items;
-        String titles[] = { "Cerrar sesión" };
+        String titles[] = { "Cerrar sesiï¿½n" };
         int icon[] = { R.drawable.cerrar_sesion_white};
 
         for (int i = 0; i < titles.length; i++){
             ResideMenuItem item = new ResideMenuItem(this, icon[i], titles[i]);
             //item.setOnClickListener(this);
-            resideMenu.addMenuItem(item,  ResideMenu.DIRECTION_LEFT); // or  ResideMenu.DIRECTION_RIGHT
+            resideMenu.addMenuItem(item,  ResideMenu.DIRECTION_LEFT,false, 0); // or  ResideMenu.DIRECTION_RIGHT
         }
     }
     @Override

@@ -28,11 +28,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -110,7 +113,7 @@ public class ChequeScanFragment extends Fragment {
     Button   btnAnverso;
     EditText txtMonto;
     LinearLayout divMonto;
-
+    String account;
     private static final String VIDEO_STORAGE_KEY = "viewvideo";
     private static final String VIDEOVIEW_VISIBILITY_STORAGE_KEY = "videoviewvisibility";
 
@@ -589,10 +592,8 @@ public class ChequeScanFragment extends Fragment {
                     return;
                 }
 
-                chequeObject.setNumCuenta("11998490");
+                chequeObject.setNumCuenta(account);
                 chequeObject.setMismoBanco(true);
-                chequeObject.setNumLote(452545);
-                chequeObject.setNombreBanco("Banesco");
 
                 if(!modoEdit)
                 {
@@ -809,7 +810,22 @@ public class ChequeScanFragment extends Fragment {
 
 
 
+        Spinner spinner = (Spinner) rootView.findViewById(R.id.spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.account_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
 
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                account = parent.getItemAtPosition(position).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         return rootView;
 
     }

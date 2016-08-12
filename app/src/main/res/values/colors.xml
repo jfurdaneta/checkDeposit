@@ -39,5 +39,5 @@
     <color name="bod_semitransparent_init">#50000000</color>
     <color name="bod_semitransparent_alert">#40000000</color>
     <color name="fondo_azul_tecnoware">#3263ab</color>
-
+    <color name="fondo_azul_claro_tecnoware">#F0F8FF</color>
 </resources>

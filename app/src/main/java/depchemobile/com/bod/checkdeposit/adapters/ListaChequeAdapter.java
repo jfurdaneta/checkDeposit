@@ -90,6 +90,7 @@ public class ListaChequeAdapter extends CursorAdapter {
         CheckBox ck1;
         TextView txtMonto;
         TextView txtfechaCheque;
+        TextView txtCuenta;
 
         mImageViewFront = (ImageView) convertView
                 .findViewById(R.id.imageViewFrente);
@@ -99,7 +100,8 @@ public class ListaChequeAdapter extends CursorAdapter {
                 .findViewById(R.id.lblMonto);
         txtfechaCheque = (TextView) convertView
                 .findViewById(R.id.txtFechaCheque);
-
+        txtCuenta = (TextView) convertView
+                .findViewById(R.id.txtCuenta);
         ck1 = (CheckBox) convertView
                 .findViewById(R.id.checkboxSelected);
         final Cheque cheque = Convertidor.llenarCheque(cursor);
@@ -120,6 +122,7 @@ public class ListaChequeAdapter extends CursorAdapter {
         txtMonto.setText( NumberFormat.getNumberInstance(Locale.getDefault()).format(cheque.getMonto()) + " Bs.");
         txtfechaCheque.setText(Utils.FormateadorFecha(cheque.getFechaProceso() ));
         ck1.setChecked(cheque.isSeleccionado());
+        txtCuenta.setText(cheque.getNumCuenta());
         mImageViewFront.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

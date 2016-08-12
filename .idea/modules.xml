@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ResideMenu/ResideMenu.iml" filepath="$PROJECT_DIR$/ResideMenu/ResideMenu.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ResideMenu/ResideMenu.iml" filepath="$PROJECT_DIR$/ResideMenu/ResideMenu.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/checkDeposit.iml" filepath="$PROJECT_DIR$/checkDeposit.iml" />
       <module fileurl="file://$PROJECT_DIR$/circularimageview/circularimageview.iml" filepath="$PROJECT_DIR$/circularimageview/circularimageview.iml" />

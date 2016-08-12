@@ -170,9 +170,14 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="cuenta_label">¿A cual cuenta?</string>
     <!--Jose urdaneta -->
 
-
+    <string-array name="account_array">
+        <item>200737170</item>
+        <item>667759855</item>
+        <item>123123332</item>
+    </string-array>
 
 
 </resources>

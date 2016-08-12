@@ -266,9 +266,9 @@ public class PrincipalFragmentActivity extends FragmentBaseActivity implements V
         cerrar.setOnClickListener(this);
         listadoCheques.setOnClickListener(this);
 
-        resideMenu.addMenuItem(panel,  ResideMenu.DIRECTION_RIGHT); // or  ResideMenu.DIRECTION_RIGHT
-        resideMenu.addMenuItem(listadoCheques,  ResideMenu.DIRECTION_RIGHT); // or  ResideMenu.DIRECTION_RIGHT
-        resideMenu.addMenuItem(cerrar,  ResideMenu.DIRECTION_RIGHT); // or  ResideMenu.DIRECTION_RIGHT
+        resideMenu.addMenuItem(panel,  ResideMenu.DIRECTION_RIGHT,false, 0); // or  ResideMenu.DIRECTION_RIGHT
+        resideMenu.addMenuItem(listadoCheques,  ResideMenu.DIRECTION_RIGHT,false, 0); // or  ResideMenu.DIRECTION_RIGHT
+        resideMenu.addMenuItem(cerrar,  ResideMenu.DIRECTION_RIGHT,false, 0); // or  ResideMenu.DIRECTION_RIGHT
 
 
     }

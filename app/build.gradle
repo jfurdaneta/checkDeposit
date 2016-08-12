@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "depchemobile.com.bod.checkdeposit"
-        minSdkVersion 19
+        minSdkVersion 18
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -40,7 +40,8 @@ dependencies {
         exclude group: 'com.nineoldandroids', module: 'library'
     }
 */
-    compile 'com.specyci:residemenu:1.6+'
+    //compile 'com.specyci:residemenu:1.6+'
+    compile project(':ResideMenu')
     compile project(':hZGrapherLib')
     compile project(':circularimageview')
     compile project(':pixlUI')

@@ -203,7 +203,17 @@
                         android:src="@drawable/editar" />
 
                 </RelativeLayout>
-
+                <com.neopixl.pixlui.components.textview.TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cuenta_label"
+                    android:layout_marginTop="5dp"
+                    android:textSize="17sp"
+                    pixlui:typeface="OpenSans-Semibold.ttf" />
+                <Spinner
+                    android:id="@+id/spinner"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" />
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
