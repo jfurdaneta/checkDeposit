@@ -36,6 +36,7 @@ public class Convertidor {
             cheque.setNumLote(numLote);
             cheque.setNombreBanco(nombreBanco);
             cheque.setMismoBanco(mismoBanco);
+            cheque.setNumCuenta(numCuenta);
             cheque.setFechaProceso(new Date(fechaCheque));
             cheque.setImgChequeFront(Uri.parse(uriFrente));
             cheque.setImgChequeBack(Uri.parse(uriTrasera));

@@ -597,6 +597,7 @@ public class ChequeScanFragment extends Fragment {
 
                 if(!modoEdit)
                 {
+                    chequeObject.setNombreBanco("BODsillo");
                     depositDbHelper.insertarCheque(chequeObject);
                 }
                 else
@@ -749,6 +750,22 @@ public class ChequeScanFragment extends Fragment {
                 MediaStore.ACTION_IMAGE_CAPTURE
         );
 
+        Spinner spinner = (Spinner) rootView.findViewById(R.id.spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.account_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                account = parent.getItemAtPosition(position).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
 
 
         if(chequeObject==null)
@@ -777,32 +794,21 @@ public class ChequeScanFragment extends Fragment {
             tmpString = tmpString.substring(0,tmpString.indexOf("."));
             editing = false;
             montoString =tmpString;
-          /* montoEditText.setBackgroundColor(getActivity().getResources().getColor(R.color.bod_blanco));
-            montoEditButton.animate().alpha(1).setDuration(400).start();
-            montoEditText.setFocusable(false);
-            Utiles.hideSoftKeyboard(getActivity());
-            //montoEnabled = false;
-            layoutMonto.setVisibility(View.VISIBLE);
-            layoutMonto.setPivotY(0);
-            layoutMonto.animate().scaleY(1).alpha(1).setDuration(500).start();
-
-*/
             activateLayoutMonto();
 
-
-
             btnAnverso.setEnabled(true);
-
             //Carga las imagenes asíncronas
             loadBitmap( chequeObject.getImgChequeBack().getPath() ,mImageViewBack);
             loadBitmap( chequeObject.getImgChequeFront().getPath() ,mImageViewFront);
 
             mImageViewFront.setClickable(true);
             mImageViewFront.setVisibility(View.VISIBLE);
-
-
             mImageViewBack.setVisibility(View.VISIBLE);
             mImageViewBack.setClickable(true);
+            account = chequeObject.getNumCuenta();
+            int spinnerPosition = adapter.getPosition(account);
+            spinner.setSelection(spinnerPosition);
+
 
 
 
@@ -810,22 +816,10 @@ public class ChequeScanFragment extends Fragment {
 
 
 
-        Spinner spinner = (Spinner) rootView.findViewById(R.id.spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.account_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
 
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                account = parent.getItemAtPosition(position).toString();
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
 
-            }
-        });
+
         return rootView;
 
     }

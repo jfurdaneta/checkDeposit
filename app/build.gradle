@@ -28,23 +28,21 @@ repositories {
     mavenCentral()
 }
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:23.3.0'
     compile 'com.android.support:support-v4:23.3.0'
-
-
     compile 'com.android.support:design:23.3.0'
-
-/*
-    compile(project(':ResideMenu')) {
-        exclude group: 'com.nineoldandroids', module: 'library'
-    }
-*/
+    /*
+                    compile(project(':ResideMenu')) {
+                        exclude group: 'com.nineoldandroids', module: 'library'
+                    }
+                */
     //compile 'com.specyci:residemenu:1.6+'
     compile project(':ResideMenu')
-    compile project(':hZGrapherLib')
-    compile project(':circularimageview')
-    compile project(':pixlUI')
     compile project(':volley')
+    compile project(':circularimageview')
+    compile project(':hZGrapherLib')
+    compile project(':pixlUI')
+    compile 'com.google.code.gson:gson:2.2.4'
 
 }
