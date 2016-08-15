@@ -39,11 +39,14 @@ package depchemobile.com.bod.checkdeposit.fragment;
         import android.support.v4.content.ContextCompat;
 
         import com.android.volley.AuthFailureError;
+        import com.android.volley.NetworkResponse;
+        import com.android.volley.ParseError;
         import com.android.volley.Request;
         import com.android.volley.RequestQueue;
         import com.android.volley.Response;
         import com.android.volley.VolleyError;
         import com.android.volley.VolleyLog;
+        import com.android.volley.toolbox.HttpHeaderParser;
         import com.android.volley.toolbox.JsonObjectRequest;
         import com.android.volley.toolbox.StringRequest;
         import com.android.volley.toolbox.Volley;
@@ -56,6 +59,7 @@ package depchemobile.com.bod.checkdeposit.fragment;
         import org.json.JSONException;
         import org.json.JSONObject;
 
+        import java.io.UnsupportedEncodingException;
         import java.util.ArrayDeque;
         import java.util.ArrayList;
         import java.util.HashMap;
@@ -82,7 +86,7 @@ package depchemobile.com.bod.checkdeposit.fragment;
  * Created by rony_2 on 1/8/2016.
  */
 public class ListaChequesFragment extends Fragment {
-
+    Dialog dialog;
     ListView list;
     ListaChequeAdapter adapter2;
     ArrayList<Cheque> listaCheques = new ArrayList<Cheque>();
@@ -91,7 +95,7 @@ public class ListaChequesFragment extends Fragment {
     private PrincipalFragmentActivity parentActivity;
     double montoTotalDeposito;
     Queue <Cheque> sendQueue;
-
+    ProgressDialog loading;
     private String formato_bsF = "Bs. ";
 
     public View rootView;
@@ -283,7 +287,7 @@ public class ListaChequesFragment extends Fragment {
 
     public void dialog_transferir() {
 
-        final Dialog dialog = new Dialog(rootView.getContext(), R.style.MyThemeDialog);
+        dialog = new Dialog(rootView.getContext(), R.style.MyThemeDialog);
         //final Dialog dialog = new Dialog(getActivity(), android.R.style.Theme_Material_NoActionBar_Fullscreen);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -297,7 +301,7 @@ public class ListaChequesFragment extends Fragment {
         TextView cuentaDestino = (TextView) dialog.findViewById(R.id.tv_cuenta_destino);
         TextView montoTextView = (TextView) dialog.findViewById(R.id.tv_monto);
 
-        cantidadCheques.setText(String.valueOf(listaCheques.size()));
+        cantidadCheques.setText(String.valueOf(sendQueue.size()));
 
 
         TextView tv_textoSuperior = (TextView) dialog.findViewById(R.id.tv_textoSuperior);
@@ -360,11 +364,7 @@ public class ListaChequesFragment extends Fragment {
             public void onClick(View v) {
 
 
-                try {
-                    uploadCheck(sendQueue.poll());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                new upload().execute();
 
 
                 //dialog.dismiss();
@@ -376,35 +376,97 @@ public class ListaChequesFragment extends Fragment {
         dialog.show();
     }
 
-    private void uploadCheck(Cheque cheque) throws JSONException {
+    private class upload extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            final int count = sendQueue.size();
+            while(!sendQueue.isEmpty()){
+
+
+                    parentActivity.runOnUiThread(new Runnable()
+                    {
+                        public void run()
+                        {
+
+                            if (loading == null) {
+                                loading = new ProgressDialog(getContext());
+                                loading.setMessage("Subiendo informacion");
+
+                                loading.setIndeterminate(false);
+                                loading.setMax(count);
+                                loading.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                                loading.setCancelable(false);
+                                loading.show();
+                                loading.setProgress(loading.getProgress() + 1);
+                            }else{
+                                loading.setProgress(loading.getProgress() + 1);
+                                if (loading.getProgress() == loading.getMax()){
+                                    loading.setTitle("Cheques subidos satisfactoriamente");
+                                    try {
+                                        Thread.sleep(13000);
+
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                        }
+                    });
+                    uploadCheck(sendQueue.poll());
+
+            }
+
+            return "1";
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            //Toast.makeText(getContext(), "Satisfactorio", Toast.LENGTH_LONG).show();
+            loading.dismiss();
+            loading=null;
+            dialog.dismiss();
+        }
+        protected void onProgressUpdate(String... progress) {
+
+            loading.setProgress(Integer.parseInt(progress[0]));
+        }
+        @Override
+        protected void onPreExecute() {}
+
+        @Override
+        protected void onProgressUpdate(Void... values) {}
+
+
+    }
+    private void uploadCheck(Cheque cheque)  {
         final Cheque check = cheque;
-        final ProgressDialog loading = ProgressDialog.show(getContext(),"Subiendo cheque " + String.valueOf(check.getMonto()),"Por favor Espere...",false,false);
-
-        Gson gson = new Gson();
-        String json = gson.toJson(check);
-        JsonParser parser = new JsonParser();
-        org.json.JSONObject jsonObject = new org.json.JSONObject();
-        jsonObject.put(ChequeContract.ChequeEntry.FECHA_PROCESO,cheque.getFechaProceso().toString());
-        jsonObject.put(ChequeContract.ChequeEntry.MONTO,cheque.getMonto());
-        jsonObject.put(ChequeContract.ChequeEntry.MISMO_BANCO,cheque.isMismoBanco());
-        jsonObject.put(ChequeContract.ChequeEntry.NUMERO_CUENTA,cheque.getNumCuenta());
-        String imagenFrente =    Utils.getStringImage( Utils.loadBitmap(parentActivity, cheque.getImgChequeFront()));
-        String imagenTrasera =    Utils.getStringImage( Utils.loadBitmap(parentActivity, cheque.getImgChequeBack()));
-
-        jsonObject.put(ChequeContract.ChequeEntry.IMAGEN_CHEQUE_FRENTE,"13213");
-        jsonObject.put(ChequeContract.ChequeEntry.NOMBRE_BANCO,"464654");
-        jsonObject.put(ChequeContract.ChequeEntry.IMAGEN_CHEQUE_TRASERA,"321321");
-        jsonObject.put(ChequeContract.ChequeEntry.NUMERO_LOTE,"564654");
+        try{
 
 
 
 
+            Gson gson = new Gson();
+            String json = gson.toJson(check);
+            JsonParser parser = new JsonParser();
+            org.json.JSONObject jsonObject = new org.json.JSONObject();
+            jsonObject.put(ChequeContract.ChequeEntry.FECHA_PROCESO,cheque.getFechaProceso().toString());
+            jsonObject.put(ChequeContract.ChequeEntry.MONTO,cheque.getMonto());
+            jsonObject.put(ChequeContract.ChequeEntry.MISMO_BANCO,cheque.isMismoBanco());
+            jsonObject.put(ChequeContract.ChequeEntry.NUMERO_CUENTA,cheque.getNumCuenta());
+            String imagenFrente =    Utils.getStringImage( Utils.loadBitmap(parentActivity, cheque.getImgChequeFront()));
+            String imagenTrasera =    Utils.getStringImage( Utils.loadBitmap(parentActivity, cheque.getImgChequeBack()));
 
-        JsonObjectRequest req = new JsonObjectRequest(WebConstants.UPLOAD_URL, jsonObject,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
+            jsonObject.put(ChequeContract.ChequeEntry.IMAGEN_CHEQUE_FRENTE,"13213");
+            jsonObject.put(ChequeContract.ChequeEntry.NOMBRE_BANCO,"464654");
+            jsonObject.put(ChequeContract.ChequeEntry.IMAGEN_CHEQUE_TRASERA,"321321");
+            jsonObject.put(ChequeContract.ChequeEntry.NUMERO_LOTE,"564654");
 
+            JsonObjectRequest req = new JsonObjectRequest(WebConstants.UPLOAD_URL, jsonObject,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            /*
                             if(!sendQueue.isEmpty()){
                                 try {
                                     uploadCheck(sendQueue.poll());
@@ -412,39 +474,32 @@ public class ListaChequesFragment extends Fragment {
                                     e.printStackTrace();
                                 }
                             }
-                            Toast.makeText(getContext(), response.toString() , Toast.LENGTH_LONG).show();
+                            //Toast.makeText(getContext(), response.toString() , Toast.LENGTH_LONG).show();
                             loading.dismiss();
+                            dialog.dismiss();*/
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getContext(), error.getMessage().toString(), Toast.LENGTH_LONG).show();
+                    loading.dismiss();
+                    dialog.dismiss();
+                }
 
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), error.getMessage().toString(), Toast.LENGTH_LONG).show();
-                loading.dismiss();
+            });
+            RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
-            }
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
+            //Adding request to the queue
+            requestQueue.add(req);
+        }catch (Exception e){
+            Toast.makeText(getContext(), e.getMessage().toString(), Toast.LENGTH_LONG).show();
+            loading.dismiss();
+        }
 
-                params.put(ChequeContract.ChequeEntry.FECHA_PROCESO,check.getFechaProceso().toString());
-                params.put(ChequeContract.ChequeEntry.MONTO,String.valueOf(check.getMonto()));
-                params.put(ChequeContract.ChequeEntry.MISMO_BANCO,String.valueOf(check.isMismoBanco()));
-                params.put(ChequeContract.ChequeEntry.NUMERO_CUENTA,check.getNumCuenta());
-                String imagenFrente =    Utils.getStringImage( Utils.loadBitmap(parentActivity, check.getImgChequeFront()));
-                String imagenTrasera =    Utils.getStringImage( Utils.loadBitmap(parentActivity, check.getImgChequeBack()));
 
-                params.put(ChequeContract.ChequeEntry.IMAGEN_CHEQUE_FRENTE,imagenFrente);
-                params.put(ChequeContract.ChequeEntry.NOMBRE_BANCO,"464654");
-                params.put(ChequeContract.ChequeEntry.IMAGEN_CHEQUE_TRASERA,imagenTrasera);
-                params.put(ChequeContract.ChequeEntry.NUMERO_LOTE,"564654");
 
-                return params;
-            };
-        });
-        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
-        //Adding request to the queue
-        requestQueue.add(req);
+
     }
 
 }

@@ -200,7 +200,7 @@ public class PrincipalFragmentActivity extends FragmentBaseActivity implements V
 
         userProfile = (LinearLayout) findViewById(R.id.ll_user_profile);
         TextView textUserName = (TextView) findViewById(R.id.tv_profile_user_name);
-        textUserName.setText("Luis Fernando Llerena");
+        textUserName.setText("Luis Fernando Santos");
 
         profileListLAyout = (LinearLayout) findViewById(R.id.ll_profile_list_layout);
         profileListLAyout.animate().scaleY(0).alpha(0).setDuration(0).start();

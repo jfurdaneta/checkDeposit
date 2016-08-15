@@ -33,7 +33,10 @@
 
         <activity android:name=".activity.ListaChequesActivity" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".activity.LoginActivity"
+
+
+
+        <activity android:name=".fragmentactivity.PrincipalFragmentActivity"
             android:label="@string/title_activity_main"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan">
@@ -68,8 +71,8 @@
             android:label="@string/title_activity_main"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity
-            android:name=".fragmentactivity.PrincipalFragmentActivity"
+
+        <activity android:name=".activity.LoginActivity"
             android:label="@string/title_activity_main"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan"
