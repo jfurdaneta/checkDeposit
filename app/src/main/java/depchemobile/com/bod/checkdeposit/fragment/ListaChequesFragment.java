@@ -376,44 +376,16 @@ public class ListaChequesFragment extends Fragment {
         dialog.show();
     }
 
-    private class upload extends AsyncTask<String, Void, String> {
+    private class upload extends AsyncTask<String, Integer, String> {
 
         @Override
         protected String doInBackground(String... params) {
-            final int count = sendQueue.size();
+            int count = 0;
+
             while(!sendQueue.isEmpty()){
-
-
-                    parentActivity.runOnUiThread(new Runnable()
-                    {
-                        public void run()
-                        {
-
-                            if (loading == null) {
-                                loading = new ProgressDialog(getContext());
-                                loading.setMessage("Subiendo informacion");
-
-                                loading.setIndeterminate(false);
-                                loading.setMax(count);
-                                loading.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                                loading.setCancelable(false);
-                                loading.show();
-                                loading.setProgress(loading.getProgress() + 1);
-                            }else{
-                                loading.setProgress(loading.getProgress() + 1);
-                                if (loading.getProgress() == loading.getMax()){
-                                    loading.setTitle("Cheques subidos satisfactoriamente");
-                                    try {
-                                        Thread.sleep(13000);
-
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }
-                        }
-                    });
-                    uploadCheck(sendQueue.poll());
+                count = count +1;
+                publishProgress(count);
+                uploadCheck(sendQueue.poll());
 
             }
 
@@ -422,29 +394,54 @@ public class ListaChequesFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String result) {
-            //Toast.makeText(getContext(), "Satisfactorio", Toast.LENGTH_LONG).show();
-            loading.dismiss();
-            loading=null;
-            dialog.dismiss();
-        }
-        protected void onProgressUpdate(String... progress) {
 
-            loading.setProgress(Integer.parseInt(progress[0]));
+            try {
+                Thread.sleep(2000);
+                loading.dismiss();
+                loading=null;
+                dialog.dismiss();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
         }
-        @Override
-        protected void onPreExecute() {}
 
         @Override
-        protected void onProgressUpdate(Void... values) {}
+        protected void onPreExecute() {
+
+            parentActivity.runOnUiThread(new Runnable()
+            {
+                public void run()
+                {
+                    if(loading == null){
+                        loading = new ProgressDialog(getContext());
+                        loading.setMessage("Depositando cheques...");
+
+                        loading.setIndeterminate(false);
+                        loading.setMax(sendQueue.size());
+                        loading.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                        loading.setCancelable(false);
+                        loading.show();
+
+                    }
+
+                }
+            });
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... value) {
+            if(value[0] == loading.getMax()){
+                loading.setMessage("Deposito completado");
+            }
+            loading.setProgress(value[0]);
+        }
 
 
     }
     private void uploadCheck(Cheque cheque)  {
         final Cheque check = cheque;
         try{
-
-
-
 
             Gson gson = new Gson();
             String json = gson.toJson(check);
