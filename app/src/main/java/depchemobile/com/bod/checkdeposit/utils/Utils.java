@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -160,8 +161,9 @@ public class    Utils {
         {
 
             is = context.getContentResolver().openInputStream( Uri.parse("file://" +uri));
-            bis = new BufferedInputStream(is, 8192);
+            bis = new BufferedInputStream(is, 1024);
             bm = BitmapFactory.decodeStream(bis);
+
         }
         catch (Exception e)
         {
@@ -193,6 +195,45 @@ public class    Utils {
         }
         return bm;
     }
+
+    public static void resize_image(Bitmap bm, Uri uri)
+    {
+
+
+        File f = new File(uri.getPath());
+
+        if (f.exists())
+        {
+            f.delete();
+            try {
+                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+
+               // bm = toGrayscale(bm);
+                // Compress the image further
+                bm.compress(Bitmap.CompressFormat.JPEG, 10, bytes);
+                // Create a new file for the resized bitmap (`getPhotoFileUri` defined above)
+
+                f.createNewFile();
+                FileOutputStream fos = new FileOutputStream(f);
+                // Write the bytes of the bitmap to file
+                fos.write(bytes.toByteArray());
+                fos.flush();
+                fos.close();
+               // return true;
+            } catch (IOException e) {
+                e.printStackTrace();
+                //return  false;
+            }
+        }
+
+
+
+
+
+
+
+    }
+
     public static Bitmap toGrayscale(Bitmap bmpOriginal)
     {
         int width, height;

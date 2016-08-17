@@ -57,6 +57,7 @@ import depchemobile.com.bod.checkdeposit.utils.Convertidor;
 import depchemobile.com.bod.checkdeposit.utils.MarshMallowPermission;
 import depchemobile.com.bod.checkdeposit.utils.STEditText;
 import depchemobile.com.bod.checkdeposit.utils.Utiles;
+import depchemobile.com.bod.checkdeposit.utils.Utils;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -914,7 +915,15 @@ public class ChequeScanFragment extends Fragment {
 
         // Decode bitmap with inSampleSize set
         options.inJustDecodeBounds = false;
-        return  BitmapFactory.decodeFile(path, options);
+        Bitmap bmp = Utils.toGrayscale( BitmapFactory.decodeFile(path, options));
+
+        options.inSampleSize = calculateInSampleSize(options, 100, 100);
+        Bitmap bmp2 =Utils.toGrayscale(BitmapFactory.decodeFile(path, options));
+
+
+
+        Utils.resize_image(bmp2,Uri.parse(path));
+        return  bmp;
     }
 
     public static int calculateInSampleSize(
