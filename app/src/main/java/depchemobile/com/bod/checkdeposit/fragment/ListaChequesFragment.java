@@ -29,6 +29,7 @@ package depchemobile.com.bod.checkdeposit.fragment;
         import android.view.WindowManager;
         import android.widget.AdapterView;
         import android.widget.Button;
+        import android.widget.CheckBox;
         import android.widget.ImageView;
         import android.widget.LinearLayout;
         import android.widget.ListView;
@@ -66,6 +67,7 @@ package depchemobile.com.bod.checkdeposit.fragment;
         import java.util.Hashtable;
         import java.util.Map;
         import java.util.Queue;
+        import java.util.Random;
 
         import depchemobile.com.bod.checkdeposit.MainActivity;
         import depchemobile.com.bod.checkdeposit.R;
@@ -97,7 +99,8 @@ public class ListaChequesFragment extends Fragment {
     Queue <Cheque> sendQueue;
     ProgressDialog loading;
     private String formato_bsF = "Bs. ";
-
+    private Integer lote;
+    Integer totalChequesADepositar, totalCheques;
     public View rootView;
 
     @Nullable
@@ -127,9 +130,10 @@ public class ListaChequesFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.v(getClass().getName(), "setOnItemClickListener - Seleccionado " + String.valueOf(position));
                 //Toast.makeText(ListaChequesActivity.this, "Cheque tocado " + String.valueOf(position), Toast.LENGTH_SHORT).show();
-
+                CheckBox cb = (CheckBox) view.findViewById(R.id.checkboxSelected);
+                cb.setChecked(!cb.isChecked());
                 // ir_a_EditarCheque(position);
-                ir_a_EditarCheque(position);
+                //ir_a_EditarCheque(position);
             }
         });
 
@@ -148,7 +152,7 @@ public class ListaChequesFragment extends Fragment {
                         sendQueue.add(bean);
                         cont++;
                 }
-
+                totalChequesADepositar = cont;
                 dialog_transferir();
                 //Toast.makeText(getActivity(), "Cheques seleccionados " + String.valueOf(cont), Toast.LENGTH_SHORT).show();
 
@@ -273,7 +277,7 @@ public class ListaChequesFragment extends Fragment {
                 }
                 adapter = new ListaChequeArraylistAdapter(getActivity(), listaCheques);
                 list.setAdapter(adapter);
-
+                totalCheques = listaCheques.size();
 
 
             } else {
@@ -300,9 +304,11 @@ public class ListaChequesFragment extends Fragment {
         TextView cantidadCheques = (TextView) dialog.findViewById(R.id.tv_CantidadCheques);
         TextView cuentaDestino = (TextView) dialog.findViewById(R.id.tv_cuenta_destino);
         TextView montoTextView = (TextView) dialog.findViewById(R.id.tv_monto);
-
+        TextView loteTextView = (TextView) dialog.findViewById(R.id.tv_Lote);
         cantidadCheques.setText(String.valueOf(sendQueue.size()));
 
+        lote = new Random().nextInt(60000);
+        loteTextView.setText(String.valueOf(lote));
 
         TextView tv_textoSuperior = (TextView) dialog.findViewById(R.id.tv_textoSuperior);
         TextView tv_tituloProductoOrigen = (TextView) dialog.findViewById(R.id.tv_tituloProductoOrigen);
@@ -399,7 +405,15 @@ public class ListaChequesFragment extends Fragment {
                 Thread.sleep(2000);
                 loading.dismiss();
                 loading=null;
+
                 dialog.dismiss();
+                if(totalCheques == totalChequesADepositar){
+                    changeFragment(new PrincipalFragment());
+
+                }else{
+                    cargarCheques();
+                }
+
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -439,6 +453,17 @@ public class ListaChequesFragment extends Fragment {
 
 
     }
+    public void changeFragment(Fragment targetFragment) {
+        //reiniciar timeout
+        //singleton.initializeTimeTask_main(this);
+        // getSingleton().resetTimeTask_main(this);
+        parentActivity.getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.main_fragment, targetFragment, "fragment")
+                .setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE).addToBackStack(null)
+                .commit();
+
+    }
     private void uploadCheck(Cheque cheque)  {
         final Cheque check = cheque;
         try{
@@ -454,32 +479,23 @@ public class ListaChequesFragment extends Fragment {
             String imagenFrente =    Utils.getStringImage( Utils.loadBitmap(parentActivity, cheque.getImgChequeFront()));
             String imagenTrasera =    Utils.getStringImage( Utils.loadBitmap(parentActivity, cheque.getImgChequeBack()));
 
-            jsonObject.put(ChequeContract.ChequeEntry.IMAGEN_CHEQUE_FRENTE,"13213");
-            jsonObject.put(ChequeContract.ChequeEntry.NOMBRE_BANCO,"464654");
-            jsonObject.put(ChequeContract.ChequeEntry.IMAGEN_CHEQUE_TRASERA,"321321");
-            jsonObject.put(ChequeContract.ChequeEntry.NUMERO_LOTE,"564654");
+            jsonObject.put(ChequeContract.ChequeEntry.IMAGEN_CHEQUE_FRENTE,"sdaf");
+            jsonObject.put(ChequeContract.ChequeEntry.NOMBRE_BANCO,"BOD");
+            jsonObject.put(ChequeContract.ChequeEntry.IMAGEN_CHEQUE_TRASERA,"sdfasdf");
+            jsonObject.put(ChequeContract.ChequeEntry.NUMERO_LOTE,lote);
 
             JsonObjectRequest req = new JsonObjectRequest(WebConstants.UPLOAD_URL, jsonObject,
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            /*
-                            if(!sendQueue.isEmpty()){
-                                try {
-                                    uploadCheck(sendQueue.poll());
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                            //Toast.makeText(getContext(), response.toString() , Toast.LENGTH_LONG).show();
-                            loading.dismiss();
-                            dialog.dismiss();*/
+                            mCheckDepositDbHelper.eliminarCheque(check.getId());
                         }
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     Toast.makeText(getContext(), error.getMessage().toString(), Toast.LENGTH_LONG).show();
                     loading.dismiss();
+                    loading =null;
                     dialog.dismiss();
                 }
 

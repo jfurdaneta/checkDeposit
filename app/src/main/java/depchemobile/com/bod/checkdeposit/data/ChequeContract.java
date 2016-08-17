@@ -11,6 +11,7 @@ public class ChequeContract {
         public static final String TABLE_NAME ="cheque";
         public static final String ID ="id";
 
+
         public static final String FECHA_PROCESO = "fechaProceso";
         public static final String MONTO = "monto";
         public static final String NUMERO_CUENTA = "numCuenta";

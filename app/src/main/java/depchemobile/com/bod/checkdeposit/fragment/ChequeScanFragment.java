@@ -558,6 +558,7 @@ public class ChequeScanFragment extends Fragment {
                 if(chequeID>0)
                 {
                     ListaChequesFragment fragment = new ListaChequesFragment();
+                    parentActivity.setTile("Listado de Cheques");
                     parentActivity.changeFragment(fragment);
                 }
                 else
@@ -630,6 +631,7 @@ public class ChequeScanFragment extends Fragment {
                 if(chequeID>0)
                 {
                     ListaChequesFragment fragment = new ListaChequesFragment();
+                    parentActivity.setTile("Listado de Cheques");
                     parentActivity.changeFragment(fragment);
                 }
                 else

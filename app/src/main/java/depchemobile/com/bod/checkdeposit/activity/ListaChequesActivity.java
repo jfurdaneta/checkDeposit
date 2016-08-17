@@ -19,6 +19,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 
+import com.neopixl.pixlui.components.checkbox.CheckBox;
+
 import java.util.ArrayList;
 
 import depchemobile.com.bod.checkdeposit.adapters.ListaChequeArraylistAdapter;
@@ -72,9 +74,10 @@ public class ListaChequesActivity extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.v(getClass().getName(), "setOnItemClickListener - Seleccionado " + String.valueOf(position));
                 //Toast.makeText(ListaChequesActivity.this, "Cheque tocado " + String.valueOf(position), Toast.LENGTH_SHORT).show();
-
-               // ir_a_EditarCheque(position);
-                ir_a_EditarCheque(position);
+                CheckBox cb = (CheckBox) view.findViewById(R.id.checkboxSelected);
+                cb.setChecked(true);
+                // ir_a_EditarCheque(position);
+                //ir_a_EditarCheque(position);
             }
         });
 

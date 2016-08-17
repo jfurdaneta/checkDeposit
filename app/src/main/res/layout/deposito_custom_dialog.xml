@@ -135,15 +135,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp">
 
-
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp">
-
                     <com.neopixl.pixlui.components.textview.TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -167,7 +158,34 @@
                         pixlui:typeface="OpenSans-Semibold.ttf" />
 
                 </LinearLayout>
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    >
 
+                    <com.neopixl.pixlui.components.textview.TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:text="Numero de Lote:"
+                        android:textSize="12dp"
+                        pixlui:clearclipboardcontent="true"
+                        pixlui:copyandpaste="false"
+                        pixlui:typeface="OpenSans-Bold.ttf" />
+
+                    <com.neopixl.pixlui.components.textview.TextView
+                        android:id="@+id/tv_Lote"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="4dp"
+                        android:gravity="left"
+                        android:text="213515"
+                        android:textSize="12dp"
+                        pixlui:clearclipboardcontent="true"
+                        pixlui:copyandpaste="false"
+                        pixlui:typeface="OpenSans-Semibold.ttf" />
+
+                </LinearLayout>
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content">
