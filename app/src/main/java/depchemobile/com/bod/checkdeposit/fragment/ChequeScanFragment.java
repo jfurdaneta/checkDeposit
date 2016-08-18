@@ -799,6 +799,16 @@ public class ChequeScanFragment extends Fragment {
             montoString =tmpString;
             activateLayoutMonto();
 
+            montoEditText.setBackgroundColor(getActivity().getResources().getColor(R.color.bod_blanco));
+            montoEditButton.animate().alpha(1).setDuration(400).start();
+            montoEditText.setFocusable(false);
+            Utiles.hideSoftKeyboard(getActivity());
+            //montoEnabled = false;
+            layoutMonto.setVisibility(View.VISIBLE);
+            layoutMonto.setPivotY(0);
+            layoutMonto.animate().scaleY(1).alpha(1).setDuration(500).start();
+
+
             btnAnverso.setEnabled(true);
             //Carga las imagenes asíncronas
             loadBitmap( chequeObject.getImgChequeBack().getPath() ,mImageViewBack);
