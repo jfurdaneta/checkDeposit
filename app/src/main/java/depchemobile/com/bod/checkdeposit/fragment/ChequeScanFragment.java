@@ -221,9 +221,10 @@ public class ChequeScanFragment extends Fragment {
             cropIntent.putExtra("aspectX", 0);
             cropIntent.putExtra("aspectY", 0);
             //indicate output X and Y
-            cropIntent.putExtra("outputX", 300);
-            cropIntent.putExtra("outputY", 300);
+            cropIntent.putExtra("outputX", 200);
+            cropIntent.putExtra("outputY", 200);
             cropIntent.putExtra("scale", true);
+            cropIntent.putExtra("scaleUpIfNeeded", true);
             //retrieve data on return
             cropIntent.putExtra("return-data", true);
             //start the activity - we handle returning in onActivityResult
@@ -394,7 +395,7 @@ public class ChequeScanFragment extends Fragment {
             switch (requestCode) {
                 case ACTION_TAKE_PHOTO_FRONT: {
                     chequeObject.setImgChequeFront(picUri);
-                    loadBitmap(picUri.getPath(),mImageViewFront);
+                    loadBitmap(picUri.getPath(),"0",mImageViewFront);
                     btnAnverso.setEnabled(true);
                     mImageViewFront.setVisibility(View.VISIBLE);
                     mImageViewFront.setClickable(true);
@@ -405,12 +406,33 @@ public class ChequeScanFragment extends Fragment {
 
                 case ACTION_TAKE_PHOTO_BACK: {
                     chequeObject.setImgChequeBack(picUri);
-                    loadBitmap(picUri.getPath(),mImageViewBack);
+                    loadBitmap(picUri.getPath(),"0",mImageViewBack);
                     mImageViewBack.setVisibility(View.VISIBLE);
                     mImageViewBack.setClickable(true);
                     activateLayoutMonto();
                     break;
                 } // ACTION_TAKE_PHOTO_S
+
+                case PIC_CROP_FRONT: {
+                    if (data != null) {
+
+                        // get the returned data
+                        Bundle extras = data.getExtras();
+
+                        // get the cropped bitmap
+                        Bitmap photo = extras.getParcelable("data");
+
+                        Utils.resize_image(photo,Uri.parse(picUri.getPath()));
+                        loadBitmap(picUri.getPath(),"1",mImageViewFront);
+
+
+                    }
+
+
+                    break;
+
+                }
+
             } // switch
 
             if(chequeObject.getImgChequeBack()!=null && chequeObject.getImgChequeFront()!=null)
@@ -811,8 +833,8 @@ public class ChequeScanFragment extends Fragment {
 
             btnAnverso.setEnabled(true);
             //Carga las imagenes asíncronas
-            loadBitmap( chequeObject.getImgChequeBack().getPath() ,mImageViewBack);
-            loadBitmap( chequeObject.getImgChequeFront().getPath() ,mImageViewFront);
+            loadBitmap( chequeObject.getImgChequeBack().getPath() ,"1",mImageViewBack);
+            loadBitmap( chequeObject.getImgChequeFront().getPath(), "1",mImageViewFront);
 
             mImageViewFront.setClickable(true);
             mImageViewFront.setVisibility(View.VISIBLE);
@@ -875,9 +897,10 @@ public class ChequeScanFragment extends Fragment {
 
 
     //Método que carga las imágenes de manera asíncrona para optimizar memoria
-    public void loadBitmap(String path, ImageView imageView) {
+    public void loadBitmap(String path, String isModoEdit,ImageView imageView) {
         BitmapWorkerTask task = new BitmapWorkerTask(imageView);
-        task.execute(path);
+        String [] params = (new String[]{path, isModoEdit});
+        task.execute(params);
     }
 
 
@@ -886,6 +909,7 @@ public class ChequeScanFragment extends Fragment {
     class BitmapWorkerTask extends AsyncTask<String, Void, Bitmap> {
         private final WeakReference<ImageView> imageViewReference;
         private String data = "";
+        private String isModoEdit=""; //1 es verdadero, 0 es falso, es Nueva Imagen
 
         public BitmapWorkerTask(ImageView imageView) {
             // Use a WeakReference to ensure the ImageView can be garbage collected
@@ -897,7 +921,8 @@ public class ChequeScanFragment extends Fragment {
         @Override
         protected Bitmap doInBackground(String... params) {
             data = params[0];
-            Bitmap bitmap =decodeBitmapFromFile(data, 100, 100);
+            isModoEdit =  params[1];
+            Bitmap bitmap =decodeBitmapFromFile(data, 100, 100, isModoEdit);
             return bitmap;
         }
 
@@ -913,7 +938,7 @@ public class ChequeScanFragment extends Fragment {
         }
     }
 
-    public static Bitmap decodeBitmapFromFile(String path,int reqWidth, int reqHeight) {
+    public static Bitmap decodeBitmapFromFile(String path,int reqWidth, int reqHeight, String isEdit) {
 
         // First decode with inJustDecodeBounds=true to check dimensions
         final BitmapFactory.Options options = new BitmapFactory.Options();
@@ -921,18 +946,37 @@ public class ChequeScanFragment extends Fragment {
         BitmapFactory.decodeFile(path, options);
 
         // Calculate inSampleSize
-        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
 
         // Decode bitmap with inSampleSize set
         options.inJustDecodeBounds = false;
-        Bitmap bmp = Utils.toGrayscale( BitmapFactory.decodeFile(path, options));
+        Bitmap bmp;
+        Bitmap bmp2;
 
-        options.inSampleSize = calculateInSampleSize(options, 100, 100);
-        Bitmap bmp2 =Utils.toGrayscale(BitmapFactory.decodeFile(path, options));
+        if(isEdit =="0")//SI es nuevo hago resize y la primera vez devuelvo escala de gris
+        {
+            options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+            bmp = Utils.toGrayscale( BitmapFactory.decodeFile(path, options));
+
+            options.inSampleSize = calculateInSampleSize(options, 100, 100);
+            bmp2 = Utils.toGrayscale( BitmapFactory.decodeFile(path, options));
+            Utils.resize_image(bmp2,Uri.parse(path));
+
+        }
+        else
+        {
+
+            options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+            bmp = BitmapFactory.decodeFile(path, options);
+        }
 
 
 
-        Utils.resize_image(bmp2,Uri.parse(path));
+
+
+
+
+
         return  bmp;
     }
 
