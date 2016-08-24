@@ -208,9 +208,11 @@ public class    Utils {
             try {
                 ByteArrayOutputStream bytes = new ByteArrayOutputStream();
 
+                bm = scaleDown(bm,800,true);
+
                // bm = toGrayscale(bm);
                 // Compress the image further
-                bm.compress(Bitmap.CompressFormat.JPEG, 10, bytes);
+                bm.compress(Bitmap.CompressFormat.JPEG, 30, bytes);
                 // Create a new file for the resized bitmap (`getPhotoFileUri` defined above)
 
                 f.createNewFile();
@@ -249,5 +251,18 @@ public class    Utils {
         paint.setColorFilter(f);
         c.drawBitmap(bmpOriginal, 0, 0, paint);
         return bmpGrayscale;
+    }
+
+    public static Bitmap scaleDown(Bitmap realImage, float maxImageSize,
+                                   boolean filter) {
+        float ratio = Math.min(
+                (float) maxImageSize / realImage.getWidth(),
+                (float) maxImageSize / realImage.getHeight());
+        int width = Math.round((float) ratio * realImage.getWidth());
+        int height = Math.round((float) ratio * realImage.getHeight());
+
+        Bitmap newBitmap = Bitmap.createScaledBitmap(realImage, width,
+                height, filter);
+        return newBitmap;
     }
 }
