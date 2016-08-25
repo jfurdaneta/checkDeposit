@@ -117,7 +117,7 @@ public class ListaChequeArraylistAdapter extends BaseAdapter {
         imageLoader.DisplayImage(cheque.getImgChequeFront().getPath()  , holder.mImageViewFront);
         imageLoader.DisplayImage(cheque.getImgChequeBack().getPath()  , holder.mImageViewBack);
         holder.txtMonto.setText( NumberFormat.getNumberInstance(Locale.getDefault()).format(cheque.getMonto()) + " Bs.");
-        holder.txtfechaCheque.setText(Utils.FormateadorFecha(cheque.getFechaProceso() ));
+        holder.txtfechaCheque.setText(Utils.FormateadorFechaLocal(cheque.getFechaProceso() ));
         holder.txtCuenta.setText(cheque.getNumCuenta());
         holder.ck1.setChecked(cheque.isSeleccionado());
         holder.mImageViewFront.setOnClickListener(new View.OnClickListener() {

@@ -46,7 +46,7 @@ public class    Utils {
         catch(Exception ex){}
     }
 
-    public  static String FormateadorFecha(Date fecha)
+    public  static String FormateadorFechaLocal(Date fecha)
     {
         SimpleDateFormat formatter;
         formatter = new SimpleDateFormat("dd/MM/yyyy\t", Locale.getDefault());
@@ -54,6 +54,15 @@ public class    Utils {
         return formatter.format(fecha);
 
     }
+
+    public  static String FormateadorFechatoServicio(Date fecha)
+    {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        return formatter.format(fecha);
+
+    }
+
+
 
 
     public Bitmap setPic(ImageView im, String mCurrentPhotoPath) {

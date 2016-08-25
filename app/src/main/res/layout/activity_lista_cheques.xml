@@ -1,28 +1,42 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:pixlui="http://schemas.android.com/apk/com.neopixl.pixlui"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+
+    android:background="@color/tecnoware_fondo">
+
+
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="100"
+
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_weight="90"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:gravity="top|center">
 
         <ListView
             android:id="@+id/list"
-            android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:divider="#b5b5b5"
-            android:dividerHeight="1dp"
             android:choiceMode="multipleChoice"
-            android:listSelector="@drawable/list_selector" />
+            android:listSelector="@drawable/list_selector"
+           />
 
 
     </LinearLayout>
@@ -31,19 +45,28 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_alignParentBottom="true">
+
+android:paddingBottom="50dp"
+        android:layout_weight="10"
+        android:gravity="center">
         <Button
             android:layout_width="wrap_content"
             android:id="@+id/btnCapturar"
-            android:text="Capturar nuevo cheque"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"/>
+            android:text="Nuevo Cheque"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/fondo_azul_tecnoware"
+            android:textColor="@color/bod_blanco" />
         <Button
             android:layout_width="wrap_content"
             android:id="@+id/btnAceptar"
             android:text="Depositar"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"/>
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/fondo_azul_tecnoware"
+            android:textColor="@color/bod_blanco" />
 
     </LinearLayout>
 </LinearLayout>
+
+</RelativeLayout>

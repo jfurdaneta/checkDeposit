@@ -120,7 +120,7 @@ public class ListaChequeAdapter extends CursorAdapter {
         imageLoader.DisplayImage(cheque.getImgChequeFront().getPath()  , mImageViewFront);
         imageLoader.DisplayImage(cheque.getImgChequeBack().getPath()  , mImageViewBack);
         txtMonto.setText( NumberFormat.getNumberInstance(Locale.getDefault()).format(cheque.getMonto()) + " Bs.");
-        txtfechaCheque.setText(Utils.FormateadorFecha(cheque.getFechaProceso() ));
+        txtfechaCheque.setText(Utils.FormateadorFechaLocal(cheque.getFechaProceso() ));
         ck1.setChecked(cheque.isSeleccionado());
         txtCuenta.setText(cheque.getNumCuenta());
         mImageViewFront.setOnClickListener(new View.OnClickListener() {

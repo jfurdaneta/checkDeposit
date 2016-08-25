@@ -39,6 +39,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -87,6 +91,7 @@ public class ChequeScanFragment extends Fragment {
     private  final int PIC_CROP_FRONT = 4;
     private  final int PIC_CROP_BACK = 5;
     private final int CAMERA_CAPTURE = 1;
+    int cualFoto= 0;
 
     Cheque chequeObject;
     long chequeID;
@@ -375,6 +380,8 @@ public class ChequeScanFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        //con esta variable, determino cual foto fue tomada, para cargar la imagen en el crop result
+
 
         if(resultCode == Activity.RESULT_OK)
         {
@@ -395,43 +402,49 @@ public class ChequeScanFragment extends Fragment {
             switch (requestCode) {
                 case ACTION_TAKE_PHOTO_FRONT: {
                     chequeObject.setImgChequeFront(picUri);
-                    loadBitmap(picUri.getPath(),"0",mImageViewFront);
+                    //loadBitmap(picUri.getPath(),"0",mImageViewFront);
                     btnAnverso.setEnabled(true);
                     mImageViewFront.setVisibility(View.VISIBLE);
                     mImageViewFront.setClickable(true);
-                    //performCrop(PIC_CROP_FRONT);
+                    cualFoto = ACTION_TAKE_PHOTO_FRONT;
+
+
+                    CropImage.activity(picUri).setOutputUri(picUri).setGuidelines(CropImageView.Guidelines.ON)
+                    .start(getContext(), this);
+
+
                     //handleBigCameraPhoto();
                     break;
                 } // ACTION_TAKE_PHOTO_B
 
                 case ACTION_TAKE_PHOTO_BACK: {
                     chequeObject.setImgChequeBack(picUri);
-                    loadBitmap(picUri.getPath(),"0",mImageViewBack);
+                    //loadBitmap(picUri.getPath(),"0",mImageViewBack);
+                    cualFoto = ACTION_TAKE_PHOTO_BACK;
                     mImageViewBack.setVisibility(View.VISIBLE);
                     mImageViewBack.setClickable(true);
+                    CropImage.activity(picUri).setOutputUri(picUri).setGuidelines(CropImageView.Guidelines.ON)
+                            .start(getContext(), this);
+
                     activateLayoutMonto();
                     break;
                 } // ACTION_TAKE_PHOTO_S
 
-                case PIC_CROP_FRONT: {
-                    if (data != null) {
 
-                        // get the returned data
-                        Bundle extras = data.getExtras();
+                case CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE:{
+                    CropImage.ActivityResult result = CropImage.getActivityResult(data);
 
-                        // get the cropped bitmap
-                        Bitmap photo = extras.getParcelable("data");
-
-                        Utils.resize_image(photo,Uri.parse(picUri.getPath()));
-                        loadBitmap(picUri.getPath(),"1",mImageViewFront);
-
-
-                    }
+                    if(cualFoto ==ACTION_TAKE_PHOTO_FRONT)
+                        loadBitmap(picUri.getPath(),"0",mImageViewFront);
+                    else
+                        if(cualFoto ==ACTION_TAKE_PHOTO_BACK)
+                            loadBitmap(picUri.getPath(),"0",mImageViewBack);
 
 
                     break;
-
                 }
+
+
 
             } // switch
 

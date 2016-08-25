@@ -9,6 +9,7 @@ import android.util.Log;
 import java.util.Date;
 
 import depchemobile.com.bod.checkdeposit.data.ChequeContract;
+import depchemobile.com.bod.checkdeposit.utils.Utils;
 
 /**
  * Created by rony_2 on 24/7/2016.
@@ -189,7 +190,8 @@ public class Cheque implements Parcelable{
     public ContentValues toContentValues() {
         ContentValues values = new ContentValues();
 
-        values.put(ChequeContract.ChequeEntry.FECHA_PROCESO, fechaProceso.toString());
+        //values.put(ChequeContract.ChequeEntry.FECHA_PROCESO, Utils.FormateadorFecha(fechaProceso));
+        values.put(ChequeContract.ChequeEntry.FECHA_PROCESO, String.valueOf(fechaProceso.getTime()));
         values.put(ChequeContract.ChequeEntry.MONTO, monto);
         values.put(ChequeContract.ChequeEntry.NUMERO_CUENTA, numCuenta);
         values.put(ChequeContract.ChequeEntry.IMAGEN_CHEQUE_FRENTE, imgChequeFront.getPath());

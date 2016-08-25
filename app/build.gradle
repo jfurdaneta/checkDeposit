@@ -33,10 +33,10 @@ dependencies {
     compile 'com.android.support:support-v4:23.3.0'
     compile 'com.android.support:design:23.3.0'
     /*
-                    compile(project(':ResideMenu')) {
-                        exclude group: 'com.nineoldandroids', module: 'library'
-                    }
-                */
+                                            compile(project(':ResideMenu')) {
+                                                exclude group: 'com.nineoldandroids', module: 'library'
+                                            }
+                                        */
     //compile 'com.specyci:residemenu:1.6+'
     compile project(':ResideMenu')
     compile project(':volley')
@@ -44,5 +44,6 @@ dependencies {
     compile project(':hZGrapherLib')
     compile project(':pixlUI')
     compile 'com.google.code.gson:gson:2.2.4'
-
+    //compile 'com.soundcloud.android:android-crop:1.0.1@aar'
+    compile 'com.theartofdev.edmodo:android-image-cropper:2.3.+'
 }

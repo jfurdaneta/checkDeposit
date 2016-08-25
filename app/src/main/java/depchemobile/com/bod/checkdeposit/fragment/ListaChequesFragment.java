@@ -40,11 +40,13 @@ package depchemobile.com.bod.checkdeposit.fragment;
         import android.support.v4.content.ContextCompat;
 
         import com.android.volley.AuthFailureError;
+        import com.android.volley.DefaultRetryPolicy;
         import com.android.volley.NetworkResponse;
         import com.android.volley.ParseError;
         import com.android.volley.Request;
         import com.android.volley.RequestQueue;
         import com.android.volley.Response;
+        import com.android.volley.RetryPolicy;
         import com.android.volley.VolleyError;
         import com.android.volley.VolleyLog;
         import com.android.volley.toolbox.HttpHeaderParser;
@@ -408,7 +410,7 @@ public class ListaChequesFragment extends Fragment {
 
                 dialog.dismiss();
                 if(totalCheques == totalChequesADepositar){
-                    changeFragment(new PrincipalFragment());
+                    //changeFragment(new PrincipalFragment());
 
                 }else{
                     cargarCheques();
@@ -472,40 +474,50 @@ public class ListaChequesFragment extends Fragment {
             String json = gson.toJson(check);
             JsonParser parser = new JsonParser();
             org.json.JSONObject jsonObject = new org.json.JSONObject();
-            jsonObject.put(ChequeContract.ChequeEntry.FECHA_PROCESO,cheque.getFechaProceso().toString());
+            jsonObject.put(ChequeContract.ChequeEntry.FECHA_PROCESO, Utils.FormateadorFechatoServicio(cheque.getFechaProceso()));
             jsonObject.put(ChequeContract.ChequeEntry.MONTO,cheque.getMonto());
             jsonObject.put(ChequeContract.ChequeEntry.MISMO_BANCO,cheque.isMismoBanco());
             jsonObject.put(ChequeContract.ChequeEntry.NUMERO_CUENTA,cheque.getNumCuenta());
             String imagenFrente =    Utils.getStringImage( Utils.loadBitmap(parentActivity, cheque.getImgChequeFront()));
             String imagenTrasera =    Utils.getStringImage( Utils.loadBitmap(parentActivity, cheque.getImgChequeBack()));
 
-            jsonObject.put(ChequeContract.ChequeEntry.IMAGEN_CHEQUE_FRENTE,"sdaf");
+            jsonObject.put(ChequeContract.ChequeEntry.IMAGEN_CHEQUE_FRENTE,"3333");
             jsonObject.put(ChequeContract.ChequeEntry.NOMBRE_BANCO,"BOD");
-            jsonObject.put(ChequeContract.ChequeEntry.IMAGEN_CHEQUE_TRASERA,"sdfasdf");
+            jsonObject.put(ChequeContract.ChequeEntry.IMAGEN_CHEQUE_TRASERA,"333");
             jsonObject.put(ChequeContract.ChequeEntry.NUMERO_LOTE,lote);
 
             JsonObjectRequest req = new JsonObjectRequest(WebConstants.UPLOAD_URL, jsonObject,
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            mCheckDepositDbHelper.eliminarCheque(check.getId());
+                            Log.v(getClass().getName(),"Response exitoso ");
+                           // mCheckDepositDbHelper.eliminarCheque(check.getId());
                         }
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(getContext(), error.getMessage().toString(), Toast.LENGTH_LONG).show();
-                    loading.dismiss();
+                    //Toast.makeText(getContext(), error.getMessage().toString(), Toast.LENGTH_LONG).show();
+                    Log.e(getClass().getName(),"Error en onErrorResponse " + error.getMessage());
+                   // loading.dismiss();
                     loading =null;
-                    dialog.dismiss();
+                    //dialog.dismiss();
                 }
 
             });
+
             RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+            Log.v(getClass().getName()," Creada  RequestQueue requestQueue ");
+            int socketTimeout = 30000;//30 seconds - change to what you want
+            RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+            req.setRetryPolicy(policy);
+            Log.v(getClass().getName()," agregado policy al req ");
 
             //Adding request to the queue
             requestQueue.add(req);
         }catch (Exception e){
-            Toast.makeText(getContext(), e.getMessage().toString(), Toast.LENGTH_LONG).show();
+
+            Log.e(getClass().getName(),"Error en uploadCheck " + e.getMessage());
+            //Toast.makeText(getContext(), e.getMessage().toString(), Toast.LENGTH_LONG).show();
             loading.dismiss();
         }
 

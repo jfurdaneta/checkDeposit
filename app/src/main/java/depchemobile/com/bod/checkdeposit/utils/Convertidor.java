@@ -28,6 +28,7 @@ public class Convertidor {
             String nombreBanco= cursor.getString(cursor.getColumnIndexOrThrow(ChequeContract.ChequeEntry.NOMBRE_BANCO));
             boolean mismoBanco = cursor.getInt(cursor.getColumnIndexOrThrow(ChequeContract.ChequeEntry.MISMO_BANCO))>0;
             long fechaCheque = cursor.getLong((int) new Date(cursor.getColumnIndexOrThrow(ChequeContract.ChequeEntry.FECHA_PROCESO)).getTime());
+            //long fechaCheque = cursor.getLong(1);
             String uriFrente = cursor.getString(cursor.getColumnIndexOrThrow(ChequeContract.ChequeEntry.IMAGEN_CHEQUE_FRENTE));
             String uriTrasera= cursor.getString(cursor.getColumnIndexOrThrow(ChequeContract.ChequeEntry.IMAGEN_CHEQUE_TRASERA));
 
