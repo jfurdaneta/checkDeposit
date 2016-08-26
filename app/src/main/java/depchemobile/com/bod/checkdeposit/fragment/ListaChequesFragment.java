@@ -80,10 +80,14 @@ package depchemobile.com.bod.checkdeposit.fragment;
         import depchemobile.com.bod.checkdeposit.data.ChequeContract;
         import depchemobile.com.bod.checkdeposit.entidades.Cheque;
         import depchemobile.com.bod.checkdeposit.fragmentactivity.PrincipalFragmentActivity;
+        import depchemobile.com.bod.checkdeposit.interfaces.ChequeApi;
+        import depchemobile.com.bod.checkdeposit.interfaces.ChequeClient;
         import depchemobile.com.bod.checkdeposit.utils.Convertidor;
         import depchemobile.com.bod.checkdeposit.utils.Utiles;
         import depchemobile.com.bod.checkdeposit.utils.Utils;
         import depchemobile.com.bod.checkdeposit.web.WebConstants;
+        import retrofit2.Call;
+        import retrofit2.Callback;
 
 
 /**
@@ -467,53 +471,31 @@ public class ListaChequesFragment extends Fragment {
 
     }
     private void uploadCheck(Cheque cheque)  {
+        cheque.setNumLote(lote);
         final Cheque check = cheque;
         try{
 
-            Gson gson = new Gson();
-            String json = gson.toJson(check);
-            JsonParser parser = new JsonParser();
-            org.json.JSONObject jsonObject = new org.json.JSONObject();
-            jsonObject.put(ChequeContract.ChequeEntry.FECHA_PROCESO, Utils.FormateadorFechatoServicio(cheque.getFechaProceso()));
-            jsonObject.put(ChequeContract.ChequeEntry.MONTO,cheque.getMonto());
-            jsonObject.put(ChequeContract.ChequeEntry.MISMO_BANCO,cheque.isMismoBanco());
-            jsonObject.put(ChequeContract.ChequeEntry.NUMERO_CUENTA,cheque.getNumCuenta());
-            String imagenFrente =    Utils.getStringImage( Utils.loadBitmap(parentActivity, cheque.getImgChequeFront()));
-            String imagenTrasera =    Utils.getStringImage( Utils.loadBitmap(parentActivity, cheque.getImgChequeBack()));
 
-            jsonObject.put(ChequeContract.ChequeEntry.IMAGEN_CHEQUE_FRENTE,"3333");
-            jsonObject.put(ChequeContract.ChequeEntry.NOMBRE_BANCO,"BOD");
-            jsonObject.put(ChequeContract.ChequeEntry.IMAGEN_CHEQUE_TRASERA,"333");
-            jsonObject.put(ChequeContract.ChequeEntry.NUMERO_LOTE,lote);
+            ChequeApi apiService =
+                    ChequeClient.getClient().create(ChequeApi.class);
 
-            JsonObjectRequest req = new JsonObjectRequest(WebConstants.UPLOAD_URL, jsonObject,
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            Log.v(getClass().getName(),"Response exitoso ");
-                           // mCheckDepositDbHelper.eliminarCheque(check.getId());
-                        }
-                    }, new Response.ErrorListener() {
+            Call<JsonObject> call = apiService.crearCheque(cheque);
+            call.enqueue(new Callback<JsonObject>() {
                 @Override
-                public void onErrorResponse(VolleyError error) {
-                    //Toast.makeText(getContext(), error.getMessage().toString(), Toast.LENGTH_LONG).show();
-                    Log.e(getClass().getName(),"Error en onErrorResponse " + error.getMessage());
-                   // loading.dismiss();
-                    loading =null;
-                    //dialog.dismiss();
+                public void onResponse(Call<JsonObject> call, retrofit2.Response<JsonObject> response) {
+                    Log.v(getClass().getName(),"Response exitoso ");
+                    mCheckDepositDbHelper.eliminarCheque(check.getId());
                 }
 
+                @Override
+                public void onFailure(Call<JsonObject> call, Throwable t) {
+                    Log.e(getClass().getName(),"error en onFailure " + t.getMessage());
+                }
             });
 
-            RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-            Log.v(getClass().getName()," Creada  RequestQueue requestQueue ");
-            int socketTimeout = 30000;//30 seconds - change to what you want
-            RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-            req.setRetryPolicy(policy);
-            Log.v(getClass().getName()," agregado policy al req ");
 
-            //Adding request to the queue
-            requestQueue.add(req);
+
+
         }catch (Exception e){
 
             Log.e(getClass().getName(),"Error en uploadCheck " + e.getMessage());

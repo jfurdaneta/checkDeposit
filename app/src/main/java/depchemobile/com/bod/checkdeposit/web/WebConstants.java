@@ -7,7 +7,7 @@ public class WebConstants {
 
     public static String SERVICE_ERROR = "E";
     public static String SERVICE_CORRECT = "C";
-    public static String UPLOAD_URL ="http://192.168.8.102:8080/WebApplication2/webresources/cheques";
+    public static String UPLOAD_URL ="http://192.168.1.102:8080/WebApplication2/webresources/";
 
     public static String KEY_IMAGE = "image";
     public static String NAME_FRONT = "anverso";

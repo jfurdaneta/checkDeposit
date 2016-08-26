@@ -156,7 +156,7 @@ public class    Utils {
     /*Tecnoware*/
     public static String getStringImage(Bitmap bmp){
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        bmp.compress(Bitmap.CompressFormat.JPEG, 30, baos);
         byte[] imageBytes = baos.toByteArray();
         String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
         return encodedImage;
@@ -273,5 +273,14 @@ public class    Utils {
         Bitmap newBitmap = Bitmap.createScaledBitmap(realImage, width,
                 height, filter);
         return newBitmap;
+    }
+
+    public  static String  uri_to_imageString(Uri uri)
+    {
+       //Uri hacked_uri = Uri.parse("file://" +  uri.getPath());
+        Bitmap bm = BitmapFactory.decodeFile(uri.getPath());
+        return getStringImage(bm);
+
+
     }
 }

@@ -43,7 +43,10 @@ dependencies {
     compile project(':circularimageview')
     compile project(':hZGrapherLib')
     compile project(':pixlUI')
-    compile 'com.google.code.gson:gson:2.2.4'
+    //compile 'com.google.code.gson:gson:2.2.4'
     //compile 'com.soundcloud.android:android-crop:1.0.1@aar'
     compile 'com.theartofdev.edmodo:android-image-cropper:2.3.+'
+    compile 'com.google.code.gson:gson:2.6.2'
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
 }
