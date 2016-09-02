@@ -16,6 +16,7 @@ public class MarshMallowPermission {
     public static final int RECORD_PERMISSION_REQUEST_CODE = 1;
     public static final int EXTERNAL_STORAGE_PERMISSION_REQUEST_CODE = 2;
     public static final int CAMERA_PERMISSION_REQUEST_CODE = 3;
+    public static final int INTERNET_PERMISSION_REQUEST_CODE = 4;
     Activity activity;
 
     public MarshMallowPermission(Activity activity) {
@@ -30,6 +31,17 @@ public class MarshMallowPermission {
             return false;
         }
     }
+
+    public boolean checkPermissionForInternet(){
+        int result = ContextCompat.checkSelfPermission(activity, Manifest.permission.INTERNET);
+        if (result == PackageManager.PERMISSION_GRANTED){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
 
     public boolean checkPermissionForExternalStorage(){
         int result = ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -78,6 +90,21 @@ public class MarshMallowPermission {
     public void requestPermissionForCamera(){
 
         ActivityCompat.requestPermissions(activity,new String[]{Manifest.permission.CAMERA},CAMERA_PERMISSION_REQUEST_CODE);
+
+        return;
+        /*
+        if (ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.CAMERA)){
+            Toast.makeText(activity, "Camera permission needed. Please allow in App Settings for additional functionality.", Toast.LENGTH_LONG).show();
+        } else {
+            ActivityCompat.requestPermissions(activity,new String[]{Manifest.permission.CAMERA},CAMERA_PERMISSION_REQUEST_CODE);
+        }
+        */
+    }
+
+
+    public void requestPermissionForInternet(){
+
+        ActivityCompat.requestPermissions(activity,new String[]{Manifest.permission.INTERNET},INTERNET_PERMISSION_REQUEST_CODE);
 
         return;
         /*

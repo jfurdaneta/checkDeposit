@@ -14,7 +14,7 @@ import retrofit2.http.POST;
  */
 public interface ChequeApi {
 
-    @POST("cheques")
+    @POST("cheque.json")
     Call<JsonObject> crearCheque(@Body Cheque cheque );
 
 }

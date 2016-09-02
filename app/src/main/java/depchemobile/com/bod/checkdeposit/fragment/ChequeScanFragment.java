@@ -256,24 +256,27 @@ public class ChequeScanFragment extends Fragment {
             if (!marshMallowPermission.checkPermissionForExternalStorage())
                 marshMallowPermission.requestPermissionForExternalStorage();
             else
-            {
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if(!marshMallowPermission.checkPermissionForInternet())
+                    marshMallowPermission.requestPermissionForInternet();
+                else
+                {
+                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
 
-                File f = null;
+                    File f = null;
 
-                try {
-                    f = setUpPhotoFile();
-                    mCurrentPhotoPath = f.getAbsolutePath();
-                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    f = null;
-                    mCurrentPhotoPath = null;
-                }
+                    try {
+                        f = setUpPhotoFile();
+                        mCurrentPhotoPath = f.getAbsolutePath();
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        f = null;
+                        mCurrentPhotoPath = null;
+                    }
 
 
-                startActivityForResult(takePictureIntent, actionCode);
+                    startActivityForResult(takePictureIntent, actionCode);
 
             }
 
